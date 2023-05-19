@@ -236,6 +236,12 @@
     \item usually one would go in the called multistep and do a clear\_previous\_steps call to make sure that the previous steps are finished
     \item but this call does not work since the ObjectiveFunction plugin does not have a db\_id
     \item thinking right now....
+    \item maybe we can finish the task in the callback function of the optimizer plugin?
+    \item Still 19.05 here we are again
+    \item I have now a working solution for the problem
+    \item the proposed solution of clearing the previous steps in the callback function did work 
+    \item the problem was that i forgot to add the call db\_task.save(cammit=True) in the callback function
+    \item this is needed to save the changes to the database without it the cleared variable is not saved
   \end{itemize}
 \end{itemize}
 
