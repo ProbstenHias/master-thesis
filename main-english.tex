@@ -220,6 +220,23 @@
     \item A way to get a list of interaction endpoints of the callee plugin
     \item A way to get the plugin metadata from the plugin URL
   \end{itemize}
+  \item 19.05: I am currently working on a big problem
+  \begin{itemize}
+    \item I have the optimizer plugin which should call the objective function plugin so that it can ask the user for the hyperparameters of the objective function
+    \item For that reason I need to add a next step as a celery task. 
+    \item The thing is i don't want to handle the next task like other multistep plugins where they share a db id since the ObjectiveFunction plugin should be able to stand on its own.
+    \item Therefore, I pass a callback function to the objective function plugin which it should call when it is done with the setup.
+    \item works all fine like that
+    \item The problem right now is how i call the ObjectiveFunction plugin from the optimizer plugin
+    \item I need to add it as a step, which is usually done via the add\_step celery task
+    \item This task though needs a db\_id which I don't want to add.
+    \item When adding none it works to call the ObjectiveFunction plugin and its also possbile to call the callback function
+    \item but the problem is that with the add\_step task the celery task is not called asyncronously
+    \item therefore when the callback function is called the optimizer plugin is not yet finished with the add\_step task
+    \item usually one would go in the called multistep and do a clear\_previous\_steps call to make sure that the previous steps are finished
+    \item but this call does not work since the ObjectiveFunction plugin does not have a db\_id
+    \item thinking right now....
+  \end{itemize}
 \end{itemize}
 
 
