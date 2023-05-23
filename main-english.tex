@@ -243,6 +243,30 @@
     \item the problem was that i forgot to add the call db\_task.save(cammit=True) in the callback function
     \item this is needed to save the changes to the database without it the cleared variable is not saved
   \end{itemize}
+  \item 20.05: Today we give the ObjectiveFunction plugin the ability to calculate the loss function
+  \begin{itemize}
+    \item On callback we give the optimizer plugin the url of the calculateLoss function url
+    \item The optimizer plugin then calls the calculateLoss function
+  \end{itemize}
+  \item 22.05: we continue with the upper
+  \begin{itemize}
+    \item it is now possible to calculate the loss function
+    \item we simply call the calculation enpoint with a post request
+    \item we pass all the necessary data in the body of the request
+    \item we have a special schema for that
+    \item current problem: passing the data to the minimize function of scipy.optimize
+    \item we have the hyperparameters as a dict to keep it as generic as possible
+    \item but the minimize function needs the hyperparameters as a list
+    \item and also the loss function needs the hyperparameters as a dict, so lets see how we can solve this
+    \item we maybe did it by just passing the hyperparameters as a dict to both of the functions 
+    \item now we have the problem that the content type of the input file is not correctly set by postman
+    \item we just change the code to accept the content type but lets not forget to change it back
+  \end{itemize}
+  \item 23.05: today we do some cleanup
+  \begin{itemize}
+    \item make the import relative so that it works with the docker container
+    \item 
+  \end{itemize}
 \end{itemize}
 
 
