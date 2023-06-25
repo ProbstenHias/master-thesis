@@ -211,8 +211,8 @@
   \item user can now select a plugin from the list of callable plugins, the list is narrowed down to the plugins that are compatible via the tag field
   \item creating a method to get the plugin name from the plugin URL
   \item made the callee plugin to multistep, to demonstrate that any amount of steps can be done in invoked plugin
-  \item started with an optimizer plugin that gives the first frontend for the user to select the objective function plugin
-  \item create an objective function plugin that takes means squared error as an objective function
+  \item started with an optimizer plugin that gives the first frontend for the user to select the objective-function-plugin
+  \item create an objective-function-plugin that takes means squared error as an objective function
   \item todo: creating a method to get the plugin metadata from the plugin URL (this is needed in order to get the entry points of the plugin)
   \item identified three key problems:
   \begin{itemize}
@@ -222,19 +222,19 @@
   \end{itemize}
   \item 19.05: I am currently working on a big problem
   \begin{itemize}
-    \item I have the optimizer plugin which should call the objective function plugin so that it can ask the user for the hyperparameters of the objective function
+    \item I have the optimizer plugin which should call the objective-function-plugin so that it can ask the user for the hyperparameters of the objective function
     \item For that reason I need to add a next step as a celery task. 
-    \item The thing is i don't want to handle the next task like other multistep plugins where they share a db id since the ObjectiveFunction plugin should be able to stand on its own.
-    \item Therefore, I pass a callback function to the objective function plugin which it should call when it is done with the setup.
+    \item The thing is i don't want to handle the next task like other multistep plugins where they share a db id since the objective-function-plugin should be able to stand on its own.
+    \item Therefore, I pass a callback function to the objective-function-plugin which it should call when it is done with the setup.
     \item works all fine like that
-    \item The problem right now is how i call the ObjectiveFunction plugin from the optimizer plugin
+    \item The problem right now is how i call the objective-function-plugin from the optimizer plugin
     \item I need to add it as a step, which is usually done via the add\_step celery task
     \item This task though needs a db\_id which I don't want to add.
-    \item When adding none it works to call the ObjectiveFunction plugin and its also possbile to call the callback function
+    \item When adding none it works to call the objective-function-plugin and its also possbile to call the callback function
     \item but the problem is that with the add\_step task the celery task is not called asyncronously
     \item therefore when the callback function is called the optimizer plugin is not yet finished with the add\_step task
     \item usually one would go in the called multistep and do a clear\_previous\_steps call to make sure that the previous steps are finished
-    \item but this call does not work since the ObjectiveFunction plugin does not have a db\_id
+    \item but this call does not work since the objective-function-plugin does not have a db\_id
     \item thinking right now....
     \item maybe we can finish the task in the callback function of the optimizer plugin?
     \item Still 19.05 here we are again
@@ -243,7 +243,7 @@
     \item the problem was that i forgot to add the call db\_task.save(cammit=True) in the callback function
     \item this is needed to save the changes to the database without it the cleared variable is not saved
   \end{itemize}
-  \item 20.05: Today we give the ObjectiveFunction plugin the ability to calculate the loss function
+  \item 20.05: Today we give the objective-function-plugin the ability to calculate the loss function
   \begin{itemize}
     \item On callback we give the optimizer plugin the url of the calculateLoss function url
     \item The optimizer plugin then calls the calculateLoss function
@@ -265,7 +265,58 @@
   \item 23.05: today we do some cleanup
   \begin{itemize}
     \item make the import relative so that it works with the docker container
-    \item 
+    \item remove all no ops tasks
+  \end{itemize}
+  \item 02.06: 
+  \begin{itemize}
+    \item we want to skip the optimizer UI since we do not need any more input data
+    \item tried to set the cleared value of the created step to true, but it did not work, since only the process step is started is by clicking submit in the ui
+    \item trying to chain the tasks directly in the callback function, which works
+  \end{itemize}
+  \item 05.06:
+  \begin{itemize}
+    \item now I want to call the objective-function-plugin via the entry points that I get through the metadata, this is needed to make the plugins more generic
+    \item I have a problem where the shared schemas can not be imported since the NumPy package cannot be found, added the NumPy package to the requirements for the opt plugin, but this did not solve the problems
+    \item maybe this will be solved by creating a coordinator plugin that lives in the top level of the plugin folder
+  \end{itemize}
+  \item 12.06:
+  \begin{itemize}
+    \item Creating a top level coordinator plugin was not the solution. If an init file is present no further plugins will be loaded from the folder
+    \item the shared schemas are now part of the coordinator plugin
+    \item Created a new infrastructure for the plugins with a coordinator plugin (diagram will be needed)
+    \item today we solve the following problem:
+    \item coordinator waits for the optimizer plugin to finish and writes the result to a file
+    \item for this the coordinator polls the task api to check if the minimizer task is finished
+    \item when it is it writes the result to a file
+    \item I should move the callback URL away from the query parameters to the body of the request, maybe to the form
+    \item next I should read about how neural networks work and how to minimize them
+  \end{itemize}
+  \item 13.06:
+  \begin{itemize}
+    \item i have made a decision on how to handle the callback url from the ui to the processing endpoint
+    \item until now the callback url was passed as a query parameter
+    \item now i want to pass it into the form that is rendered by the UI
+    \item it should be a hidden field
+    \item i have to make and change so that i can pass multiple schemas to the render function and set which fields should be hidden
+  \end{itemize}
+  \item 16.06:
+  \begin{itemize}
+    \item when an invoked plugin now makes a callback to its invoker it only passes back the endpoint for the calculation endpoint. 
+    \item it does not pass any hyperparameters back since it should own the hyperparameters and not the invoker
+    \item i now want to have a look of how loss functions are called in python and how hyperparameters are passed to them
+    \item with this information I want to create interaction endpoints for the objective-function-plugin that are completely generic, i.e. the hyperparameters are passed to the endpoint as a dict
+    \item as an example of how a generic method could look like i will have a look at the scipy.optimize.minimize function
+    \item I now interaction endpoints as and additional list to entry points
+  \end{itemize}
+  \item 25.06:
+  \begin{itemize}
+    \item i have added a functionality where I use the blinker library to create a signal that is emitted when the status of a task changes
+    \item this is used by the coordinator plugin to check if the minimization task is finished
+    \item the coordinator plugin passes the callback URL to the minimization calculation endpoint
+    \item this endpoint registers the URL to the db
+    \item the signal handlers makes a post request to this URL when the status of the task changes
+    \item I have moved all shared schemas into a separate folder
+    \item I have moved all utilities concerning plugin interactions into a separate folder
   \end{itemize}
 \end{itemize}
 
@@ -286,14 +337,14 @@
   \end{itemize}
   \item \textbf{Optimizer}: This plugin should have the following steps:
     \begin{itemize}
-      \item \textbf{ /get setup UI }: Let the user select the objective function plugin, dataset, target variable, and the optimization algorithm
+      \item \textbf{ /get setup UI }: Let the user select the objective-function-plugin, dataset, target variable, and the optimization algorithm
       \item \textbf{ /post setup }: This step should setup the optimizer with set a database id for future reference of the parameter. 
       Then it should call the objective function entry point to setup the objective function. Pass the url of the optimizer callback function as a parameter.
-      \item \textbf{ /post callback }: This endpoint should be called by the objective function plugin to indicate that the setup is done.
+      \item \textbf{ /post callback }: This endpoint should be called by the objective-function-plugin to indicate that the setup is done.
       It should then start the optimization process.
       \item \textbf{ /post optimize }: This step should trigger the optimization process.
-      It should loop the optimization fucntion until a stop condition is met.
-      In each iteration it should call the objective function plugin to calculate the loss function.
+      It should loop the optimization function until a stop condition is met.
+      In each iteration it should call the objective-function-plugin to calculate the loss function.
     \end{itemize}
 \end{itemize}
 
