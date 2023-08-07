@@ -318,6 +318,17 @@
     \item I have moved all shared schemas into a separate folder
     \item I have moved all utilities concerning plugin interactions into a separate folder
   \end{itemize}
+  \item 26.06:
+  \begin{itemize}
+    \item I developed a way to pass any amount of parameters to the processing endpoint of the invoked plugin UI
+    \item I added an interaction endpoint that is used to invoke the invoked plugin
+    \item this interaction endpoint allows any number of parameters
+    \item the endpoint saves these parameters to the database
+    \item it then adds the entry points of the invoked plugin as a step
+    \item it passes the processing URL with the db id as a query parameter to the invoked plugin
+    \item the invoked plugin then calls the processing endpoint with the db id as a query parameter
+    \item here it starts a new db task with the arguments that were passed to the invoked plugin 
+  \end{itemize}
 \end{itemize}
 
 
@@ -355,16 +366,54 @@ This thesis starts with \cref{chap:k2}.
 We can also typeset \verb|<text>verbatim text</text>|.
 Backticks are also rendered correctly: \verb|`words in backticks`|.
 
-\chapter{Chapter Two}
-\label{chap:k2}
+\chapter{Background}
+\label{chap:literatureReview}
+\section{Maschine Learning}
+\label{sec:machineLearning}
+\section{Quantum Computing}
+\label{sec:quantumComputing}
+\section{Quantum Machine Learning and QHana}
+\label{sec:quantumMachineLearning}
+\section{Restful API Design}
 
-LaTeX hints are provided in \cref{chap:latexhints}.
-
-\blinddocument
 
 \chapter{Related Work}
 
 Describe relevant scientific literature related to your work.
+
+\chapter*{Methodology}
+\label{chap:methodology}
+\section*{Concept Development for Plugin Interaction}
+\label{sec:conceptDevelopment}
+
+\chapter{Implementation}
+\label{chap:implementation}
+\section{Plugin Infrastructure}
+\label{sec:pluginInfrastructure}
+\section{Plugin Interaction}
+\label{sec:pluginInteraction}
+\section{Minimizer Plugin}
+\label{sec:minimizerPlugin}
+\section{Objective Function Plugins}
+\label{sec:objectiveFunctionPlugins}
+
+
+\chapter{Evaluation}
+\label{chap:evaluation}
+\section{Sample Machine Learning Experiment}
+\label{sec:sampleMachineLearningExperiment}
+\section{Interchangeability of Plugins}
+\label{sec:interchangeabilityOfPlugins}
+\section{Performance Analysis}
+\label{sec:performanceAnalysis}
+
+\chapter*{Discussion}
+\label{chap:discussion}
+\section*{Achievements and Contribution}
+\label{sec:achievementsAndContribution}
+\section*{Limitations}
+\label{sec:limitations}
+
 
 \chapter{Conclusion and Outlook}
 \label{chap:zusfas}
@@ -376,7 +425,6 @@ Describe relevant scientific literature related to your work.
 All links were last followed on March 17, 2018.
 
 \appendix
-\input{latexhints-english}
 
 \pagestyle{empty}
 \renewcommand*{\chapterpagestyle}{empty}
