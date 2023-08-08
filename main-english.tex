@@ -372,19 +372,19 @@ Backticks are also rendered correctly: \verb|`words in backticks`|.
 \label{sec:optimizationAlgorithms}
 \subsection*{Objective Functions}
 \label{subsec:objectiveFunctions}
-Objective functions, serving as the cornerstone of optimization problems, form the foundation for a wide range of computational algorithms and models.
+OFs, serving as the cornerstone of optimization problems, form the foundation for a wide range of computational algorithms and models.
 They provide a metric to gauge the performance of a given model, solution, or set of parameters.
 Objective functions are the heart of many optimization problems.
 The goal is to minimize or maximize these functions depending on the context and requirements \cite{Weinan2017}.
 In the context of VQAs, the primary objective is to minimize the function.
 
-The core inputs to an objective function typically encompass data points (denoted as $x$), corresponding labels or outcomes (represented by $y$), and a set of parameters or weights (often symbolized by $\theta$ or $w$).
+The core inputs to an of typically encompass data points (denoted as $x$), corresponding labels or outcomes (represented by $y$), and a set of parameters or weights (often symbolized by $\theta$ or $w$).
 These parameters dictate how the model responds to the input data and makes its predictions.
-Additionally, certain objective functions may also include hyperparameters as input, which control the behavior and complexity of the model.
-In the context of optimization problems, the role of an objective function is to capture both the problem we're attempting to solve and the strategy by which we're trying to solve it.
+Additionally, certain ofs may also include hyperparameters as input, which control the behavior and complexity of the model.
+In the context of optimization problems, the role of an of is to capture both the problem we're attempting to solve and the strategy by which we're trying to solve it.
 It provides a measure of the 'goodness' or 'fitness' of our current solution or parameters, and the aim is to adjust these parameters to improve this measure.
 
-One example of an objective function is the Lasso (Least Absolute Shrinkage and Selection Operator) Loss function.
+One example of an of is the Lasso (Least Absolute Shrinkage and Selection Operator) Loss function.
 The Lasso loss function is represented as:
 \[
 L(Y, X, W, \lambda) = ||Y - XW||^2_2 + \lambda ||W||_1
@@ -403,17 +403,89 @@ This function consists of two terms:
   This term penalizes the absolute size of the coefficients, encouraging them to be small.
 \end{enumerate}
 The hyperparameter \(\lambda\) governs the trade-off between these two terms.
-When \(\lambda = 0\), the objective function reduces to ordinary least squares regression, and the weights are chosen to minimize the mean squared error alone.
+When \(\lambda = 0\), the of reduces to ordinary least squares regression, and the weights are chosen to minimize the mean squared error alone.
 As \(\lambda\) increases, more weight is given to the regularization term, and the solution becomes more sparse (i.e., more of the weights are driven to zero).
 This can help to prevent overfitting by effectively reducing the complexity of the model \cite{ShalevShwartz2014}
 
-\subsection*{Minimization Algorithms}
-\label{subsec:minimizationAlgorithms}
+\subsection*{Minimization Functions}
+\label{subsec:minimizationFunctions}
+Minimization functions, often referred to as optimization algorithms, play a pivotal role in a vast array of computational models and algorithms.
+In essence, they serve to iteratively enhance the parameters of a model to reduce the value of the of.
+The goal of these minimization functions is to find the optimal set of parameters that yield the lowest possible value of the of within the constraints of the problem \cite{Nocedal2006}.
+
+The process of optimization involves a search through the parameter space.
+This search can be visualized as navigating a landscape of hills and valleys, with each point in the landscape corresponding to a different set of parameters, and the height at each point representing the value of the of.
+The goal of the minimization function is to find the lowest point in this landscape, corresponding to the minimum value of the of \cite{Goodfellow2017}.
+
+The core inputs to a minimization function are the initial parameters of the model or weights (denoted as \(\theta\) or \(w\)),
+the of that needs to be minimized, and the gradients of the of with respect to the parameters.
+Additionally, certain minimization functions may also include hyperparameters as input, which control the behavior and complexity of the optimization process \cite{Virtanen2020}.
+For instance, the learning rate is a typical hyperparameter that determines the step size in each iteration of the optimization process.
+
+There are numerous minimization functions used in computational problems, each with its own strengths and weaknesses.
+These range from simple methods such as gradient descent, to more complex ones such as the Newton's method, stochastic gradient descent (SGD), RMSprop, and Adam.
+
+One of the most fundamental and widely used minimization functions is the Gradient Descent. 
+To find a local minimum of a function using gradient descent, one takes steps proportional to the negative of the gradient (or approximate gradient) of the function at the current point. 
+
+The update rule of gradient descent is given as:
+
+\[
+\theta_{t+1} = \theta_t - \alpha \nabla F(\theta_t)
+\]
+
+In this formula:
+
+\begin{itemize}
+  \item \(\theta_{t+1}\) represents the parameters at the next time step.
+  \item \(\theta_t\) represents the current parameters.
+  \item \(\alpha\) is the learning rate, a positive scalar determining the size of the step.
+  \item \(\nabla F(\theta_t)\) is the gradient of the of.
+\end{itemize}
+
+Here, the of \(F\) is assumed to be a differentiable function.
+The gradient \(\nabla F(\theta_t)\) provides the direction of the steepest ascent at the point \(\theta_t\), and \(-\nabla F(\theta_t)\) provides the direction of steepest descent.
+By taking a step in this direction, we move towards the minimum of the function.
+
+The size of the steps taken is determined by the learning rate \(\alpha\), which is a hyperparameter that must be set before the learning process begins.
+The learning rate controls how fast or slow we move towards the optimal weights.
+If the learning rate is very large, we may skip the optimal solution.
+If it is too small, we may need too many iterations to converge to the best values.
+
+The choice of minimization function can significantly influence the efficiency and success of the optimization process.
+While some minimization functions may perform well on certain problems, they may not yield similar results on others.
+Therefore, understanding the underlying mechanisms of these functions and their suitability to the specific problem at hand is crucial.
 
 \section{Quantum Computing}
 \label{sec:quantumComputing}
-\section{Quantum Machine Learning and QHana}
-\label{sec:quantumMachineLearning}
+Quantum computing is a cutting-edge field that exploits the principles of quantum mechanics to process information.
+Unlike classical computers that use bits (0s and 1s) to store and process information, quantum computers use quantum bits, or "qubits."
+Qubits, through the phenomena of superposition and entanglement, can exist in multiple states at once and be correlated with each other in ways that classical bits cannot \cite{Nielsen2010}.
+
+Superposition allows a qubit to be in a state that is a combination of both 0 and 1, with a certain probability for each.
+This property enables quantum computers to perform many calculations simultaneously, vastly increasing their potential computational power.
+Entanglement, on the other hand, allows qubits that are entangled to be intimately linked regardless of the distance separating them.
+A change in the state of one will instantaneously affect the state of the other, a phenomenon that Einstein famously called "spooky action at a distance" \cite{Einstein1935}.
+This property is essential for many quantum algorithms, quantum error correction, and quantum teleportation, making it a fundamental resource in quantum information processing \cite{Nielsen2010,Preskill1998}.
+
+
+\section{Variational Quantum Algorithms}
+\label{sec:variationalQuantumAlgorithms}
+
+VQAs bring together the principles of quantum computing and optimization in a unique and powerful way.
+They are a class of hybrid quantum-classical algorithms that leverage the strengths of both quantum and classical computing to solve complex problems \cite{McClean2016}.
+
+The main concept of VQAs is to use a sequence of quantum operations (a "quantum circuit") controlled by certain parameters.
+These parameters are adjusted using classical optimization techniques with the aim of solving a specific problem.
+This problem, in many cases, involves finding the lowest energy state, or "ground state", of a quantum system, a problem that maps to finding the minimum of a particular function \cite{Peruzzo2013}.
+
+By leveraging classical optimization algorithms, VQAs become more resistant to quantum errors, as the majority of the computation is performed on a classical computer.
+This combination of quantum and classical resources makes VQAs a promising type of algorithm for near-term quantum devices \cite{Moll2017}.
+
+\section{QHana}
+\label{sec:qhana}
+
+
 \section{Restful API Design}
 
 
