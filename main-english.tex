@@ -485,6 +485,23 @@ This combination of quantum and classical resources makes VQAs a promising type 
 \section{QHana}
 \label{sec:qhana}
 
+QHana, short for Quantum Humanities Analysis tool, is a unique application developed in the domain of Digital Humanities (DH).
+It provides a platform for users to experiment with various machine learning algorithms on specified datasets.
+With the advent of quantum computers and their availability in the cloud, QHana has become a viable tool for evaluating the potential advantages of quantum algorithms in the DH community.
+
+QHana is designed to be extensible, allowing the integration of new data sources and quantum algorithms as plugins.
+However, plugins are specifically built for specific applications, limiting their reusability in other applications.
+Moreover, plugins for an application have to be developed in the same programming language as the application.
+Even if a plugin can be reused in another application, its UI has to adapt to the new application, otherwise users may fail to understand the plugin's functionality.
+To address this limitation, QHana is built on a novel concept of Reusable Microservice-based Plugins (RAMPs).
+This allows microservices with an integrated UI to be used as plugins by multiple applications, enhancing the reusability of the plugins across different applications \cite{Buehler2022}.
+
+In the context of VQAs, this thesis aims to extend the capabilities of QHana by developing a novel approach where plugins can interact with each other.
+By leveraging the principles of quantum computing and optimization, VQAs can be implemented as interchangeable plugins within the QHana platform.
+This means that different components of a VQA, such as the minimizer and the objective functions, can be developed as separate plugins.
+These plugins can then interact, communicate, and collaborate to achieve the desired optimization results.
+This modular approach not only enhances the flexibility and scalability of the system but also promotes reusability, as individual plugins can be utilized in various combinations to tackle different optimization problems.
+
 
 \section{Restful API Design}
 
