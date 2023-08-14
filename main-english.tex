@@ -372,19 +372,19 @@ Backticks are also rendered correctly: \verb|`words in backticks`|.
 \label{sec:optimizationAlgorithms}
 \subsection{Objective Functions}
 \label{subsec:objectiveFunctions}
-OFs, serving as the cornerstone of optimization problems, form the foundation for a wide range of computational algorithms and models.
+\glspl{of}, serving as the cornerstone of optimization problems, form the foundation for a wide range of computational algorithms and models.
 They provide a metric to gauge the performance of a given model, solution, or set of parameters.
-Objective functions are the heart of many optimization problems.
+\glspl{of} are the heart of many optimization problems.
 The goal is to minimize or maximize these functions depending on the context and requirements \cite{Weinan2017}.
-In the context of VQAs, the primary objective is to minimize the function.
+In the context of \glspl{vqa}, the primary objective is to minimize the function.
 
-The core inputs to an of typically encompass data points (denoted as $x$), corresponding labels or outcomes (represented by $y$), and a set of parameters or weights (often symbolized by $\theta$ or $w$).
+The core inputs to a \gls{of} typically encompass data points (denoted as $x$), corresponding labels or outcomes (represented by $y$), and a set of parameters or weights (often symbolized by $\theta$ or $w$).
 These parameters dictate how the model responds to the input data and makes its predictions.
-Additionally, certain ofs may also include hyperparameters as input, which control the behavior and complexity of the model.
-In the context of optimization problems, the role of an of is to capture both the problem we're attempting to solve and the strategy by which we're trying to solve it.
+Additionally, certain \glspl{of} may also include hyperparameters as input, which control the behavior and complexity of the model.
+In the context of optimization problems, the role of an \gls{of} is to capture both the problem we're attempting to solve and the strategy by which we're trying to solve it.
 It provides a measure of the 'goodness' or 'fitness' of our current solution or parameters, and the aim is to adjust these parameters to improve this measure.
 
-One example of an of is the Lasso (Least Absolute Shrinkage and Selection Operator) Loss function.
+One example of an \gls{of} is the Lasso (Least Absolute Shrinkage and Selection Operator) Loss function.
 The Lasso loss function is represented as:
 \[
 L(Y, X, W, \lambda) = ||Y - XW||^2_2 + \lambda ||W||_1
@@ -403,22 +403,22 @@ This function consists of two terms:
   This term penalizes the absolute size of the coefficients, encouraging them to be small.
 \end{enumerate}
 The hyperparameter \(\lambda\) governs the trade-off between these two terms.
-When \(\lambda = 0\), the of reduces to ordinary least squares regression, and the weights are chosen to minimize the mean squared error alone.
+When \(\lambda = 0\), the \gls{of} reduces to ordinary least squares regression, and the weights are chosen to minimize the mean squared error alone.
 As \(\lambda\) increases, more weight is given to the regularization term, and the solution becomes more sparse (i.e., more of the weights are driven to zero).
 This can help to prevent overfitting by effectively reducing the complexity of the model \cite{ShalevShwartz2014}
 
 \subsection{Minimization Functions}
 \label{subsec:minimizationFunctions}
 Minimization functions, often referred to as optimization algorithms, play a pivotal role in a vast array of computational models and algorithms.
-In essence, they serve to iteratively enhance the parameters of a model to reduce the value of the of.
-The goal of these minimization functions is to find the optimal set of parameters that yield the lowest possible value of the of within the constraints of the problem \cite{Nocedal2006}.
+In essence, they serve to iteratively enhance the parameters of a model to reduce the value of the \gls{of}.
+The goal of these minimization functions is to find the optimal set of parameters that yield the lowest possible value of the \gls{of} within the constraints of the problem \cite{Nocedal2006}.
 
 The process of optimization involves a search through the parameter space.
-This search can be visualized as navigating a landscape of hills and valleys, with each point in the landscape corresponding to a different set of parameters, and the height at each point representing the value of the of.
-The goal of the minimization function is to find the lowest point in this landscape, corresponding to the minimum value of the of \cite{Goodfellow2017}.
+This search can be visualized as navigating a landscape of hills and valleys, with each point in the landscape corresponding to a different set of parameters, and the height at each point representing the value of the \gls{of}.
+The goal of the minimization function is to find the lowest point in this landscape, corresponding to the minimum value of the \gls{of} \cite{Goodfellow2017}.
 
 The core inputs to a minimization function are the initial parameters of the model or weights (denoted as \(\theta\) or \(w\)),
-the of that needs to be minimized, and the gradients of the of with respect to the parameters.
+the \gls{of} that needs to be minimized, and the gradients of the \gls{of} with respect to the parameters.
 Additionally, certain minimization functions may also include hyperparameters as input, which control the behavior and complexity of the optimization process \cite{Virtanen2020}.
 For instance, the learning rate is a typical hyperparameter that determines the step size in each iteration of the optimization process.
 
@@ -443,7 +443,7 @@ In this formula:
   \item \(\nabla F(\theta_t)\) is the gradient of the of.
 \end{itemize}
 
-Here, the of \(F\) is assumed to be a differentiable function.
+Here, the \gls{of} \(F\) is assumed to be a differentiable function.
 The gradient \(\nabla F(\theta_t)\) provides the direction of the steepest ascent at the point \(\theta_t\), and \(-\nabla F(\theta_t)\) provides the direction of steepest descent.
 By taking a step in this direction, we move towards the minimum of the function.
 
@@ -472,15 +472,15 @@ This property is essential for many quantum algorithms, quantum error correction
 \section{Variational Quantum Algorithms}
 \label{sec:variationalQuantumAlgorithms}
 
-VQAs bring together the principles of quantum computing and optimization in a unique and powerful way.
+\glspl{vqa} bring together the principles of quantum computing and optimization in a unique and powerful way.
 They are a class of hybrid quantum-classical algorithms that leverage the strengths of both quantum and classical computing to solve complex problems \cite{McClean2016}.
 
-The main concept of VQAs is to use a sequence of quantum operations (a "quantum circuit") controlled by certain parameters.
+The main concept of \glspl{vqa} is to use a sequence of quantum operations (a "quantum circuit") controlled by certain parameters.
 These parameters are adjusted using classical optimization techniques with the aim of solving a specific problem.
 This problem, in many cases, involves finding the lowest energy state, or "ground state", of a quantum system, a problem that maps to finding the minimum of a particular function \cite{Peruzzo2013}.
 
-By leveraging classical optimization algorithms, VQAs become more resistant to quantum errors, as the majority of the computation is performed on a classical computer.
-This combination of quantum and classical resources makes VQAs a promising type of algorithm for near-term quantum devices \cite{Moll2017}.
+By leveraging classical optimization algorithms, \glspl{vqa} become more resistant to quantum errors, as the majority of the computation is performed on a classical computer.
+This combination of quantum and classical resources makes \glspl{vqa} a promising type of algorithm for near-term quantum devices \cite{Moll2017}.
 
 \section{QHana}
 \label{sec:qhana}
@@ -496,9 +496,9 @@ Even if a plugin can be reused in another application, its UI has to adapt to th
 To address this limitation, QHana is built on a novel concept of Reusable Microservice-based Plugins (RAMPs).
 This allows microservices with an integrated UI to be used as plugins by multiple applications, enhancing the reusability of the plugins across different applications \cite{Buehler2022}.
 
-In the context of VQAs, this thesis aims to extend the capabilities of QHana by developing a novel approach where plugins can interact with each other.
-By leveraging the principles of quantum computing and optimization, VQAs can be implemented as interchangeable plugins within the QHana platform.
-This means that different components of a VQA, such as the minimizer and the objective functions, can be developed as separate plugins.
+In the context of \glspl{vqa}, this thesis aims to extend the capabilities of QHana by developing a novel approach where plugins can interact with each other.
+By leveraging the principles of quantum computing and optimization, \glspl{vqa} can be implemented as interchangeable plugins within the QHana platform.
+This means that different components of a \gls{vqa}, such as the minimizer and the \gls{of}, can be developed as separate plugins.
 These plugins can then interact, communicate, and collaborate to achieve the desired optimization results.
 This modular approach not only enhances the flexibility and scalability of the system but also promotes reusability, as individual plugins can be utilized in various combinations to tackle different optimization problems.
 
@@ -542,7 +542,7 @@ To promote clarity and a structured layout, further divisions were made:
 
 \begin{itemize}
   \item \textit{plugins/optimization/coordinator} – For the main optimization plugin.
-  \item \textit{plugins/optimization/objective\_functions} – Where each objective function plugin occupies its respective subfolder.
+  \item \textit{plugins/optimization/objective\_functions} – Where each \gls{of} plugin occupies its respective subfolder.
   \item \textit{plugins/optimization/minimizer} – Where each minimizer plugin occupies its respective subfolder.
 \end{itemize}
 
