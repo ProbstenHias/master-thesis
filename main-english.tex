@@ -625,6 +625,26 @@ We want to see how much time is spent in the network and how much time is spent 
 For more sophisticated loss functions (in this case the neural network) we want to see how much time is spent for the setup of the neural network.
 Since a microservice does not have state, the neural network has to be setup for every call of to calculate loss function.
 
+\section{Hardware and System Specifications}
+
+The benchmarks were conducted on a MacBook Pro. The detailed specifications of the machine are as follows:
+
+\begin{itemize}
+    \item \textbf{Model:} MacBookPro18,1
+    \item \textbf{Processor (CPU):} Apple M1 Pro
+    \item \textbf{Memory (RAM):} 32 GB (hw.memsize: 34359738368 bytes)
+    \item \textbf{Graphics Processing Unit (GPU):}
+    \begin{itemize}
+        \item Chipset Model: Apple M1 Pro
+        \item Type: GPU
+        \item Bus: Built-In
+        \item Total Number of Cores: 16
+        \item Metal Support: Metal 3
+    \end{itemize}
+    \item \textbf{Operating System:} macOS, Version 13.4.1, Build Version: 22F770820d
+\end{itemize}
+
+
 \section{Accuracy Analysis}
 \label{sec:accuracyAnalysis}
 In terms of accuracy we compare the results of the plugin based system with the results of the jupyter notebook based system.
