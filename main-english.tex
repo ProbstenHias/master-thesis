@@ -223,7 +223,7 @@
   \item 19.05: I am currently working on a big problem
   \begin{itemize}
     \item I have the optimizer plugin which should call the objective-function-plugin so that it can ask the user for the hyperparameters of the objective function
-    \item For that reason I need to add a next step as a celery task. 
+    \item For that reason I need to add a next step as a celery task.
     \item The thing is i don't want to handle the next task like other multistep plugins where they share a db id since the objective-function-plugin should be able to stand on its own.
     \item Therefore, I pass a callback function to the objective-function-plugin which it should call when it is done with the setup.
     \item works all fine like that
@@ -239,7 +239,7 @@
     \item maybe we can finish the task in the callback function of the optimizer plugin?
     \item Still 19.05 here we are again
     \item I have now a working solution for the problem
-    \item the proposed solution of clearing the previous steps in the callback function did work 
+    \item the proposed solution of clearing the previous steps in the callback function did work
     \item the problem was that i forgot to add the call db\_task.save(cammit=True) in the callback function
     \item this is needed to save the changes to the database without it the cleared variable is not saved
   \end{itemize}
@@ -258,7 +258,7 @@
     \item we have the hyperparameters as a dict to keep it as generic as possible
     \item but the minimize function needs the hyperparameters as a list
     \item and also the loss function needs the hyperparameters as a dict, so lets see how we can solve this
-    \item we maybe did it by just passing the hyperparameters as a dict to both of the functions 
+    \item we maybe did it by just passing the hyperparameters as a dict to both of the functions
     \item now we have the problem that the content type of the input file is not correctly set by postman
     \item we just change the code to accept the content type but lets not forget to change it back
   \end{itemize}
@@ -267,7 +267,7 @@
     \item make the import relative so that it works with the docker container
     \item remove all no ops tasks
   \end{itemize}
-  \item 02.06: 
+  \item 02.06:
   \begin{itemize}
     \item we want to skip the optimizer UI since we do not need any more input data
     \item tried to set the cleared value of the created step to true, but it did not work, since only the process step is started is by clicking submit in the ui
@@ -301,7 +301,7 @@
   \end{itemize}
   \item 16.06:
   \begin{itemize}
-    \item when an invoked plugin now makes a callback to its invoker it only passes back the endpoint for the calculation endpoint. 
+    \item when an invoked plugin now makes a callback to its invoker it only passes back the endpoint for the calculation endpoint.
     \item it does not pass any hyperparameters back since it should own the hyperparameters and not the invoker
     \item i now want to have a look of how loss functions are called in python and how hyperparameters are passed to them
     \item with this information I want to create interaction endpoints for the objective-function-plugin that are completely generic, i.e. the hyperparameters are passed to the endpoint as a dict
@@ -327,7 +327,7 @@
     \item it then adds the entry points of the invoked plugin as a step
     \item it passes the processing URL with the db id as a query parameter to the invoked plugin
     \item the invoked plugin then calls the processing endpoint with the db id as a query parameter
-    \item here it starts a new db task with the arguments that were passed to the invoked plugin 
+    \item here it starts a new db task with the arguments that were passed to the invoked plugin
   \end{itemize}
 \end{itemize}
 
@@ -337,7 +337,7 @@
   \item \textbf{ObjectiveFunction}: This plugin should have the following steps
   \begin{itemize}
     \item \textbf{ /get hyperparameterUI }: This step should let the user select the hyperparameters of the objective function
-    \item \textbf{ /post ObjectiveFunctionSetup}: This step should setup the objective function with set a database id for future reference of the parameter. 
+    \item \textbf{ /post ObjectiveFunctionSetup}: This step should setup the objective function with set a database id for future reference of the parameter.
     Then it should store the following information to the database:
     \begin{itemize}
       \item hyperparameters
@@ -349,7 +349,7 @@
   \item \textbf{Optimizer}: This plugin should have the following steps:
     \begin{itemize}
       \item \textbf{ /get setup UI }: Let the user select the objective-function-plugin, dataset, target variable, and the optimization algorithm
-      \item \textbf{ /post setup }: This step should setup the optimizer with set a database id for future reference of the parameter. 
+      \item \textbf{ /post setup }: This step should setup the optimizer with set a database id for future reference of the parameter.
       Then it should call the objective function entry point to setup the objective function. Pass the url of the optimizer callback function as a parameter.
       \item \textbf{ /post callback }: This endpoint should be called by the objective-function-plugin to indicate that the setup is done.
       It should then start the optimization process.
@@ -425,8 +425,8 @@ For instance, the learning rate is a typical hyperparameter that determines the 
 There are numerous minimization functions used in computational problems, each with its own strengths and weaknesses.
 These range from simple methods such as gradient descent, to more complex ones such as the Newton's method, stochastic gradient descent (SGD), RMSprop, and Adam.
 
-One of the most fundamental and widely used minimization functions is the Gradient Descent. 
-To find a local minimum of a function using gradient descent, one takes steps proportional to the negative of the gradient (or approximate gradient) of the function at the current point. 
+One of the most fundamental and widely used minimization functions is the Gradient Descent.
+To find a local minimum of a function using gradient descent, one takes steps proportional to the negative of the gradient (or approximate gradient) of the function at the current point.
 
 The update rule of gradient descent is given as:
 
@@ -548,6 +548,36 @@ Describe relevant scientific literature related to your work.
 \section{Performance Analysis}
 \label{sec:performanceAnalysis}
 
+The performance of the system is evaluated by measuring the time the system takes to complete a machine learning experiment.
+The time that it takes for an user to input the data is not measured.
+This benchmark should only measure the time that it takes for the system to complete the experiment.
+We compare the performance of the plugin based system with the performance of a jupyter notebook based system.
+There are several steps that are benchmarked in the plugin based system, since there is user interaction between the steps.
+\begin{itemize}
+  \item The time that it takes after the user has selected the plugins until the user can input the hyperparameters for the of plugin.
+  \item The time that it takes after the user has input the of plugin hyperparameters until the user can input the hyperparameters for the minimizer plugin.
+  \item The time that it takes after the user has input the minimizer plugin hyperparameters until the user gets the result of the experiment.
+\end{itemize}
+The times of those steps are summed up to get the total time that it takes for the plugin based system to complete the experiment.
+The time that it takes for the jupyter notebook based system is measured from the start of the notebook until the user gets the result of the experiment.
+The time is measured by adding a timestamp at the start of the step and at the end of the step.
+The difference between the two timestamps is the time that it takes for the step to complete.
+The time that it takes for the plugin based system to complete the experiment is compared to the time that it takes for the jupyter notebook based system to complete the experiment.
+In order to get a more accurate result, the experiment is repeated several times and the average time is taken.
+To make it as comparable as possible, the same datasets and hyperparameters are used for both systems.
+The output file of the experiment should also have the same exact format.
+
+Since the benchmark of the plugin based system shows worse performance than the jupyter notebook based system, we want to explore where the most time is spent.
+Therefore, we measure the time it takes to call to calculate the loss function.
+In case of the plugin based system this includes the network latency between the plugins.
+We want to see how much time is spent in the network and how much time is spent in the actual calculation of the loss function.
+
+For more sophisticated loss functions (in this case the neural network) we want to see how much time is spent for the setup of the neural network.
+Since a microservice does not have state, the neural network has to be setup for every call of to calculate loss function.
+
+
+
+
 \chapter{Discussion}
 \label{chap:discussion}
 \section{Achievements and Contribution}
@@ -563,7 +593,7 @@ Describe relevant scientific literature related to your work.
 
 \printbibliography
 
-All links were last followed on March 17, 2018.
+All links were last followed on October 15, 2023.
 
 \appendix
 
