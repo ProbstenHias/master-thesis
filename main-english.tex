@@ -575,6 +575,12 @@ We want to see how much time is spent in the network and how much time is spent 
 For more sophisticated loss functions (in this case the neural network) we want to see how much time is spent for the setup of the neural network.
 Since a microservice does not have state, the neural network has to be setup for every call of to calculate loss function.
 
+\section{Accuracy Analysis}
+\label{sec:accuracyAnalysis}
+In terms of accuracy we compare the results of the plugin based system with the results of the jupyter notebook based system.
+The results of the two systems should be the same, since the same datasets and hyperparameters are used.
+Also, we should see the same results since the same actual code is executed in both systems, only the way of calling the code is different.
+The results are compared by calculating the mean squared error between the two results.
 
 
 
