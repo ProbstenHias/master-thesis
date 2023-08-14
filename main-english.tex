@@ -529,6 +529,56 @@ For those seeking a deeper dive into the intricacies of RESTful design in micros
 
 \chapter{Implementation}
 \label{chap:implementation}
+\section{Directory Structure and Plugin Loading}
+\label{sec:directoryStructure}
+
+QHana maintains two primary directories for plugin management: the \textit{plugins} and the \textit{stable plugins} directories.
+The former hosts plugins undergoing development, while the latter contains plugins that are deployment-ready.
+Within these directories, individual plugins are neatly organized into dedicated subfolders.
+Upon initiation, QHana scans and loads plugins from these designated subfolders.
+
+The focus of this thesis, the optimization plugin, resides in the \textit{plugins/optimization} directory.
+To promote clarity and a structured layout, further divisions were made:
+
+\begin{itemize}
+  \item \textit{plugins/optimization/coordinator} – For the main optimization plugin.
+  \item \textit{plugins/optimization/objective\_functions} – Where each objective function plugin occupies its respective subfolder.
+  \item \textit{plugins/optimization/minimizer} – Where each minimizer plugin occupies its respective subfolder.
+\end{itemize}
+
+Given that QHana's native architecture doesn't support the direct loading of plugins from nested subdirectories, a recursive plugin loader was developed for this purpose.
+This loader traverses through the \textit{plugins} directory and its subdirectories.
+The presence of an \textit{\_\_init\_\_.py} file within a folder acts as a confirmation for the plugin's legitimacy.
+If any plugin needs to be excluded from the loading process, a \textit{.ignore} file is placed in its respective folder to act as a loading deterrent.
+
+To ensure that the recursive process doesn’t compromise system performance, the recursion depth is capped at 4.
+This threshold sufficiently accommodates the current plugin structure but can be adjusted upwards if future needs arise.
+
+The folder hierarchy is further enriched by the inclusion of an \textit{interaction\_utils} directory, dedicated to housing utility functions for generalized plugin interactions.
+Additionally, there's a \textit{shared} directory, which stores data structures and schemas utilized across the plugins related to optimization plugin.
+A visual representation of the final folder structure, with all plugins implemented for this thesis, is shown in \cref{fig:folderStructure}.
+
+
+\begin{figure}[h!]
+  \dirtree{%
+      .1 plugins.
+      .2 optimizer.
+      .3 coordinator.
+      .3 interaction\_utils.
+      .3 minimizer.
+      .4 scipy\_minimizer.
+      .4 scipy\_minimizer\_grad.
+      .3 objective\_functions.
+      .4 hinge\_loss.
+      .4 neural\_network.
+      .4 ridge\_loss.
+      .3 shared.
+  }
+  \caption{QHana Plugin Folder Structure.}
+  \label{fig:folderStructure}
+\end{figure}
+
+
 \section{Plugin Infrastructure}
 \label{sec:pluginInfrastructure}
 \section{Plugin Interaction}
@@ -549,7 +599,7 @@ For those seeking a deeper dive into the intricacies of RESTful design in micros
 \label{sec:performanceAnalysis}
 
 The performance of the system is evaluated by measuring the time the system takes to complete a machine learning experiment.
-The time that it takes for an user to input the data is not measured.
+The time that it takes for a user to input the data is not measured.
 This benchmark should only measure the time that it takes for the system to complete the experiment.
 We compare the performance of the plugin based system with the performance of a jupyter notebook based system.
 There are several steps that are benchmarked in the plugin based system, since there is user interaction between the steps.
