@@ -367,9 +367,19 @@ We can also typeset \verb|<text>verbatim text</text>|.
 Backticks are also rendered correctly: \verb|`words in backticks`|.
 
 \chapter{Background}
-\label{chap:literatureReview}
+\label{chap:background}
+
+Before diving deep into the intricacies of QHana and its innovative plugin interactions, it's beneficial to have a solid grasp on some foundational concepts.
+This chapter serves as a brief primer, covering the essentials of optimization algorithms, quantum computing, \glspl{vqa}, REST and QHAna.
+By understanding these basics, the subsequent sections become more accessible and meaningful, since this thesis combines these concepts in novel ways.
+Whether familiar with these topics or encountering them for the first time, this chapter ensures a smooth transition into the core content of the thesis.
+
 \section{Optimization Algorithms}
 \label{sec:optimizationAlgorithms}
+Optimization is a powerful tool that's ubiquitous in various scientific and technological domains.
+At its core, optimization is about finding the best solution from a set of possible choices.
+This section provides a snapshot of optimization's fundamental principles, paving the way for its deeper exploration in the context of \glspl{vqa} and finally microservice based \glspl{vqa}.
+
 \subsection{Objective Functions}
 \label{subsec:objectiveFunctions}
 \glspl{of}, serving as the cornerstone of optimization problems, form the foundation for a wide range of computational algorithms and models.
@@ -517,6 +527,33 @@ This not only promotes interoperability but also enhances the overall resilience
 
 For those seeking a deeper dive into the intricacies of RESTful design in microservices architectures, influential works by Fielding \cite{Fielding2000} and practical insights by Richardson and Amundsen \cite{Richardson2013} are recommended.
 
+\chapter{Problem Statement and Objectives}
+\label{chap:problem}
+
+Optimization algorithms, with their ability to find the best possible solution from a set of feasible solutions, play a pivotal role in numerous computational domains.
+Variational Quantum Algorithms (VQAs) are a subset of these algorithms that leverage quantum computing principles, particularly in the realm of objective functions and minimization techniques.
+However, the true potential of optimization, and by extension VQAs, is often hindered by rigid platforms where the components of these algorithms are tightly integrated, limiting adaptability and innovation.
+
+QHana, with its unique environment tailored for experimenting with a myriad of machine learning and quantum algorithms, presents an opportunity to redefine this paradigm.
+Yet, its current architecture does not fully exploit the modular benefits that can be achieved by decoupling the components of optimization algorithms.
+Furthermore, while developing this modular framework, it's essential to allow for plugins to interact with each other.
+This interaction-centric concept, once established, can be universally applied across QHana, not just for optimization but for any scenario where plugin interaction is required.
+
+\textbf{Problem Statement:}
+How can we design and implement a modular framework within QHana that allows components of optimization algorithms, specifically objective functions and minimization functions, to be encapsulated as distinct, interchangeable plugins?
+Furthermore, how can these plugins, especially in the context of VQAs, be structured to communicate and collaborate seamlessly?
+
+This problem encompasses several challenges:
+
+\begin{itemize}
+    \item \textbf{Communication:} Establishing a robust communication mechanism that enables interaction, data sharing, and collaboration among these plugins.
+    \item \textbf{Interchangeability:} Designing a system where different objective function and minimization plugins can be effortlessly swapped, ensuring adaptability in optimization and VQAs.
+    \item \textbf{Standardization:} Implementing a consistent interface for these plugins, ensuring uniformity and compatibility across various objective function and minimization plugins.
+    \item \textbf{User Experience:} Providing an intuitive environment where users can easily select, interchange, and experiment with different optimization components tailored to their needs.
+\end{itemize}
+
+Addressing this problem is essential to enhance the capabilities of QHana, transforming it into a dynamic, adaptable, and user-centric platform for optimization and VQAs.
+The subsequent sections of this thesis will delve into the methodologies, implementations, and evaluations related to this problem.
 
 \chapter{Related Work}
 
