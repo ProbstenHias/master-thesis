@@ -400,10 +400,13 @@ The Lasso loss function is represented as:
 L(Y, X, W, \lambda) = ||Y - XW||^2_2 + \lambda ||W||_1
 \]
 In this equation:
-- \(Y\) is the vector of observed values.
-- \(X\) is the matrix of input data points.
-- \(W\) is the vector of weights, the parameters of the model.
-- \(\lambda\) is the regularization parameter, a non-negative hyperparameter.
+
+\begin{itemize}
+  \item \(Y\) is the vector of observed values.
+  \item \(X\) is the matrix of input data points.
+  \item \(W\) is the vector of weights, the parameters of the model.
+  \item \(\lambda\) is the regularization parameter, a non-negative hyperparameter.
+\end{itemize}
 
 This function consists of two terms:
 \begin{enumerate}
