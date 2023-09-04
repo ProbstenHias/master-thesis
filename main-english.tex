@@ -377,11 +377,9 @@ This section provides a snapshot of optimization's fundamental principles, pavin
 
 \subsection{Objective Functions}
 \label{subsec:objectiveFunctions}
-\glspl{of}, serving as the cornerstone of optimization problems, form the foundation for a wide range of computational algorithms and models.
-They provide a metric to gauge the performance of a given model, solution, or set of parameters.
-\glspl{of} are the heart of many optimization problems.
-The goal is to minimize or maximize these functions depending on the context and requirements \cite{Weinan2017}.
-In the context of \glspl{vqa}, the primary objective is to minimize the function.
+\glspl{of} are fundamental to optimization problems, underpinning a myriad of computational algorithms and models.
+Depending on specific requirements, the aim might be to minimize or maximize these functions.
+Notably, within the realm of \glspl{vqa}, the focus is primarily on function minimization \cite{Weinan2017}.
 
 The core inputs to a \gls{of} typically encompass data points (denoted as $x$), corresponding labels or outcomes (represented by $y$), and a set of parameters or weights (often symbolized by $\theta$ or $w$).
 These parameters dictate how the model responds to the input data and makes its predictions.
@@ -448,7 +446,7 @@ In this formula:
   \item \(\theta_{t+1}\) represents the parameters at the next time step.
   \item \(\theta_t\) represents the current parameters.
   \item \(\alpha\) is the learning rate, a positive scalar determining the size of the step.
-  \item \(\nabla F(\theta_t)\) is the gradient of the of.
+  \item \(\nabla F(\theta_t)\) is the gradient of the \gls{of}.
 \end{itemize}
 
 Here, the \gls{of} \(F\) is assumed to be a differentiable function.
@@ -467,13 +465,13 @@ Therefore, understanding the underlying mechanisms of these functions and their 
 \section{Quantum Computing}
 \label{sec:quantumComputing}
 Quantum computing is a cutting-edge field that exploits the principles of quantum mechanics to process information.
-Unlike classical computers that use bits (0s and 1s) to store and process information, quantum computers use quantum bits, or "qubits."
+Unlike classical computers that use bits (0s and 1s) to store and process information, quantum computers use quantum bits, or \emph{qubits}.
 Qubits, through the phenomena of superposition and entanglement, can exist in multiple states at once and be correlated with each other in ways that classical bits cannot \cite{Nielsen2010}.
 
 Superposition allows a qubit to be in a state that is a combination of both 0 and 1, with a certain probability for each.
 This property enables quantum computers to perform many calculations simultaneously, vastly increasing their potential computational power.
 Entanglement, on the other hand, allows qubits that are entangled to be intimately linked regardless of the distance separating them.
-A change in the state of one will instantaneously affect the state of the other, a phenomenon that Einstein famously called "spooky action at a distance" \cite{Einstein1935}.
+A change in the state of one will instantaneously affect the state of the other, a phenomenon that Einstein famously called spooky action at a distance \cite{Einstein1935}.
 This property is essential for many quantum algorithms, quantum error correction, and quantum teleportation, making it a fundamental resource in quantum information processing \cite{Nielsen2010,Preskill1998}.
 
 
@@ -493,12 +491,12 @@ This combination of quantum and classical resources makes \glspl{vqa} a promisin
 \section{QHana}
 \label{sec:qhana}
 
-QHana, short for Quantum Humanities Analysis tool, is a unique application developed in the domain of Digital Humanities (DH).
-It provides a platform for users to experiment with various machine learning algorithms on specified datasets.
-With the advent of quantum computers and their availability in the cloud, QHana has become a viable tool for evaluating the potential advantages of quantum algorithms in the DH community.
+QHana, an acronym for Quantum Humanities Analysis tool, was conceived as a specialized application in the domain of Digital Humanities (DH).
+Its primary design offers users a platform to explore various machine learning algorithms on designated datasets.
+While the primary vision of QHana was to assess the potential advantages of quantum algorithms within the DH community, the rise and cloud availability of quantum computers further underscore its relevance and timeliness.
 
 QHana is designed to be extensible, allowing the integration of new data sources and quantum algorithms as plugins.
-However, plugins are specifically built for specific applications, limiting their reusability in other applications.
+However, plugins are built for specific applications, limiting their reusability in other contexts.
 Moreover, plugins for an application have to be developed in the same programming language as the application.
 Even if a plugin can be reused in another application, its UI has to adapt to the new application, otherwise users may fail to understand the plugin's functionality.
 To address this limitation, QHana is built on a novel concept of Reusable Microservice-based Plugins (RAMPs).
