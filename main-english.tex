@@ -555,6 +555,48 @@ The subsequent sections of this thesis will delve into the methodologies, implem
 
 \chapter{Implementation}
 \label{chap:implementation}
+
+\section{Splitting Variational Quantum Algorithms into Plugins}
+\label{sec:splittingVQAsIntoPlugins}
+
+The cornerstone of this research endeavor revolves around the modularization of VQAs into interchangeable plugins.
+This section delineates the approach and rationale for such a decomposition.
+
+\glspl{vqa}, as previously expounded in the background section, are intrinsically optimization problems.
+Fundamentally, optimization problems encompass two key components: an \gls{of}, which quantifies the problem, and a minimization function, which endeavors to find the optimal solution.
+Given this inherent structure, the decision to modularize a \gls{vqa} into separate plugins for the \gls{of} and the minimization function becomes intuitive.
+
+\subsection{Objective Function Plugin}
+The \gls{of} plugin serves these pivotal roles:
+
+\begin{itemize}
+\item \textbf{Parameter Acquisition:} It presents a \gls{ui} to collect hyperparameters pertinent to the \gls{of} from the end user.
+\item \textbf{Loss Computation:} Given the user-defined hyperparameters and the provided data, the plugin computes the loss function.
+\item \textbf{Loss Return:} Subsequently, it returns the computed loss, which serves as an input for the minimization function plugin.
+\end{itemize}
+
+\subsection{Minimization Function Plugin}
+The minimization function plugin, complementing the objective function, has these essential responsibilities:
+
+\begin{itemize}
+\item \textbf{Parameter Acquisition:} Similar to its objective counterpart, this plugin offers a \gls{ui} to gather hyperparameters, but specific to the minimization function.
+\item \textbf{Function Minimization:} Given the hyperparameters, the defined objective function, and the data, this plugin minimizes the \gls{of}.
+\item \textbf{Result Return:} Upon completion, it relays the optimization result back to the coordinating entity.
+\end{itemize}
+
+\subsection{Coordinator Plugin}
+To ensure the harmonious orchestration of the aforementioned plugins and to facilitate a cohesive user experience, a coordinator plugin is indispensable. Its quintessential roles are:
+
+\begin{itemize}
+\item \textbf{Data Acquisition:} Initially, it obtains the requisite data from the user.
+\item \textbf{Plugin Selection:} It allows users to specify their choice of \gls{of} and minimization function plugins.
+\item \textbf{UI Invocation:} Sequentially, it triggers the UIs of both the objective and minimization function plugins for hyperparameter acquisition.
+\item \textbf{Optimization Execution:} With all requisite information collated, it commands the minimization function plugin to embark on the optimization of the \gls{of}.
+\item \textbf{Result Presentation:} Finally, it shows the optimization result to the user, completing the cycle.
+\end{itemize}
+
+The ensuing sections will delve into the technical intricacies of achieving this modular integration within QHana.
+
 \section{Directory Structure and Plugin Loading}
 \label{sec:directoryStructure}
 
@@ -603,6 +645,10 @@ A visual representation of the final folder structure, with all plugins implemen
   \caption{QHana Plugin Folder Structure.}
   \label{fig:folderStructure}
 \end{figure}
+
+
+\section{Implementation of User Interfaces}
+
 
 
 \section{Plugin Infrastructure}
