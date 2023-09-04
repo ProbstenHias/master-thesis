@@ -369,6 +369,50 @@ The study of QHana and its advanced plugin interactions is rooted in a set of fo
 This chapter aims to offer a comprehensive introduction to these principles, encompassing key areas such as optimization algorithms, quantum computing, \glspl{vqa}, REST, and the core architecture of QHana.
 By delving into these foundational topics, readers will gain the necessary context to understand the innovative approaches adopted in this thesis.
 
+\section{QHana}
+\label{sec:qhana}
+
+QHana, an acronym for Quantum Humanities Analysis tool, was conceived as a specialized application in the domain of Digital Humanities (DH).
+Its primary design offers users a platform to explore various machine learning algorithms on designated datasets.
+While the primary vision of QHana was to assess the potential advantages of quantum algorithms within the DH community, the rise and cloud availability of quantum computers further underscore its relevance and timeliness.
+
+QHana is designed to be extensible, allowing the integration of new data sources and quantum algorithms as plugins.
+However, plugins are built for specific applications, limiting their reusability in other contexts.
+Moreover, plugins for an application have to be developed in the same programming language as the application.
+Even if a plugin can be reused in another application, its UI has to adapt to the new application, otherwise users may fail to understand the plugin's functionality.
+To address this limitation, QHana is built on a novel concept of Reusable Microservice-based Plugins (RAMPs).
+This allows microservices with an integrated UI to be used as plugins by multiple applications, enhancing the reusability of the plugins across different applications \cite{Buehler2022}.
+
+Central to this thesis is the integration of \glspl{vqa}
+The envisioned approach allows for plugins to interact and collaborate, enabling the implementation of \glspl{vqa} as modular components within QHana.
+
+\section{Quantum Computing}
+\label{sec:quantumComputing}
+Quantum computing is a cutting-edge field that exploits the principles of quantum mechanics to process information.
+Unlike classical computers that use bits (0s and 1s) to store and process information, quantum computers use quantum bits, or \emph{qubits}.
+Qubits, through the phenomena of superposition and entanglement, can exist in multiple states at once and be correlated with each other in ways that classical bits cannot \cite{Nielsen2010}.
+
+Superposition allows a qubit to be in a state that is a combination of both 0 and 1, with a certain probability for each.
+This property enables quantum computers to perform many calculations simultaneously, vastly increasing their potential computational power.
+Entanglement, on the other hand, allows qubits that are entangled to be intimately linked regardless of the distance separating them.
+A change in the state of one will instantaneously affect the state of the other, a phenomenon that Einstein famously called spooky action at a distance \cite{Einstein1935}.
+This property is essential for many quantum algorithms, quantum error correction, and quantum teleportation, making it a fundamental resource in quantum information processing \cite{Nielsen2010,Preskill1998}.
+
+
+\section{Variational Quantum Algorithms}
+\label{sec:variationalQuantumAlgorithms}
+
+\glspl{vqa} bring together the principles of quantum computing and optimization in a unique and powerful way.
+They are a class of hybrid quantum-classical algorithms that leverage the strengths of both quantum and classical computing to solve complex problems \cite{McClean2016}.
+
+The main concept of \glspl{vqa} is to use a sequence of quantum operations (a "quantum circuit") controlled by certain parameters.
+These parameters are adjusted using classical optimization techniques with the aim of solving a specific problem.
+This problem, in many cases, involves finding the lowest energy state, or "ground state", of a quantum system, a problem that maps to finding the minimum of a particular function \cite{Peruzzo2013}.
+
+By leveraging classical optimization algorithms, \glspl{vqa} become more resistant to quantum errors, as the majority of the computation is performed on a classical computer.
+This combination of quantum and classical resources makes \glspl{vqa} a promising type of algorithm for near-term quantum devices \cite{Moll2017}.
+
+
 \section{Optimization Algorithms}
 \label{sec:optimizationAlgorithms}
 Optimization is a powerful tool that's ubiquitous in various scientific and technological domains.
@@ -461,52 +505,6 @@ If it is too small, we may need too many iterations to converge to the best valu
 The choice of minimization function can significantly influence the efficiency and success of the optimization process.
 While some minimization functions may perform well on certain problems, they may not yield similar results on others.
 Therefore, understanding the underlying mechanisms of these functions and their suitability to the specific problem at hand is crucial.
-
-\section{Quantum Computing}
-\label{sec:quantumComputing}
-Quantum computing is a cutting-edge field that exploits the principles of quantum mechanics to process information.
-Unlike classical computers that use bits (0s and 1s) to store and process information, quantum computers use quantum bits, or \emph{qubits}.
-Qubits, through the phenomena of superposition and entanglement, can exist in multiple states at once and be correlated with each other in ways that classical bits cannot \cite{Nielsen2010}.
-
-Superposition allows a qubit to be in a state that is a combination of both 0 and 1, with a certain probability for each.
-This property enables quantum computers to perform many calculations simultaneously, vastly increasing their potential computational power.
-Entanglement, on the other hand, allows qubits that are entangled to be intimately linked regardless of the distance separating them.
-A change in the state of one will instantaneously affect the state of the other, a phenomenon that Einstein famously called spooky action at a distance \cite{Einstein1935}.
-This property is essential for many quantum algorithms, quantum error correction, and quantum teleportation, making it a fundamental resource in quantum information processing \cite{Nielsen2010,Preskill1998}.
-
-
-\section{Variational Quantum Algorithms}
-\label{sec:variationalQuantumAlgorithms}
-
-\glspl{vqa} bring together the principles of quantum computing and optimization in a unique and powerful way.
-They are a class of hybrid quantum-classical algorithms that leverage the strengths of both quantum and classical computing to solve complex problems \cite{McClean2016}.
-
-The main concept of \glspl{vqa} is to use a sequence of quantum operations (a "quantum circuit") controlled by certain parameters.
-These parameters are adjusted using classical optimization techniques with the aim of solving a specific problem.
-This problem, in many cases, involves finding the lowest energy state, or "ground state", of a quantum system, a problem that maps to finding the minimum of a particular function \cite{Peruzzo2013}.
-
-By leveraging classical optimization algorithms, \glspl{vqa} become more resistant to quantum errors, as the majority of the computation is performed on a classical computer.
-This combination of quantum and classical resources makes \glspl{vqa} a promising type of algorithm for near-term quantum devices \cite{Moll2017}.
-
-\section{QHana}
-\label{sec:qhana}
-
-QHana, an acronym for Quantum Humanities Analysis tool, was conceived as a specialized application in the domain of Digital Humanities (DH).
-Its primary design offers users a platform to explore various machine learning algorithms on designated datasets.
-While the primary vision of QHana was to assess the potential advantages of quantum algorithms within the DH community, the rise and cloud availability of quantum computers further underscore its relevance and timeliness.
-
-QHana is designed to be extensible, allowing the integration of new data sources and quantum algorithms as plugins.
-However, plugins are built for specific applications, limiting their reusability in other contexts.
-Moreover, plugins for an application have to be developed in the same programming language as the application.
-Even if a plugin can be reused in another application, its UI has to adapt to the new application, otherwise users may fail to understand the plugin's functionality.
-To address this limitation, QHana is built on a novel concept of Reusable Microservice-based Plugins (RAMPs).
-This allows microservices with an integrated UI to be used as plugins by multiple applications, enhancing the reusability of the plugins across different applications \cite{Buehler2022}.
-
-In the context of \glspl{vqa}, this thesis aims to extend the capabilities of QHana by developing a novel approach where plugins can interact with each other.
-By leveraging the principles of quantum computing and optimization, \glspl{vqa} can be implemented as interchangeable plugins within the QHana platform.
-This means that different components of a \gls{vqa}, such as the minimizer and the \gls{of}, can be developed as separate plugins.
-These plugins can then interact, communicate, and collaborate to achieve the desired optimization results.
-This modular approach not only enhances the flexibility and scalability of the system but also promotes reusability, as individual plugins can be utilized in various combinations to tackle different optimization problems.
 
 
 \section{RESTful API Design}
