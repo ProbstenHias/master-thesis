@@ -520,8 +520,8 @@ For those seeking a deeper dive into the intricacies of RESTful design in micros
 \label{chap:problem}
 
 Optimization algorithms, with their ability to find the best possible solution from a set of feasible solutions, play a pivotal role in numerous computational domains.
-Variational Quantum Algorithms (VQAs) are a subset of these algorithms that leverage quantum computing principles, particularly in the realm of objective functions and minimization techniques.
-However, the true potential of optimization, and by extension VQAs, is often hindered by rigid platforms where the components of these algorithms are tightly integrated, limiting adaptability and innovation.
+\glspl{vqa} are a subset of these algorithms that leverage quantum computing principles, particularly in the realm of \glspl{of} and minimization techniques.
+However, the true potential of optimization, and by extension \glspl{vqa}, is often hindered by rigid platforms where the components of these algorithms are tightly integrated, limiting adaptability and innovation.
 
 QHana, with its unique environment tailored for experimenting with a myriad of machine learning and quantum algorithms, presents an opportunity to redefine this paradigm.
 Yet, its current architecture does not fully exploit the modular benefits that can be achieved by decoupling the components of optimization algorithms.
@@ -529,16 +529,16 @@ Furthermore, while developing this modular framework, it's essential to allow fo
 This interaction-centric concept, once established, can be universally applied across QHana, not just for optimization but for any scenario where plugin interaction is required.
 
 \textbf{Problem Statement:}
-How can we design and implement a modular framework within QHana that allows components of optimization algorithms, specifically objective functions and minimization functions, to be encapsulated as distinct, interchangeable plugins?
-Furthermore, how can these plugins, especially in the context of VQAs, be structured to communicate and collaborate seamlessly?
+How can we design and implement a modular framework within QHana that allows components of optimization algorithms, specifically \glspl{of} and minimization functions, to be encapsulated as distinct, interchangeable plugins?
+Furthermore, how can these plugins, especially in the context of \glspl{vqa}, be structured to communicate and collaborate seamlessly?
 
 This problem encompasses several challenges:
 
 \begin{itemize}
     \item \textbf{Communication:} Establishing a robust communication mechanism that enables interaction, data sharing, and collaboration among these plugins.
-    \item \textbf{Interchangeability:} Designing a system where different objective function and minimization plugins can be effortlessly swapped, ensuring adaptability in optimization and VQAs.
-    \item \textbf{Standardization:} Implementing a consistent interface for these plugins, ensuring uniformity and compatibility across various objective function and minimization plugins.
-    \item \textbf{User Experience:} Providing an intuitive environment where users can easily select, interchange, and experiment with different optimization components tailored to their needs.
+    \item \textbf{Interchangeability:} Designing a system where different \gls{of} and minimization plugins can be effortlessly swapped, ensuring adaptability in optimization and \glspl{vqa}.
+    \item \textbf{Standardization:} Implementing a consistent interface for these plugins, ensuring uniformity and compatibility across various \gls{of} and minimization plugins.
+    \item \textbf{User Experience:} Providing an intuitive environment where users can easily select, interchange, and experiment with different optimization components tailored to their needs and provide developers with an extensible framework to build new minimization and \gls{of} plugins.
 \end{itemize}
 
 Addressing this problem is essential to enhance the capabilities of QHana, transforming it into a dynamic, adaptable, and user-centric platform for optimization and VQAs.
@@ -550,16 +550,116 @@ The subsequent sections of this thesis will delve into the methodologies, implem
 
 \chapter{Methodology}
 \label{chap:methodology}
-\section{Concept Development for Plugin Interaction}
-\label{sec:conceptDevelopment}
+\section{Conceptual Framework}
+\label{sec:conceptualFramework}
+
+This section outlines the theoretical and conceptual groundwork that anchors the methodology for this thesis.
+The framework is rooted in the principles of modularity, interactivity, and adaptability in the context of plugin-based architectures and optimization algorithms.
+
+\subsection{Plugin-Based Architecture in QHana}
+QHana, with its design centered on the Digital Humanities, provides an extensible platform for experimenting with various algorithms.
+The crux of its architecture revolves around the concept of RAMPs.
+The aim is to further exploit the modularity inherent in QHana by creating a system where components of optimization algorithms can be encapsulated as distinct, interchangeable plugins.
+This brings us to the significance of modularity in optimization.
+
+\subsection{Significance of Modularity in Optimization}
+Optimization algorithms, especially VQAs, can achieve greater flexibility and adaptability when their components are modular.
+By breaking down VQAs into \glspl{of} and minimization functions, we can independently adjust, replace, or upgrade parts of the algorithm without disrupting the entire system.
+This reflects the goals of modularity and flexibility intrinsic to QHana's design.
+
+\subsection{Interactivity Between Plugins}
+Interactivity in QHana encompasses various facets:
+
+A plugin should be able to invoke the microfrontend of another plugin.
+Control should revert to the invoking plugin once the invoked plugin completes its tasks.
+Both short-running tasks and long-running tasks should be facilitated.
+For the latter, a callback mechanism is proposed, wherein the invoking plugin can be notified upon the completion of a long-running task by the invoked plugin.
+
+The need for such interactivity stems from the inherent nature of optimization.
+The \glspl{of} and minimization must closely interact to produce meaningful optimization results.
+Moreover, since an invoking plugin is unaware of the parameters or requirements of the invoked plugin, direct interaction becomes imperative for dynamic data exchange and collaborative processing.
+
+Drawing inspiration from existing systems, the interaction between the minimization and objective functions in implementations like Scipy's \emph{optimizer.minimize} \cite{2020SciPy-NMeth} function serves as a precedent.
+
+To elevate the degree of interactivity between plugins within QHana, this thesis introduces the innovative concept of \emph{interaction endpoints}.
+While QHana already employs a metadata field for plugins known as \emph{entry points} - endpoints invoked by the QHana UI to render the UI of a plugin - interaction endpoints extend this paradigm by marking specific endpoints as callable by other plugins.
+
+A defining characteristic of an interaction endpoint is its \emph{type}.
+Interaction endpoints sharing the same type uphold uniformity in their signature and return type.
+This ensures that they are invoked consistently by other plugins, irrespective of their specific implementation
+
+\subsection{Integration and Alignment with QHana}
+The proposed approach complements QHana's existing principles, resonating with its emphasis on extensibility, adaptability, and user-centricity.
+By enhancing the interactivity and modularity of plugins within QHana, we strive to elevate its capabilities, making it a more dynamic platform for optimization and \glspl{vqa}.
+
+\section{Architectural Design}
+
+
+\section{Implementation Strategy}
+\label{sec:implementationStrategy}
+
+\subsection{Preliminary Analysis and Design}
+Before diving into the implementation, an in-depth study of the QHana documentation and a related paper on QHana's architecture \cite{Buehler2022} was undertaken to gain a comprehensive understanding of the system.
+To visualize the intricate interactions and roles of various components, component diagrams were created.
+Additionally, sequence diagrams were formulated to map out the sequence of interactions between plugins.
+
+\subsection{Development Environment and Toolset}
+
+\begin{itemize}
+    \item \textbf{Visual Studio Code}: A versatile integrated development environment employed for its adaptability and support for Python development, facilitating comprehensive coding, debugging, and testing for the project.
+
+    \item \textbf{Docker}: Utilized to run all components of QHana, ensuring consistent behavior across different computing environments.
+
+    \item \textbf{Postman}: An API testing tool that was employed to validate and debug various endpoints, ensuring consistent and expected behavior of the plugin interactions.
+
+    \item \textbf{Python}: As QHana is implemented in Python, it was the primary language for backend development, offering versatility and a vast library ecosystem.
+
+    \item \textbf{HTML}: Used for creating the microfrontends, forming the user interfaces of the plugins.
+
+    \item \textbf{Flask}: A lightweight Python web framework employed to develop the web services and RESTful APIs for the plugins.
+
+    \item \textbf{Marshmallow}: A Python library pivotal for object serialization/deserialization, ensuring structured data transfer between the plugins.
+
+    \item \textbf{Flask-Smorest}: An extension of Flask, offering tools for building RESTful APIs with Flask and Marshmallow, ensuring structured and accurate data transfer between plugins.
+
+    \item \textbf{Celery}: Integrated to manage long-running tasks, particularly for objective function plugins, allowing for asynchronous task execution.
+
+    \item \textbf{Requests}: A Python library fundamental for facilitating interactions between plugins via HTTP requests.
+\end{itemize}
+
+\subsection{Adherence to QHana’s Development Principles}
+To maintain consistency and ensure seamless integration, the coding principles proposed by QHana for plugin creation were strictly adhered to.
+This not only ensured compatibility but also facilitated the process of integrating the new functionality into the QHana ecosystem.
+
+\subsection{Data Handling and Transfer}
+Flask-Smorest was instrumental in ensuring structured and accurate data transfer between plugins.
+It aided in validating the correctness of passed data, returning appropriate error codes, and managing errors efficiently.
+This ensured that data exchanges between plugins, especially in the context of \glspl{vqa}, were smooth and error-free.
+
+\subsection{Testing and Debugging}
+Quality assurance was a critical phase in the implementation process.
+Extensive testing was conducted on multiple datasets to validate the functionality and ensure accuracy.
+Given the modular nature of the plugins, the risk of regression or affecting existing functionalities was inherently low.
+Nevertheless, rigorous testing assured the stability and reliability of the new features.
+
+\subsection{Performance Optimization}
+In terms of performance, the primary goal was to minimize interactions and reduce the data transmitted across the network.
+Efficiency considerations were paramount to ensure swift and seamless interactions between plugins.
+
+\subsection{Documentation and Extensibility}
+To foster an environment of growth and encourage future development, comprehensive documentation detailing the process of adding new \gls{of} and minimization plugins was created.
+This documentation serves as a guideline for developers aiming to extend the capabilities of QHana with interactive plugins.
+
+
+
 
 \chapter{Implementation}
 \label{chap:implementation}
 
-\section{Splitting Variational Quantum Algorithms into Plugins}
+\section{Splitting an Optimization Problem into Plugins}
 \label{sec:splittingVQAsIntoPlugins}
 
-The cornerstone of this research endeavor revolves around the modularization of VQAs into interchangeable plugins.
+The cornerstone of this research endeavor revolves around the modularization of \glspl{vqa} into interchangeable plugins.
 This section delineates the approach and rationale for such a decomposition.
 
 \glspl{vqa}, as previously expounded in the background section, are intrinsically optimization problems.
@@ -576,11 +676,11 @@ The \gls{of} plugin serves these pivotal roles:
 \end{itemize}
 
 \subsection{Minimization Function Plugin}
-The minimization function plugin, complementing the objective function, has these essential responsibilities:
+The minimization function plugin, complementing the \gls{of}, has these essential responsibilities:
 
 \begin{itemize}
 \item \textbf{Parameter Acquisition:} Similar to its objective counterpart, this plugin offers a \gls{ui} to gather hyperparameters, but specific to the minimization function.
-\item \textbf{Function Minimization:} Given the hyperparameters, the defined objective function, and the data, this plugin minimizes the \gls{of}.
+\item \textbf{Function Minimization:} Given the hyperparameters and the defined \gls{of} this plugin minimizes the \gls{of}.
 \item \textbf{Result Return:} Upon completion, it relays the optimization result back to the coordinating entity.
 \end{itemize}
 
@@ -647,9 +747,127 @@ A visual representation of the final folder structure, with all plugins implemen
 \end{figure}
 
 
-\section{Implementation of User Interfaces}
+\section{Interaction Endpoints}
+\label{sec:interactionEndpoints}
+this thesis introduces the concept of interaction endpoints to qhana
+qhana already defines a metadata field for pluings called entry points which are edndpoints called by the qhana ui to render the ui of a plugin
+interaction endpoints add to this conecpt by defining endpoints that are callable by other plugins
+an interaction endoint has a type.
+all interaction endpoints which the same type must have the same signature and return type and can be called in the same way by other plugins
+in the case of of objective function plugins for example one interaction endpoint type is the \emph{objective-function_calc} type which is used to calculate the loss function
+all plugins that have this type of interaction endpoint can be used as an objective function plugin
+
+this concept has several advantages
+* it allows for full interchangeability of plugins
+* it allows the developer that want to interact with a plugin to know what endpoints are available and how to call them
+* an alternatiev would be to return the url of available endpoitns after passing through the ui, now we can completely skip the ui alltogether and just call the endpoint directly
 
 
+\section{Plugin interaction}
+\label{sec:pluginInteraction}
+
+coordinator plugin gets the metadata of the metadata of the of and min plugin via a simple get request to the metadata endpoint of the plugins
+the metadata contains the entry point to the plugins which is the user interface and the ineteraction endpoints which are other endpoints of a plugin that can be called by other plugins
+the coornator then calls the entry point of the of plugin and passes along a callback url to which the of plugin should make a post request when it is done with its setup
+after the user has entered the hyperparameters for the of plugin the user clicks submit and the of pluings saved the hyperparameters to the database and makes a post request to the callback url
+the callback url is the processing endpoint of the coordinator plugin
+the coordinator plugin then calls the entry point of the min plugin and passes along the callback url to which the min plugin should make a post request when it is done with its setup
+after the user has entered the hyperparameters for the min plugin the user clicks submit and the min pluings saved the hyperparameters to the database and makes a post request to the callback url
+the callback url is the processing endpoint of the coordinator plugin
+
+
+\section{Implementation of an Objective Function Plugin}
+\label{sec:implementationOfAnObjectiveFunctionPlugin}
+
+to go over the taks of an of plugin again:
+* parameter acquisition
+* loss computation
+* loss return
+
+\subsection{Parameter Acquisition}
+\label{subsec:parameterAcquisition}
+parameter acquisition is done via an ui that is rendered by the plugin.
+the ui is no new concept but follows the standard concept of an microfrontend in qhana
+it presents the user with a form that is defined in a marshmallow schema
+that schema holds the hyperparameters of the of plugin
+in case of a ridge loss plugin this hyperparameter is the alpha value as described in the background section
+when clicking submit the ui makes a post request to the processing endpoint of the plugin
+this processing endpoint saves the hyperparameters to the database and makes a post
+
+to allow for interaction between plugins the ui has some additional functionality
+since it is a invocable plugin a callback url to and invoking plugin endpoint is passed to the ui via a query parameter
+it is a query parameter since the has to be called with an get request and get requests can only have query parameters
+the ui endpoint forwards the callback url to the processing endpoint of the of plugin as a query parameter
+the processing endpoint then makes a post request to the callback url when it is done with its setup
+
+\subsection{Objective Function interaction endpoints}
+\label{subsec:objectiveFunctionInteractionEndpoints}
+the of plugin should provide several interaction endpoints
+on is the pass data endpoint
+this endpoint is called to pass input data to the of plugin
+there are several reasons why this is done via an interaction endpoint and not via ui input
+* the data is not specific to the of plugin but is shared between the of plugin and the min plugin, so therefore the user should not have to enter it here but rather in the coordinator plugin
+* one could think that the cooridnator plugin could just pass the data to the of plugin via the ui endpoint, but this would mean passing huge ammonts of data via a get request which is not a good idea
+* one could think about passing a link to a file that contains the data, but this would mean that the of plugin would have to download the file and parse it, this should not be the job of the of plugin
+* the minimization plugin could pass the data to the of plugin when calling the of plugin to calculate the loss, but this would mean that one the min pluing needs to know the data, which otherwise is not necessary, 2. the min plugin would have to pass the data to the of plugin every time it calls the of plugin to calculate the loss, which would cause a lot of network traffic, 3. it would make the process less generic, since the min plugin would have to know how to pass the data to the of plugin
+
+this endpoint can simply be called by a invoking plugin via a post request and returns directly after saving the data to the database
+this endpoint also returns the metadata numberofweights which is the number of weights that the of plugin needs to calculate the loss function
+this is needed by a minimization plugin to know how many weights it needs to pass to the of plugin when calling the of plugin to calculate the loss function
+the number of weights is passed here since it is can depend on the data and the of hyperparameters and therefore is not known when the metadata is requested
+
+one interaction endpoint is the loss fucntion calculation endpoint
+this endpoint is called to calculate the loss function
+it can be called by a invoking plugin via a post request
+the arugments passed to the endpoints are the weights of the model
+the endpoint then calculates the loss function and returns it
+
+an optinal interaction endpoint is the gradient calculation endpoint
+this endpoint is called to calculate the gradient of the loss function
+it can be called by a invoking plugin via a post request
+the arugments passed to the endpoints are the weights of the model
+the endpoint then calculates the gradient of the loss function and returns it
+
+another optional interaction endpoitn is the gradient and loss function calculation endpoint
+this endpoint combined the two previous endpoints into one since the loss function and the gradient of the loss function are often calculated together and so makes the process more efficient
+it can be called by a invoking plugin via a post request
+the arugments passed to the endpoints are the weights of the model
+the endpoint then calculates the loss function and the gradient of the loss function and returns them
+
+
+\section{Implementation of a Minimization Function Plugin}
+\label{sec:implementationOfAMinimizationFunctionPlugin}
+to go over the taks of an min plugin again:
+* parameter acquisition
+* function minimization
+* result return
+
+\subsection{Parameter Acquisition}
+\label{subsec:parameterAcquisition}
+parameter acquisition is done the same way as for the of plugin
+as an example for the min plugin that uses the scipy minimize function the hyperparameter is the method that is used to minimize the function
+
+\subsection{Minimization Function interaction endpoints}
+\label{subsec:minimizationFunctionInteractionEndpoints}
+
+a minimization plugin provides a single interaction endpoint
+this endpoint is called to minimize the of
+the arugments passed to the endpoints is the url of the of plugin loss calculation endpoint, the weights of the model, and a callback url to the invoking plugin
+some optinal arguments can be the url of the of plugin gradient calculation endpoint and the url of the of plugin gradient and loss function calculation endpoint
+these optional arguments are only considrered if the minimization plugin implements a minimization function that uses the gradient of the loss function
+the endpoint schedules an asyncronous celery task that minimizes the of
+it return directly after scheduling the task
+
+the celery task minimizes the of by calling the calcucation endpoint over and over again
+a novel approach is used to make a callback to the invoking plugin
+qhana provides a way url to an celery task of a plugin that can be called to get the status of the task
+this status is stored in a database
+the python library blinker is used to to track changes to the status of the task
+now when the status of a task changes the blinker library calls a function that is registered to the status change event
+this function then makes a post request to the callback url of the invoking plugin
+this way the invoking plugin is notified when the task is done and does not have to poll the status of the task
+
+\section{Implementation of a Coordinator Plugin}
 
 \section{Plugin Infrastructure}
 \label{sec:pluginInfrastructure}
