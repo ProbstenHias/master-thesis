@@ -627,9 +627,47 @@ Additionally, sequence diagrams were formulated to map out the sequence of inter
     \item \textbf{Requests}: A Python library fundamental for facilitating interactions between plugins via HTTP requests.
 \end{itemize}
 
-\subsection{Adherence to QHana’s Development Principles}
-To maintain consistency and ensure seamless integration, the coding principles proposed by QHana for plugin creation were strictly adhered to.
-This not only ensured compatibility but also facilitated the process of integrating the new functionality into the QHana ecosystem.
+\subsection{Key Principles of QHana Plugins}
+
+In the QHana ecosystem, plugins play a pivotal role in extending functionality.
+The creation and integration of these plugins are governed by a set of principles that ensure their seamless operation and interaction.
+For the context of this thesis, the following principles are deemed most significant:
+
+\begin{itemize}
+    \item \textbf{Plugin Definition:}
+    A QHAna plugin is essentially a Python module or package. It contains a class that inherits from \texttt{QHAnaPluginBase} and should be situated in a directory specified by the \texttt{PLUGIN\_FOLDERS} configuration variable.
+    The plugin runner imports all plugins from these directories, handling only the root module of the plugin.
+    The plugin, in turn, is responsible for importing its implementation class and all associated Celery tasks.
+
+    \item \textbf{Plugin Metadata and Endpoints:}
+    Plugins should contain metadata and links to all their endpoints, typically located in the `./` directory.
+    The metadata includes crucial information like entry points.
+
+    \item \textbf{UI Interaction:}
+    Plugins define both \texttt{href} and \texttt{hrefUi} to point to their micro frontend.
+    The `hrefUi` serves the microfrontend where users input data, and `href` processes this input.
+
+    \item \textbf{Data Handling in Multi-step Plugins:}
+    For plugins that necessitate multiple user input steps, data is stored in a key-value store with dictionary-like functionality.
+    Data specific to a plugin task is associated with a unique database ID, and subsequent endpoint URLs of a plugin with this ID follow the pattern \texttt{http(s)://…/<UUID>/endpointName}.
+
+    \item \textbf{Handling Long Running Tasks:}
+    Long-running tasks utilize Celery. Task names, incorporating the plugin name, must be unique.
+
+    \item \textbf{File Loading from URLs:}
+    Plugins are designed to load files from URLs.
+
+    \item \textbf{Data Format Specification:}
+    Data formats, especially those shared across plugins, should be defined as per QHAna's guidelines. For instance, for the \texttt{text/csv} format pertaining to entities:
+    \begin{itemize}
+        \item The first column must be the ID column (named ID). Subsequent columns represent entity attributes.
+        \item The CSV file should contain a header row specifying all attribute names.
+    \end{itemize}
+\end{itemize}
+
+It's imperative to note that while the outlined principles are crucial for this thesis, QHana's overarching documentation provides a more exhaustive list of best practices and guidelines for plugin creation.
+
+
 
 \subsection{Data Handling and Transfer}
 Flask-Smorest was instrumental in ensuring structured and accurate data transfer between plugins.
@@ -643,8 +681,16 @@ Given the modular nature of the plugins, the risk of regression or affecting exi
 Nevertheless, rigorous testing assured the stability and reliability of the new features.
 
 \subsection{Performance Optimization}
-In terms of performance, the primary goal was to minimize interactions and reduce the data transmitted across the network.
-Efficiency considerations were paramount to ensure swift and seamless interactions between plugins.
+For optimal performance in the microservice-based plugin architecture, several strategies were employed:
+
+\begin{enumerate}
+    \item Reducing the number of interactions between plugins.
+    \item For each interaction, the amount of data transmitted across the network should be kept to a minimum to ensure efficient communication and faster response times.
+    \item For tasks that require extended processing, the Celery framework should be utilized, allowing these tasks to operate asynchronously and thereby optimizing resource usage.
+\end{enumerate}
+
+These strategies were critical in ensuring swift and seamless interactions between plugins.
+
 
 \subsection{Documentation and Extensibility}
 To foster an environment of growth and encourage future development, comprehensive documentation detailing the process of adding new \gls{of} and minimization plugins was created.
@@ -754,7 +800,7 @@ qhana already defines a metadata field for pluings called entry points which are
 interaction endpoints add to this conecpt by defining endpoints that are callable by other plugins
 an interaction endoint has a type.
 all interaction endpoints which the same type must have the same signature and return type and can be called in the same way by other plugins
-in the case of of objective function plugins for example one interaction endpoint type is the \emph{objective-function_calc} type which is used to calculate the loss function
+in the case of of objective function plugins for example one interaction endpoint type is the \emph{objectivefunctioncalc} type which is used to calculate the loss function
 all plugins that have this type of interaction endpoint can be used as an objective function plugin
 
 this concept has several advantages
