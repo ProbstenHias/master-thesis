@@ -365,26 +365,26 @@
 \chapter{Background}
 \label{chap:background}
 
-The study of QHana and its advanced plugin interactions is rooted in a set of foundational principles that underpin its functionality.
-This chapter aims to offer a comprehensive introduction to these principles, encompassing key areas such as optimization algorithms, quantum computing, \glspl{vqa}, REST, and the core architecture of QHana.
+The study of \gls{qhana} and its advanced plugin interactions is rooted in a set of foundational principles that underpin its functionality.
+This chapter aims to offer a comprehensive introduction to these principles, encompassing key areas such as optimization algorithms, quantum computing, \glspl{vqa}, REST, and the core architecture of \gls{qhana}.
 By delving into these foundational topics, readers will gain the necessary context to understand the innovative approaches adopted in this thesis.
 
 \section{QHana}
 \label{sec:qhana}
 
-QHana, an acronym for Quantum Humanities Analysis tool, was conceived as a specialized application in the domain of Digital Humanities (DH).
+\gls{qhana} was conceived as a specialized application in the domain of Digital Humanities.
 Its primary design offers users a platform to explore various machine learning algorithms on designated datasets.
-While the primary vision of QHana was to assess the potential advantages of quantum algorithms within the DH community, the rise and cloud availability of quantum computers further underscore its relevance and timeliness.
+While the primary vision of \gls{qhana} was to assess the potential advantages of quantum algorithms within the DH community, the rise and cloud availability of quantum computers further underscore its relevance and timeliness.
 
-QHana is designed to be extensible, allowing the integration of new data sources and quantum algorithms as plugins.
+\gls{qhana} is designed to be extensible, allowing the integration of new data sources and quantum algorithms as plugins.
 However, plugins are built for specific applications, limiting their reusability in other contexts.
 Moreover, plugins for an application have to be developed in the same programming language as the application.
 Even if a plugin can be reused in another application, its UI has to adapt to the new application, otherwise users may fail to understand the plugin's functionality.
-To address this limitation, QHana is built on a novel concept of Reusable Microservice-based Plugins (RAMPs).
+To address this limitation, \gls{qhana} is built on a novel concept of Reusable Microservice-based Plugins (RAMPs).
 This allows microservices with an integrated UI to be used as plugins by multiple applications, enhancing the reusability of the plugins across different applications \cite{Buehler2022}.
 
 Central to this thesis is the integration of \glspl{vqa}
-The envisioned approach allows for plugins to interact and collaborate, enabling the implementation of \glspl{vqa} as modular components within QHana.
+The envisioned approach allows for plugins to interact and collaborate, enabling the implementation of \glspl{vqa} as modular components within \gls{qhana}.
 
 \section{Quantum Computing}
 \label{sec:quantumComputing}
@@ -509,7 +509,7 @@ Therefore, understanding the underlying mechanisms of these functions and their 
 
 \section{RESTful API Design}
 In the evolving landscape of software design, microservices have emerged as a preferred architectural style, prized for their modularity, scalability, and independent deployability.
-At the heart of QHAna's design is a microservices-based plugin approach, which facilitates its dynamic and extensible nature.
+At the heart of \gls{qhana}'s design is a microservices-based plugin approach, which facilitates its dynamic and extensible nature.
 Central to the orchestration of these microservices is the application of RESTful API design.
 Representational State Transfer (REST) is an architectural style that sets forth constraints for creating web services.
 RESTful APIs, built upon these constraints, are pivotal in ensuring seamless communication between individual microservices, thereby enabling efficient data exchange and service integration.
@@ -523,13 +523,13 @@ Optimization algorithms, with their ability to find the best possible solution f
 \glspl{vqa} are a subset of these algorithms that leverage quantum computing principles, particularly in the realm of \glspl{of} and minimization techniques.
 However, the true potential of optimization, and by extension \glspl{vqa}, is often hindered by rigid platforms where the components of these algorithms are tightly integrated, limiting adaptability and innovation.
 
-QHana, with its unique environment tailored for experimenting with a myriad of machine learning and quantum algorithms, presents an opportunity to redefine this paradigm.
+\gls{qhana}, with its unique environment tailored for experimenting with a myriad of machine learning and quantum algorithms, presents an opportunity to redefine this paradigm.
 Yet, its current architecture does not fully exploit the modular benefits that can be achieved by decoupling the components of optimization algorithms.
 Furthermore, while developing this modular framework, it's essential to allow for plugins to interact with each other.
-This interaction-centric concept, once established, can be universally applied across QHana, not just for optimization but for any scenario where plugin interaction is required.
+This interaction-centric concept, once established, can be universally applied across \gls{qhana}, not just for optimization but for any scenario where plugin interaction is required.
 
 \textbf{Problem Statement:}
-How can we design and implement a modular framework within QHana that allows components of optimization algorithms, specifically \glspl{of} and minimization functions, to be encapsulated as distinct, interchangeable plugins?
+How can we design and implement a modular framework within \gls{qhana} that allows components of optimization algorithms, specifically \glspl{of} and minimization functions, to be encapsulated as distinct, interchangeable plugins?
 Furthermore, how can these plugins, especially in the context of \glspl{vqa}, be structured to communicate and collaborate seamlessly?
 
 This problem encompasses several challenges:
@@ -541,7 +541,7 @@ This problem encompasses several challenges:
     \item \textbf{User Experience:} Providing an intuitive environment where users can easily select, interchange, and experiment with different optimization components tailored to their needs and provide developers with an extensible framework to build new minimization and \gls{of} plugins.
 \end{itemize}
 
-Addressing this problem is essential to enhance the capabilities of QHana, transforming it into a dynamic, adaptable, and user-centric platform for optimization and VQAs.
+Addressing this problem is essential to enhance the capabilities of \gls{qhana}, transforming it into a dynamic, adaptable, and user-centric platform for optimization and VQAs.
 The subsequent sections of this thesis will delve into the methodologies, implementations, and evaluations related to this problem.
 
 \chapter{Related Work}
@@ -557,18 +557,18 @@ This section outlines the theoretical and conceptual groundwork that anchors the
 The framework is rooted in the principles of modularity, interactivity, and adaptability in the context of plugin-based architectures and optimization algorithms.
 
 \subsection{Plugin-Based Architecture in QHana}
-QHana, with its design centered on the Digital Humanities, provides an extensible platform for experimenting with various algorithms.
-QHana's architecture predominantly revolves around the concept of RAMPs.
-The objective is to leverage QHana's inherent modularity by enabling components of optimization algorithms to function as distinct, interchangeable plugins.
+\gls{qhana}, with its design centered on the Digital Humanities, provides an extensible platform for experimenting with various algorithms.
+\gls{qhana}'s architecture predominantly revolves around the concept of RAMPs.
+The objective is to leverage \gls{qhana}'s inherent modularity by enabling components of optimization algorithms to function as distinct, interchangeable plugins.
 This brings us to the significance of modularity in optimization.
 
 \subsection{Significance of Modularity in Optimization}
 When VQAs are designed with modular components, it allows for increased flexibility.
 Specifically, having distinct \glspl{of} and minimization functions means parts of the algorithm can be adjusted or replaced seamlessly.
-This reflects the goals of modularity and flexibility intrinsic to QHana's design.
+This reflects the goals of modularity and flexibility intrinsic to \gls{qhana}'s design.
 
 \subsection{Interactivity Between Plugins}
-Interactivity in QHana encompasses various facets:
+Interactivity in \qls{qhana} encompasses various facets:
 
 A plugin should be able to invoke the microfrontend of another plugin.
 Control should revert to the invoking plugin once the invoked plugin completes its tasks.
@@ -581,16 +581,16 @@ Moreover, since an invoking plugin is unaware of the parameters or requirements 
 
 Drawing inspiration from existing systems, the interaction between the minimization and objective functions in implementations like Scipy's \emph{optimizer.minimize} \cite{2020SciPy-NMeth} function serves as a precedent.
 
-To elevate the degree of interactivity between plugins within QHana, this thesis introduces the innovative concept of \emph{interaction endpoints}.
-While QHana already employs a metadata field for plugins known as \emph{entry points} - endpoints invoked by the QHana UI to render the UI of a plugin - interaction endpoints extend this paradigm by marking specific endpoints as callable by other plugins.
+To elevate the degree of interactivity between plugins within \gls{qhana}, this thesis introduces the innovative concept of \emph{interaction endpoints}.
+While QHana already employs a metadata field for plugins known as \emph{entry points} - endpoints invoked by the \gls{qhana} \gls{ui} to render the \gls{ui} of a plugin - interaction endpoints extend this paradigm by marking specific endpoints as callable by other plugins.
 
 A defining characteristic of an interaction endpoint is its \emph{type}.
 Interaction endpoints sharing the same type uphold uniformity in their signature and return type.
 This ensures that they are invoked consistently by other plugins, irrespective of their specific implementation
 
 \subsection{Integration and Alignment with QHana}
-The proposed approach complements QHana's existing principles, resonating with its emphasis on extensibility, adaptability, and user-centricity.
-By enhancing the interactivity and modularity of plugins within QHana, we strive to elevate its capabilities, making it a more dynamic platform for optimization and \glspl{vqa}.
+The proposed approach complements \gls{qhana}'s existing principles, resonating with its emphasis on extensibility, adaptability, and user-centricity.
+By enhancing the interactivity and modularity of plugins within \gls{qhana}, we strive to elevate its capabilities, making it a more dynamic platform for optimization and \glspl{vqa}.
 
 \section{Architectural Design}
 
@@ -599,7 +599,7 @@ By enhancing the interactivity and modularity of plugins within QHana, we strive
 \label{sec:implementationStrategy}
 
 \subsection{Preliminary Analysis and Design}
-Before diving into the implementation, an in-depth study of the QHana documentation and a related paper on QHana's architecture \cite{Buehler2022} was undertaken to gain a comprehensive understanding of the system.
+Before diving into the implementation, an in-depth study of the \gls{qhana} documentation and a related paper on \gls{qhana}'s architecture \cite{Buehler2022} was undertaken to gain a comprehensive understanding of the system.
 To visualize the intricate interactions and roles of various components, component diagrams were created.
 Additionally, sequence diagrams were formulated to map out the sequence of interactions between plugins.
 
@@ -608,11 +608,11 @@ Additionally, sequence diagrams were formulated to map out the sequence of inter
 \begin{itemize}
     \item \textbf{Visual Studio Code}: A versatile integrated development environment employed for its adaptability and support for Python development, facilitating comprehensive coding, debugging, and testing for the project.
 
-    \item \textbf{Docker}: Utilized to run all components of QHana, ensuring consistent behavior across different computing environments.
+    \item \textbf{Docker}: Utilized to run all components of \gls{qhana}, ensuring consistent behavior across different computing environments.
 
     \item \textbf{Postman}: An API testing tool that was employed to validate and debug various endpoints, ensuring consistent and expected behavior of the plugin interactions.
 
-    \item \textbf{Python}: As QHana is implemented in Python, it was the primary language for backend development, offering versatility and a vast library ecosystem.
+    \item \textbf{Python}: As \gls{qhana} is implemented in Python, it was the primary language for backend development, offering versatility and a vast library ecosystem.
 
     \item \textbf{HTML}: Used for creating the microfrontends, forming the user interfaces of the plugins.
 
@@ -629,13 +629,14 @@ Additionally, sequence diagrams were formulated to map out the sequence of inter
 
 \subsection{Key Principles of QHana Plugins}
 
-In the QHana ecosystem, plugins play a pivotal role in extending functionality.
+In the \gls{qhana} ecosystem, plugins play a pivotal role in extending functionality.
 The creation and integration of these plugins are governed by a set of principles that ensure their seamless operation and interaction.
 For the context of this thesis, the following principles are deemed most significant:
 
 \begin{itemize}
     \item \textbf{Plugin Definition:}
-    A QHAna plugin is essentially a Python module or package. It contains a class that inherits from \texttt{QHAnaPluginBase} and should be situated in a directory specified by the \texttt{PLUGIN\_FOLDERS} configuration variable.
+    A plugin is essentially a Python module or package.
+    It contains a class that inherits from \texttt{QHAnaPluginBase} and should be situated in a directory specified by the \texttt{PLUGIN\_FOLDERS} configuration variable.
     The plugin runner imports all plugins from these directories, handling only the root module of the plugin.
     The plugin, in turn, is responsible for importing its implementation class and all associated Celery tasks.
 
@@ -658,14 +659,15 @@ For the context of this thesis, the following principles are deemed most signifi
     Plugins are designed to load files from URLs.
 
     \item \textbf{Data Format Specification:}
-    Data formats, especially those shared across plugins, should be defined as per QHAna's guidelines. For instance, for the \texttt{text/csv} format pertaining to entities:
+    Data formats, especially those shared across plugins, should be defined as per \gls{qhana}'s guidelines.
+    For instance, for the \texttt{text/csv} format pertaining to entities:
     \begin{itemize}
         \item The first column must be the ID column (named ID). Subsequent columns represent entity attributes.
         \item The CSV file should contain a header row specifying all attribute names.
     \end{itemize}
 \end{itemize}
 
-It's imperative to note that while the outlined principles are crucial for this thesis, QHana's overarching documentation provides a more exhaustive list of best practices and guidelines for plugin creation.
+It's imperative to note that while the outlined principles are crucial for this thesis, \gls{qhana}'s overarching documentation provides a more exhaustive list of best practices and guidelines for plugin creation \cite{Buehler2022}.
 
 
 
@@ -726,9 +728,7 @@ These strategies were critical in ensuring swift and seamless interactions betwe
 
 \subsection{Documentation and Extensibility}
 To foster an environment of growth and encourage future development, comprehensive documentation detailing the process of adding new \gls{of} and minimization plugins was created.
-This documentation serves as a guideline for developers aiming to extend the capabilities of QHana with interactive plugins.
-
-
+This documentation serves as a guideline for developers aiming to extend the capabilities of \gls{qhana} with plugin interaction.
 
 
 \chapter{Implementation}
@@ -773,15 +773,15 @@ To ensure the harmonious orchestration of the aforementioned plugins and to faci
 \item \textbf{Result Presentation:} Finally, it shows the optimization result to the user, completing the cycle.
 \end{itemize}
 
-The ensuing sections will delve into the technical intricacies of achieving this modular integration within QHana.
+The ensuing sections will delve into the technical intricacies of achieving this modular integration within \gls{qhana}.
 
 \section{Directory Structure and Plugin Loading}
 \label{sec:directoryStructure}
 
-QHana maintains two primary directories for plugin management: the \textit{plugins} and the \textit{stable plugins} directories.
+\gls{qhana} maintains two primary directories for plugin management: the \textit{plugins} and the \textit{stable plugins} directories.
 The former hosts plugins undergoing development, while the latter contains plugins that are deployment-ready.
 Within these directories, individual plugins are neatly organized into dedicated subfolders.
-Upon initiation, QHana scans and loads plugins from these designated subfolders.
+Upon initiation, \gls{qhana} scans and loads plugins from these designated subfolders.
 
 The focus of this thesis, the optimization plugin, resides in the \textit{plugins/optimization} directory.
 To promote clarity and a structured layout, further divisions were made:
@@ -792,7 +792,7 @@ To promote clarity and a structured layout, further divisions were made:
   \item \textit{plugins/optimization/minimizer} – Where each minimizer plugin occupies its respective subfolder.
 \end{itemize}
 
-Given that QHana's native architecture doesn't support the direct loading of plugins from nested subdirectories, a recursive plugin loader was developed for this purpose.
+Given that \gls{qhana}'s native architecture does not support the direct loading of plugins from nested subdirectories, a recursive plugin loader was developed for this purpose.
 This loader traverses through the \textit{plugins} directory and its subdirectories.
 The presence of an \textit{\_\_init\_\_.py} file within a folder acts as a confirmation for the plugin's legitimacy.
 If any plugin needs to be excluded from the loading process, a \textit{.ignore} file is placed in its respective folder to act as a loading deterrent.
@@ -827,7 +827,7 @@ A visual representation of the final folder structure, with all plugins implemen
 
 \section{Interaction Endpoints}
 \label{sec:interactionEndpoints}
-this thesis introduces the concept of interaction endpoints to qhana
+this thesis introduces the concept of interaction endpoints to \gls{qhana}
 qhana already defines a metadata field for pluings called entry points which are edndpoints called by the qhana ui to render the ui of a plugin
 interaction endpoints add to this conecpt by defining endpoints that are callable by other plugins
 an interaction endoint has a type.
