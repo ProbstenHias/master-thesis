@@ -558,13 +558,13 @@ The framework is rooted in the principles of modularity, interactivity, and adap
 
 \subsection{Plugin-Based Architecture in QHana}
 QHana, with its design centered on the Digital Humanities, provides an extensible platform for experimenting with various algorithms.
-The crux of its architecture revolves around the concept of RAMPs.
-The aim is to further exploit the modularity inherent in QHana by creating a system where components of optimization algorithms can be encapsulated as distinct, interchangeable plugins.
+QHana's architecture predominantly revolves around the concept of RAMPs.
+The objective is to leverage QHana's inherent modularity by enabling components of optimization algorithms to function as distinct, interchangeable plugins.
 This brings us to the significance of modularity in optimization.
 
 \subsection{Significance of Modularity in Optimization}
-Optimization algorithms, especially VQAs, can achieve greater flexibility and adaptability when their components are modular.
-By breaking down VQAs into \glspl{of} and minimization functions, we can independently adjust, replace, or upgrade parts of the algorithm without disrupting the entire system.
+When VQAs are designed with modular components, it allows for increased flexibility.
+Specifically, having distinct \glspl{of} and minimization functions means parts of the algorithm can be adjusted or replaced seamlessly.
 This reflects the goals of modularity and flexibility intrinsic to QHana's design.
 
 \subsection{Interactivity Between Plugins}
@@ -675,10 +675,42 @@ It aided in validating the correctness of passed data, returning appropriate err
 This ensured that data exchanges between plugins, especially in the context of \glspl{vqa}, were smooth and error-free.
 
 \subsection{Testing and Debugging}
-Quality assurance was a critical phase in the implementation process.
-Extensive testing was conducted on multiple datasets to validate the functionality and ensure accuracy.
-Given the modular nature of the plugins, the risk of regression or affecting existing functionalities was inherently low.
-Nevertheless, rigorous testing assured the stability and reliability of the new features.
+
+The quality and reliability of plugins and their interactions are paramount.
+For this reason, a multi-faceted testing strategy was adopted:
+
+\begin{enumerate}
+    \item \textbf{Static Code Analysis}:
+    \begin{itemize}
+        \item \textbf{Purpose}: To ensure code quality, maintainability, and to identify potential vulnerabilities or deviations from coding standards.
+        \item \textbf{Tools \& Implementation}: The tool \texttt{flake8} was utilized to conduct static code analysis on the Python codebase.
+        By running \texttt{flake8}, a report detailing any code inconsistencies, potential errors, or areas for improvement was generated, providing valuable feedback for refinement.
+    \end{itemize}
+
+    \item \textbf{Logging and Monitoring}:
+    \begin{itemize}
+        \item \textbf{Purpose}: To capture, store, and analyze real-time information about the system's operations, thereby aiding in troubleshooting and understanding system behavior.
+        \item \textbf{Tools \& Implementation}: Python's in-built \texttt{logging} package was leveraged to track and record various events during the execution of plugins.
+        By strategically placing logging statements within the code, it was possible to gain insights into the flow of operations, detect anomalies, and pinpoint areas that might require attention.
+    \end{itemize}
+
+    \item \textbf{Interactive Debugging}:
+    \begin{itemize}
+        \item \textbf{Purpose}: To step through the code in real-time, inspect variables, and analyze the program's flow to identify and rectify issues.
+        \item \textbf{Tools \& Implementation}: The integrated Python debugger in Visual Studio Code was employed.
+        This debugger allowed for setting breakpoints, stepping through code, inspecting variable states, and examining the call stack, providing a granular view of the system's operations and aiding in issue identification and resolution.
+    \end{itemize}
+
+    \item \textbf{Manual Testing}:
+    \begin{itemize}
+        \item \textbf{Purpose}: To capture nuances and potential issues that might be overlooked.
+        \item \textbf{Procedure}: A hands-on approach was adopted where the plugins were interactively used.
+        This involved navigating through the \gls{ui}, experimenting with different inputs, and observing the system's reactions to ensure it behaved as expected and met user requirements.
+    \end{itemize}
+\end{enumerate}
+
+By employing a combination of static code analysis, detailed logging, interactive debugging, and manual testing, it was ensured that the plugins were not only functionally correct but also adhered to coding standards and best practices, guaranteeing a robust and user-friendly experience.
+
 
 \subsection{Performance Optimization}
 For optimal performance in the microservice-based plugin architecture, several strategies were employed:
