@@ -801,9 +801,31 @@ A minimal version of the code that was used to generate the test data can be fou
 
 By employing such multifaceted and representative datasets, the methodology aims to guarantee a holistic evaluation of the optimization solutions, assessing their performance, scalability, and robustness across diverse conditions.
 
-
+\chapter{Architecture}
+\label{chap:architecture}
+here we define the architecture of the system
+in which plugins we split the system
+(coodinator, objective function, minimizer)
+component diagram of the system
+endpoints they provide
+how they interact with each other
+as a sequence diagram
+what data is passed between them
 \chapter{Implementation}
 \label{chap:implementation}
+here we describe how we implemented the architecture
+folders and stuff
+what final methods the coordiantor plugin has
+what final methods the objective function plugin has
+what final methods the minimizer plugin has
+how they get metadata
+what data formats they send
+we can add the numpy array format in marschmellow
+we can say we use the db to share data across interaction endpoints
+
+then we do show example implementations
+these are the two minimizers grad and no grad
+and the three ob function ridge, hinge, and nn
 
 \section{Splitting an Optimization Problem into Plugins}
 \label{sec:splittingVQAsIntoPlugins}
