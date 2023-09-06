@@ -731,6 +731,77 @@ To foster an environment of growth and encourage future development, comprehensi
 This documentation serves as a guideline for developers aiming to extend the capabilities of \gls{qhana} with plugin interaction.
 
 
+\section{Evaluation Strategy}
+\label{sec:evaluationStrategy}
+
+The implementation section of this thesis will ultimately present two distinct versions of a service-based optimization framework.
+The evaluation will assess both versions to facilitate a comparison between the two approaches.
+Additionally, the evaluation will juxtapose these approaches with a non-service-based approach, presented in the form of a Jupyter notebook.
+To validate the effectiveness of the proposed solutions and to assess whether the goals set out in the problem statement have been achieved, the following evaluation methodologies are adopted:
+
+\subsection{Performance Benchmarking}
+Performance is paramount, especially in a service-based architecture.
+A direct comparison will be made between the two service-based approaches and the non-service-based approach.
+Key metrics for this comparison include:
+
+\begin{itemize}
+\item \textbf{Objective Function Calculation Time}: This measures the time taken to compute the loss, which directly impacts the overall optimization time.
+For the service-based approach, the evaluation encompasses not only the calculation time of the \gls{of} but also the time taken for a call to the \gls{of} calculation endpoint.
+
+\item \textbf{Minimization Time}: This refers to the time consumed to minimize the \gls{of}.
+In the service-based approach, the time taken for the minimization endpoint to return a result is also accounted for.
+
+\item \textbf{Network Latency}: This quantifies the time required for a request to reach the server and for the corresponding response to be received.
+This metric is exclusive to the service-based approach.
+
+\item \textbf{Network Traffic}: This represents the volume of data transmitted between the endpoints.
+This metric is exclusive to the service-based approach.
+
+\item \textbf{Database Access Times}: It is essential to gauge the time required to retrieve data from the database since endpoints access context data from the database during each invocation.
+\end{itemize}
+
+This evaluation hinges on quantitative metrics, with results graphically depicted for enhanced clarity. The \emph{time.perf_count} function from Python is employed to capture measurements, while the Google Chrome developer tools are used to measure network traffic.
+
+\subsection{Interchangeability}
+A litmus test for modularity is its potential for component interchangeability without disruptions. Accordingly, every plugin of a particular type is tested against every other plugin of the same type to validate seamless interchangeability.
+
+\subsection{Standardization Adherence}
+Standardization, pivotal for ensuring compatibility and uniformity across diverse plugins, is put to the test. An evaluation is undertaken to ascertain whether all implemented plugins conform to the prescribed standards. This guarantees that all optimization plugins can be implemented uniformly, facilitating consistent and compatible integrations in the future.
+
+\subsection{User Experience}
+While the primary audience for this thesis is developers for the \gls{qhana} platform, the user experience is not to be undermined. An assessment determines the ease and efficiency with which a developer can introduce a new plugin in the context of service-based optimization in \gls{qhana}. The lines of code required to integrate a new, interchangeable plugin for the optimization process are enumerated and compared across the approaches.
+
+Through a meticulous evaluation across these parameters, this thesis endeavors to furnish a thorough appraisal of the solutions in relation to the challenges delineated in the problem statement.\section{Test Data Generation for Evaluation}
+
+To robustly evaluate the solutions proposed in this work, it's essential to test them on a diverse range of datasets, reflecting both size and complexity.
+The objective is to mimic real-world scenarios where optimization problems can range from simple tasks with a few data points to complex challenges with a vast number of features and data points.
+A minimal version of the code that was used to generate the test data can be found in the appendix \ref{appendix:generate_data}.
+
+\subsection{Dataset Characteristics:}
+
+\begin{enumerate}
+    \item \textbf{Variability in Size}: Datasets of different sizes have been generated, spanning from a modest 10 data points to a substantial 100,000 data points.
+    This variation ensures that the optimization performance is assessed across different scales, from quick-to-process small datasets to the computationally demanding large datasets.
+
+    \item \textbf{Features Determined by Size}: The number of features, \( x \), in each dataset is dynamically determined based on the dataset's size, specifically calculated as \( \text{int}(\sqrt{\text{size}} \times 1.5) \).
+    This approach ensures that with the growth of the dataset, its complexity also increases, mirroring real-world scenarios where larger datasets often present more features or dimensions.
+
+    \item \textbf{Synthetic Data with Noise}: The data is synthetically generated using the \texttt{make\_regression} function from the Scikit-learn library, known for its utility in machine learning.
+    An added noise parameter introduces an element of randomness, making the optimization task more intricate and thereby closely resembling real-world challenges.
+
+    \item \textbf{Ensuring Reproducibility}: To maintain the consistency and reliability of the generated datasets across multiple runs or evaluations, a fixed random seed (`np.random.seed(42)`) has been set.
+    This ensures that the data, though synthetic and noisy, remains consistent across evaluations, enabling true comparisons, assessments and reproducibility.
+
+    \item \textbf{Adherence to QHana Standards}:
+   \begin{itemize}
+        \item \textbf{Unique Entity IDs}: Each data point in the dataset is allocated a unique ID in the format 'entityX', where X represents the entity number. This aligns with \gls{qhana}'s data standard that mandates every data point to have an identifiable ID.
+        \item \textbf{Data Format and Storage}: All datasets are stored in the CSV (Comma Separated Values) format, adhering to \gls{qhana}'s accepted data formats.
+    \end{itemize}
+\end{enumerate}
+
+By employing such multifaceted and representative datasets, the methodology aims to guarantee a holistic evaluation of the optimization solutions, assessing their performance, scalability, and robustness across diverse conditions.
+
+
 \chapter{Implementation}
 \label{chap:implementation}
 
