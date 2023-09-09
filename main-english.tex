@@ -864,8 +864,55 @@ A minimal version of the code that was used to generate the test data can be fou
 
 By employing such multifaceted and representative datasets, the methodology aims to guarantee a holistic evaluation of the optimization solutions, assessing their performance, scalability, and robustness across diverse conditions.
 
-\chapter{Architecture}
+\chapter{Resutling System Architecture}
 \label{chap:architecture}
+
+
+\section{Resutant Decompostion into Plugins and their Responsibilities}
+
+Following the decomposition strategy, the plugin-based optimization framework was divided into three primary plugin types:
+\gls{of} plugin, the minimizer plugin, and the coorinator plugin.
+Each of these plugins was equipped with specific roles and responsibilities, ensuring a modular and efficient optimization process.
+This split is visualized in the component diagram in figure \ref{fig:component_diagram}.
+
+\subsection{Objective Function Plugin}
+
+The \gls{of} plugin is central to the optimization framework, encapsulating the mathematical function that defines the problem at hand.
+Its primary roles include:
+
+\begin{itemize}
+\item \textbf{Metadata Provision}: The plugin offers metadata about itself.
+\item \textbf{Hyperparameters Acquisition}: It prompts the user to provide the hyperparameters necessary for the loss function calculation.
+\item \textbf{Loss Calculation}: Based on the provided input data, the plugin computes the loss, representing the discrepancy between the predicted values and actual values.
+\item \textbf{Gradient Calculation (Optional)}: For optimization algorithms that leverage gradient-based methods, the plugin can optionally compute the gradient of the loss function. This aids in guiding the optimization process towards the desired minima.
+\end{itemize}
+
+\subsection{Minimizer Plugin}
+
+The minimizer plugin is responsible for iteratively adjusting parameters to minimize the loss provided by the Objective Function plugin.
+Its functions include:
+
+\begin{itemize}
+\item \textbf{Metadata Provision}: Similar to the \gls{of} plugin, it provides essential metadata.
+\item \textbf{Hyperparameters Acquisition}: The plugin acquires the hyperparameters crucial for the employed minimization algorithm from the user.
+\item \textbf{Minimization Process}: Using the loss (and optionally the gradient) from the \gls{of} plugin, the minimizer plugin endeavors to find the parameter values that minimize this loss.
+\end{itemize}
+
+\subsection{Coordinator Plugin}
+
+The Coordinator plugin acts as the orchestrator, ensuring seamless interaction between the \gls{of} and Minimization plugins and the user.
+Its primary responsibilities are:
+
+\begin{itemize}
+\item \textbf{Plugin Selection}: It prompts the user to select the desired \gls{of} and minimizer plugins to be used in the optimization process.
+\item \textbf{Data Acquisition}: The plugin gathers the necessary input data and the target variable from the user, which will be used in the optimization process.
+\item \textbf{Endpoint Acquisition}: It obtains the necessary endpoints from the selected plugins, which will be used for interaction.
+\item \textbf{Coordination Role}: It manages the interaction between the \gls{of} and minimizer plugins, ensuring that the loss (and optionally gradient) calculation function is provided to the minimizer plugin for the optimization process.
+Additionally, it coordinates the interaction between the user and the selected plugins, ensuring the user is provided with the necessary microfrontends.
+\item \textbf{Results Presentation}: Post-optimization, the coordinator plugin presents the optimization results to the user.
+\end{itemize}
+
+
 here we define the architecture of the system
 in which plugins we split the system
 (coodinator, objective function, minimizer)
