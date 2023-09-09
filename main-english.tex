@@ -914,14 +914,14 @@ Additionally, it coordinates the interaction between the user and the selected p
 \end{itemize}
 
 
-\subsection{Universal Plugin Interface Design}
+\section{Universal Plugin Interface Design}
 
 The process of optimization is inherently complex, with a multitude of variations and nuances.
 To ensure a streamlined interaction between different plugins, it was imperative to establish universal plugin interfaces for each type of plugin.
 This interface acts as a standard that every plugin of a specific type has to adhere to.
 The interfaces for each plugin are detailed below and are visualized in the component diagram in figure \ref{fig:component_diagram}.
 
-\subsubsection{Objective Function Plugin Interfaces}
+\subsection{Objective Function Plugin Interfaces}
 
 The \gls{of} plugin interface is designed to accommodate a wide range of loss functions, including those that require gradient computation.
 Its interfaces are:
@@ -941,7 +941,7 @@ The number of weights is returned here since it is depandant on the data and pos
 \item \textbf{CalculateLossAndGradient}: This endpoint is used to calculate the loss and the gradient of the loss function.
 \end{itemize}
 
-\subsubsection{Minimizer Plugin Interfaces}
+\subsection{Minimizer Plugin Interfaces}
 
 The minimizer plugin, responsible for optimizing the loss function provided by the \gls{of} plugin, offers these interfaces:
 
@@ -956,7 +956,7 @@ The minimizer plugin, responsible for optimizing the loss function provided by t
   \item \textbf{Minimize}: This endpoint is used to minimize the loss function.
 \end{itemize}
 
-\subsubsection{Coordinator Plugin Interfaces}
+\subsection{Coordinator Plugin Interfaces}
 
 The Coordinator plugin, orchestrating the interaction between the OF and Minimizer plugins, is equipped with the standard \gls{qhana} interfaces \textbf{Metadata}, \textbf{UIRef}, and \textbf{HRef}.
 
