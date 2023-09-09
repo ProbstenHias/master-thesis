@@ -568,7 +568,7 @@ Specifically, having distinct \glspl{of} and minimization functions means parts 
 This reflects the goals of modularity and flexibility intrinsic to \gls{qhana}'s design.
 
 \subsection{Interactivity Between Plugins}
-Interactivity in \qls{qhana} encompasses various facets:
+Interactivity in \gls{qhana} encompasses various facets:
 
 A plugin should be able to invoke the microfrontend of another plugin.
 Control should revert to the invoking plugin once the invoked plugin completes its tasks.
@@ -579,7 +579,7 @@ The need for such interactivity stems from the inherent nature of optimization.
 The \glspl{of} and minimization must closely interact to produce meaningful optimization results.
 Moreover, since an invoking plugin is unaware of the parameters or requirements of the invoked plugin, direct interaction becomes imperative for dynamic data exchange and collaborative processing.
 
-Drawing inspiration from existing systems, the interaction between the minimization and objective functions in implementations like Scipy's \emph{optimizer.minimize} \cite{2020SciPy-NMeth} function serves as a precedent.
+Drawing inspiration from existing systems, the interaction between the minimization and objective functions in implementations like Scipy's \emph{optimizer.minimize} \cite{Virtanen2020} function serves as a precedent.
 
 To elevate the degree of interactivity between plugins within \gls{qhana}, this thesis introduces the innovative concept of \emph{interaction endpoints}.
 While QHana already employs a metadata field for plugins known as \emph{entry points} - endpoints invoked by the \gls{qhana} \gls{ui} to render the \gls{ui} of a plugin - interaction endpoints extend this paradigm by marking specific endpoints as callable by other plugins.
@@ -592,16 +592,65 @@ This ensures that they are invoked consistently by other plugins, irrespective o
 The proposed approach complements \gls{qhana}'s existing principles, resonating with its emphasis on extensibility, adaptability, and user-centricity.
 By enhancing the interactivity and modularity of plugins within \gls{qhana}, we strive to elevate its capabilities, making it a more dynamic platform for optimization and \glspl{vqa}.
 
-\section{Architectural Design}
+\section{Architectural Design Strategy}
+\label{sec:architecturalDesignStrategy}
 
+The architectural design process is a critical phase that dictates how the components of the solution will function and interaract with each other.
+The methodology undertaken for the architectural design of the service-based optimization framework consisted of a series of well-defined steps, ensuring clarity, modularity, and extensibility.
+
+\subsection{Decomposition into Plugins}
+The first step involved decomposing the optimization process into distinct plugins.
+This was achieved by reviewing relevant literature to understand common practices and methodologies in optimization \cite{Virtanen2020, Nocedal2006, ShalevShwartz2014, Weinan2017}.
+The next step was Analyzing the inherent modularity in optimization processes and identifying distinct tasks or functionalities that could be encapsulated into plugins.
+
+\subsection{Defining Plugin Responsibilities}
+Once the plugins were identified, the next step was to precisely define the responsibilities of each plugin.
+This ensured that every plugin had a well-defined purpose, preventing overlaps in functionality and ensuring clarity in their roles.
+
+\subsection{Universal Plugin Interface Design}
+Recognizing the vast possibilities and variations that interchangeable plugins might encompass, it was crucial to formulate a universally adhered-to interface.
+This interface acted as a "contract", ensuring that irrespective of the specific implementation details of a plugin, there existed a consistent mode of interaction.
+Core attributes and functionalities, like querying the number of initial wights for the minimization process required, were defined as part of this universal interface.
+This approach fostered interchangeability and adaptability, as the defined interface could accommodate a multitude of interchangeable plugins, each with its unique functionalities.
+In terms of optimization, this could mean that in case of an \gls{of} plugin, that is responsible for calculating the loss function, interfaces have to be generalized to allow for any thinkable type of loss function.
+
+
+\subsection{Plugin Interaction Design}
+The next step was to design the interaction between plugins.
+This involved defining the various ways in which plugins could interact with each other.
+For instance, a plugin could invoke the microfrontend of another plugin, or it could call a specific endpoint of another plugin.
+Additionally, the interaction design also encompassed the flow of control between plugins.
+For instance, a plugin could invoke another plugin and then wait for it to complete its tasks before resuming its own tasks.
+It could also invoke another plugin and then stop execution all together, while providing the invoked plugin with a callback URL that the invoked plugin could call once it completes its tasks.
+Alternatively, a plugin could invoke another plugin and then continue with its tasks without waiting for the invoked plugin to complete its tasks.
+Intrinsic to this step was the design of a coordination mechanism that facilitated the interaction between plugins.
+
+\subsection{Component Diagrams}
+To pictorially represent the responsibilities and interfaces of each plugin, component diagrams were formulated.
+Each diagram encapsulated the primary tasks of a plugin and the interfaces it provides, offering a clear understanding of the system's structure.
+
+
+\subsection{Sequence Diagrams and Interaction Flow}
+To fathom the intricate interplay between plugins, sequence diagrams were devised.
+These diagrams capture the stepwise interaction between plugins.
+They detail the flow of control and data, spotlighting the sequence of plugin invocations and collaborative processes.
+
+
+\subsection{Feedback and Refinement}
+Throughout the design odyssey, continuous feedback loops were integrated. This involved:
+\begin{itemize}
+\item Revisiting each stage, evaluating its alignment with overarching goals.
+\item Making necessary refinements to ensure the architecture was both robust and flexible.
+\end{itemize}
+
+With the architectural design strategy in place, the next step was to define the implementation strategy.
 
 \section{Implementation Strategy}
 \label{sec:implementationStrategy}
 
 \subsection{Preliminary Analysis and Design}
 Before diving into the implementation, an in-depth study of the \gls{qhana} documentation and a related paper on \gls{qhana}'s architecture \cite{Buehler2022} was undertaken to gain a comprehensive understanding of the system.
-To visualize the intricate interactions and roles of various components, component diagrams were created.
-Additionally, sequence diagrams were formulated to map out the sequence of interactions between plugins.
+With component and sequence diagrams already in place, the next step was to define the implementation strategy.
 
 \subsection{Development Environment and Toolset}
 
@@ -760,7 +809,7 @@ This metric is exclusive to the service-based approach.
 \item \textbf{Database Access Times}: It is essential to gauge the time required to retrieve data from the database since endpoints access context data from the database during each invocation.
 \end{itemize}
 
-This evaluation hinges on quantitative metrics, with results graphically depicted for enhanced clarity. The \emph{time.perf_count} function from Python is employed to capture measurements, while the Google Chrome developer tools are used to measure network traffic.
+This evaluation hinges on quantitative metrics, with results graphically depicted for enhanced clarity. The \emph{time.perf\_count} function from Python is employed to capture measurements, while the Google Chrome developer tools are used to measure network traffic.
 
 \subsection{Interchangeability}
 A litmus test for modularity is its potential for component interchangeability without disruptions. Accordingly, every plugin of a particular type is tested against every other plugin of the same type to validate seamless interchangeability.
