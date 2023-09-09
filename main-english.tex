@@ -601,11 +601,23 @@ The methodology undertaken for the architectural design of the service-based opt
 \subsection{Decomposition into Plugins}
 The first step involved decomposing the optimization process into distinct plugins.
 This was achieved by reviewing relevant literature to understand common practices and methodologies in optimization \cite{Virtanen2020, Nocedal2006, ShalevShwartz2014, Weinan2017}.
-The next step was Analyzing the inherent modularity in optimization processes and identifying distinct tasks or functionalities that could be encapsulated into plugins.
+The main challenge was to find a good decomposition that on the one hand all functionalities that should later be interchangeable should be encompassed in an extra plugin,
+but on the other hand too many plugins would create an overhead that would lead to inefficiency because of commutation overhead.
 
 \subsection{Defining Plugin Responsibilities}
 Once the plugins were identified, the next step was to precisely define the responsibilities of each plugin.
 This ensured that every plugin had a well-defined purpose, preventing overlaps in functionality and ensuring clarity in their roles.
+Some challenges in this phase included the following:
+\begin{itemize}
+  \item Which plugin should be responsible for the calculation of the loss function?
+  \item Which plugin should be responsible for doing the minimization?
+  \item Which plugin should ask the user for the \gls{of} hyperparameters?
+  \item Which plugin should ask the user for the minimization function hyperparameters?
+  \item Which plugin should ask the user which \gls{of} and which minimization algorithm to use?
+  \item Which plugin should ask the user for the input data?
+  \item Which plugin should ask the user for the target variable?
+  \item Which plugin should coordinate the whole process?
+\end{itemize}
 
 \subsection{Universal Plugin Interface Design}
 Recognizing the vast possibilities and variations that interchangeable plugins might encompass, it was crucial to formulate a universally adhered-to interface.
@@ -618,12 +630,14 @@ In terms of optimization, this could mean that in case of an \gls{of} plugin, th
 \subsection{Plugin Interaction Design}
 The next step was to design the interaction between plugins.
 This involved defining the various ways in which plugins could interact with each other.
-For instance, a plugin could invoke the microfrontend of another plugin, or it could call a specific endpoint of another plugin.
+It was crucial to build a robust and flexible interaction design that could accommodate a multitude of scenarios, since the interaction between plugins in \gls{qhana} should not be limited to the optimization process.
+This interaction design should lay the foundation for all future plugin interactions within \gls{qhana}.
+Scenarios that were considered included for instance a plugin invoking the microfrontend of another plugin, or it could call a specific endpoint of another plugin.
 Additionally, the interaction design also encompassed the flow of control between plugins.
 For instance, a plugin could invoke another plugin and then wait for it to complete its tasks before resuming its own tasks.
 It could also invoke another plugin and then stop execution all together, while providing the invoked plugin with a callback URL that the invoked plugin could call once it completes its tasks.
 Alternatively, a plugin could invoke another plugin and then continue with its tasks without waiting for the invoked plugin to complete its tasks.
-Intrinsic to this step was the design of a coordination mechanism that facilitated the interaction between plugins.
+Intrinsic to this step was also the design of a coordination mechanism that facilitated the interaction between plugins.
 
 \subsection{Component Diagrams}
 To pictorially represent the responsibilities and interfaces of each plugin, component diagrams were formulated.
