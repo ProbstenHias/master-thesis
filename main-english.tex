@@ -874,6 +874,7 @@ Following the decomposition strategy, the plugin-based optimization framework wa
 \gls{of} plugin, the minimizer plugin, and the coorinator plugin.
 Each of these plugins was equipped with specific roles and responsibilities, ensuring a modular and efficient optimization process.
 This split is visualized in the component diagram in figure \ref{fig:component_diagram}.
+It is important to note that for both proposed plugin-based approaches, this decomposition and the associated responsibilities remain consistent.
 
 \subsection{Objective Function Plugin}
 
@@ -912,6 +913,55 @@ Additionally, it coordinates the interaction between the user and the selected p
 \item \textbf{Results Presentation}: Post-optimization, the coordinator plugin presents the optimization results to the user.
 \end{itemize}
 
+
+\subsection{Universal Plugin Interface Design}
+
+The process of optimization is inherently complex, with a multitude of variations and nuances.
+To ensure a streamlined interaction between different plugins, it was imperative to establish universal plugin interfaces for each type of plugin.
+This interface acts as a standard that every plugin of a specific type has to adhere to.
+The interfaces for each plugin are detailed below and are visualized in the component diagram in figure \ref{fig:component_diagram}.
+
+\subsubsection{Objective Function Plugin Interfaces}
+
+The \gls{of} plugin interface is designed to accommodate a wide range of loss functions, including those that require gradient computation.
+Its interfaces are:
+
+\begin{itemize}
+\item \textbf{Metadata}: The plugin provides metadata about itself as specified in the \gls{qhana} documentation \cite{Buehler2022}.
+\item \textbf{UIRef}: This endpoint is used to obtain the microfrontend for the \gls{of} plugin, which is used to collect the hyperparameters from the user.
+This interface is also in accordance with the \gls{qhana} documentation \cite{Buehler2022}.
+\item \textbf{HRef}: This endpoint is used to process the input from the \gls{of} microfrontend.
+It is usually triggered by the user clicking the \emph{submit} button on the microfrontend.
+This interface is also in accordance with the \gls{qhana} documentation \cite{Buehler2022}.
+\item \textbf{PassDataOF}: This endpoint is used to pass the input data and the target data to the \gls{of} plugin.
+It returns the number of weights that is required for the optimization process.
+The number of weights is returned here since it is depandant on the data and possibly the hyperparameters.
+\item \textbf{CalculateLoss}: This endpoint is used to calculate the loss.
+\item \textbf{CalculateGradient}: This endpoint is used to calculate the gradient of the loss function.
+\item \textbf{CalculateLossAndGradient}: This endpoint is used to calculate the loss and the gradient of the loss function.
+\end{itemize}
+
+\subsubsection{Minimizer Plugin Interfaces}
+
+The minimizer plugin, responsible for optimizing the loss function provided by the \gls{of} plugin, offers these interfaces:
+
+\begin{itemize}
+  \item \textbf{Metadata}: same as for the \gls{of} plugin
+  \item \textbf{UIRef}: same as for the \gls{of} plugin
+  \item \textbf{HRef}: same as for the \gls{of} plugin
+  \item \textbf{(Optional) PassDataMinimizer}: Similar to the \texttt{PassDataOF} endpoint, this endpoint is used to pass the input data and the target data to the minimizer plugin.
+  As the a minimizer does not necessarily need the data, this endpoint is optional.
+  The nescesscity of this endpoint is the difference in two alternative approaches that will be discussed in the following sections.
+  For now we just assume that the minimizer does not need the data.
+  \item \textbf{Minimize}: This endpoint is used to minimize the loss function.
+\end{itemize}
+
+\subsubsection{Coordinator Plugin Interfaces}
+
+The Coordinator plugin, orchestrating the interaction between the OF and Minimizer plugins, is equipped with the standard \gls{qhana} interfaces \textbf{Metadata}, \textbf{UIRef}, and \textbf{HRef}.
+
+By establishing these interfaces and ensuring that each plugin conforms to them, a systematic, consistent, and efficient optimization process is ensured.
+This structured approach not only facilitates seamless interactions but also fosters interchangeability, modularity, extensibility and Interchangeability and making it easy to add new \gls{of} and minimizer plugins in the future.
 
 here we define the architecture of the system
 in which plugins we split the system
