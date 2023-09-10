@@ -632,6 +632,7 @@ The next step was to design the interaction between plugins.
 This involved defining the various ways in which plugins could interact with each other.
 It was crucial to build a robust and flexible interaction design that could accommodate a multitude of scenarios, since the interaction between plugins in \gls{qhana} should not be limited to the optimization process.
 This interaction design should lay the foundation for all future plugin interactions within \gls{qhana}.
+
 Scenarios that were considered included for instance a plugin invoking the microfrontend of another plugin, or it could call a specific endpoint of another plugin.
 Additionally, the interaction design also encompassed the flow of control between plugins.
 For instance, a plugin could invoke another plugin and then wait for it to complete its tasks before resuming its own tasks.
@@ -963,70 +964,164 @@ The Coordinator plugin, orchestrating the interaction between the OF and Minimiz
 By establishing these interfaces and ensuring that each plugin conforms to them, a systematic, consistent, and efficient optimization process is ensured.
 This structured approach not only facilitates seamless interactions but also fosters interchangeability, modularity, extensibility and Interchangeability and making it easy to add new \gls{of} and minimizer plugins in the future.
 
-here we define the architecture of the system
-in which plugins we split the system
-(coodinator, objective function, minimizer)
-component diagram of the system
-endpoints they provide
-how they interact with each other
-as a sequence diagram
-what data is passed between them
+\section{Plugin Interaction Design}
+
+The design of plugin interactions is pivotal to ensuring efficient and seamless coordination between different components of the system. Given the extensive possibilities of interactions within the \gls{qhana} environment, the design phase was meticulous, taking into consideration various scenarios and ensuring adaptability. The two primary modes of interactions were short-running and long-running, each catering to specific requirements.
+
+\subsection{Short-Running Interaction}
+
+In short-running interactions, a plugin invokes another plugin's endpoint, typically via a `GET` or a `Post` request, and immediately receives a response.
+This mode of interaction is synchronous, wherein the invoking plugin waits for the response before proceeding. Instances of such interactions include:
+\begin{itemize}
+    \item The coordinator plugin retrieving metadata of an invokable plugin.
+    \item The coordinator plugin passing data to the \gls{of} plugin.
+    \item The minimizer plugin calling the \texttt{CalculateLoss} endpoint of the \gls{of} plugin.
+\end{itemize}
+
+\subsubsection{Long-Running Interaction}
+
+For processes that demand extensive computation time or involve multiple steps, long-running interactions come into play.
+In such a case the calling plugin invokes the endpoint of the invoked plugin.
+This endodpoint return immediately indicating that is has successfully triggred the long-running process.
+The invoking plugin then continues with its tasks.
+Since the invoking plugin usually needs the result of the long-running process, a callback mechanism is introduced.
+These interactions are  and can be further divided into two categories:
+
+\paragraph{Multiple Short-Running Endpoints:}
+\begin{itemize}
+    \item \textbf{Scenario:} The coordinator plugin invokes the microfrontend of the \gls{of} plugin, which returns instantly.
+    However, upon user input, the \texttt{href} endpoint of the \gls{of} plugin is triggered, and only upon its completion is control reverted to the coordinator.
+    \item \textbf{Mechanism:} The invoking plugin provides a callback URL during the initial call.
+    This callback URL is propagated through all subsequent endpoints.
+    Once the final endpoint completes its task, it issues a request to the callback URL, effectively notifying the invoking plugin of task completion.
+    Any necessary response data is appended by the last endpoint in this chain.
+\end{itemize}
+
+\paragraph{Asynchronous Tasks:}
+\begin{itemize}
+    \item \textbf{Scenario:} The coordinator plugin triggers the minimization endpoint of the minimizer plugin, a process that could involve one or multiple asynchronous long running tasks.
+    \item \textbf{Mechanism:} As with the previous category, a callback endpoint on the invoking side is created and passed to the invoked plugin in the form of a URL.
+    The invoked plugin then triggers the asynchronous task and returns immediately.
+    Upon completion of the asynchronous task, QHana's inherent property of updating the database with task status is leveraged.
+    A signaling mechanism is introduced to detect the status change to 'finished', triggering a function that calls the provided callback URL.
+    Crucially, any results from the long-running process are encapsulated within QHana's task view.
+    An URL pointing to these results is then shared with the invoking plugin for further processing or display.
+\end{itemize}
+
+The design of these interactions ensures that regardless of the complexity or duration of tasks, plugins can interact seamlessly, efficiently, and adaptably.
+
+\section{Introduction of Interaction Endpoints}
+\label{sec:introie}
+
+Building upon the idea of plugins interacting with each other, as detailed in the previous section, there arises a crucial question:
+How does one plugin discover the available endpoints of another?
+To address this very challenge, this thesis introduces a novel concept called \textit{interaction endpoints} to \gls{qhana}.
+
+While \gls{qhana} already has a metadata field named `entry points', which are endpoints invoked by the \gls{qhana} UI to render a plugin's UI, interaction endpoints extend this idea further.
+They specifically define endpoints in the metadata that other plugins can invoke, facilitating seamless integration and interaction among them.
+
+The core of interaction endpoints is their \emph{type}.
+All interaction endpoints with the same type must adhere to the same signature and return type.
+This uniformity ensures that they can be interchangeably invoked by other plugins.
+The \gls{of} plugin provides interaction endpoints of types \emph{objective-function\_calc}, \emph{objective-function\_gradient}, \emph{of-loss-and-grad}, and \emph{of_pass_data}.
+Similarly, the minimizer plugin offers the `minimization-step' type and optionally the `min-pass-data' type.
+These interaction endpoints correpsond to the endpoints defined in the previous section.
+The introduction of interaction endpoints significantly enhances the modularity and interchangeability within \gls{qhana}, paving the way for a more dynamic and adaptable plugin ecosystem.
+
+Below are the detailed specifications for these interaction endpoints:
+
+\begin{description}
+    \item[minimization-step]
+    \begin{itemize}
+        \item \textbf{Arguments:}
+        \begin{description}
+            \item[Required:] initial weights, URL to \emph{CalculateLoss} endpoint
+            \item[Optional:] URL to \emph{CalculateGradient}, URL to \emph{CalculateLossAndGradient}, URL to callback enpoint of invoking plugin
+        \end{description}
+        \item \textbf{Returns:} URL to \gls{qhana}'s task view for the asynchronous task
+    \end{itemize}
+
+    \item[min-pass-data]
+    \begin{itemize}
+        \item \textbf{Arguments:}
+        \begin{description}
+            \item[Required:] x, y
+        \end{description}
+        \item \textbf{Returns:} OK
+    \end{itemize}
+
+    \item[objective-function\_calc]
+    \begin{itemize}
+        \item \textbf{Arguments:}
+        \begin{description}
+            \item[Required:] weights for the loss function
+            \item[Optional:] x, y
+        \end{description}
+        \item \textbf{Returns:} loss value
+    \end{itemize}
+
+    \item[objective-function\_gradient]
+    \begin{itemize}
+        \item \textbf{Arguments:}
+        \begin{description}
+            \item[Required:] weights for the loss function
+            \item[Optional:] x, y
+        \end{description}
+        \item \textbf{Returns:} gradient of the loss function
+    \end{itemize}
+
+    \item[of-loss-and-grad]
+    \begin{itemize}
+        \item \textbf{Arguments:}
+        \begin{description}
+            \item[Required:] weights for the loss function
+            \item[Optional:] x, y
+        \end{description}
+        \item \textbf{Returns:} loss value, gradient of the loss function
+    \end{itemize}
+
+    \item[of-pass-data]
+    \begin{itemize}
+        \item \textbf{Arguments:}
+        \begin{description}
+            \item[Required:] x, y
+        \end{description}
+        \item \textbf{Returns:} number of required weights for the loss function
+    \end{itemize}
+\end{description}
+
+\section{Final Interaction Flow}
+With the architecure now fully defined, the final interaction flow can be visualized.
+Figure \ref{fig:interaction_flow} shows the interaction flow for the two proposed approaches.
+
+
 \chapter{Implementation}
 \label{chap:implementation}
 here we describe how we implemented the architecture
-folders and stuff
+
+how the uis of the pluings look like mostly how we defined them in the marshmallow schemas
+in order to show only of and min in the correct form we have the plugins labels
+
 what final methods the coordiantor plugin has
+* with callback endpoints and stuff
+
+data is shared across pluings endpoints via db and uuids
+
+interactions enpoitns are defined in the metadata of the plugins as format strings
+the format strings are then filled with the uuids of the plugins once the plugins ui was finished, the processing enpoint returns the uuids of the plugins
+
+introduction of numpy array format in marshmallow
+
+difference between the two approaches lies in the interaction between the of calc endpoint and the minimization Endpoint
+in one the data itself it not passed to the calc_loss enpoint but instead the data is loaded from the db in the calc_loss endpoint
+in the other approach the data is passed to the calc_loss endpoint and not loaded from the db
+
 what final methods the objective function plugin has
 what final methods the minimizer plugin has
-how they get metadata
-what data formats they send
-we can add the numpy array format in marschmellow
-we can say we use the db to share data across interaction endpoints
 
 then we do show example implementations
 these are the two minimizers grad and no grad
 and the three ob function ridge, hinge, and nn
-
-\section{Splitting an Optimization Problem into Plugins}
-\label{sec:splittingVQAsIntoPlugins}
-
-The cornerstone of this research endeavor revolves around the modularization of \glspl{vqa} into interchangeable plugins.
-This section delineates the approach and rationale for such a decomposition.
-
-\glspl{vqa}, as previously expounded in the background section, are intrinsically optimization problems.
-Fundamentally, optimization problems encompass two key components: an \gls{of}, which quantifies the problem, and a minimization function, which endeavors to find the optimal solution.
-Given this inherent structure, the decision to modularize a \gls{vqa} into separate plugins for the \gls{of} and the minimization function becomes intuitive.
-
-\subsection{Objective Function Plugin}
-The \gls{of} plugin serves these pivotal roles:
-
-\begin{itemize}
-\item \textbf{Parameter Acquisition:} It presents a \gls{ui} to collect hyperparameters pertinent to the \gls{of} from the end user.
-\item \textbf{Loss Computation:} Given the user-defined hyperparameters and the provided data, the plugin computes the loss function.
-\item \textbf{Loss Return:} Subsequently, it returns the computed loss, which serves as an input for the minimization function plugin.
-\end{itemize}
-
-\subsection{Minimization Function Plugin}
-The minimization function plugin, complementing the \gls{of}, has these essential responsibilities:
-
-\begin{itemize}
-\item \textbf{Parameter Acquisition:} Similar to its objective counterpart, this plugin offers a \gls{ui} to gather hyperparameters, but specific to the minimization function.
-\item \textbf{Function Minimization:} Given the hyperparameters and the defined \gls{of} this plugin minimizes the \gls{of}.
-\item \textbf{Result Return:} Upon completion, it relays the optimization result back to the coordinating entity.
-\end{itemize}
-
-\subsection{Coordinator Plugin}
-To ensure the harmonious orchestration of the aforementioned plugins and to facilitate a cohesive user experience, a coordinator plugin is indispensable. Its quintessential roles are:
-
-\begin{itemize}
-\item \textbf{Data Acquisition:} Initially, it obtains the requisite data from the user.
-\item \textbf{Plugin Selection:} It allows users to specify their choice of \gls{of} and minimization function plugins.
-\item \textbf{UI Invocation:} Sequentially, it triggers the UIs of both the objective and minimization function plugins for hyperparameter acquisition.
-\item \textbf{Optimization Execution:} With all requisite information collated, it commands the minimization function plugin to embark on the optimization of the \gls{of}.
-\item \textbf{Result Presentation:} Finally, it shows the optimization result to the user, completing the cycle.
-\end{itemize}
-
-The ensuing sections will delve into the technical intricacies of achieving this modular integration within \gls{qhana}.
 
 \section{Directory Structure and Plugin Loading}
 \label{sec:directoryStructure}
@@ -1092,19 +1187,6 @@ this concept has several advantages
 * it allows for full interchangeability of plugins
 * it allows the developer that want to interact with a plugin to know what endpoints are available and how to call them
 * an alternatiev would be to return the url of available endpoitns after passing through the ui, now we can completely skip the ui alltogether and just call the endpoint directly
-
-
-\section{Plugin interaction}
-\label{sec:pluginInteraction}
-
-coordinator plugin gets the metadata of the metadata of the of and min plugin via a simple get request to the metadata endpoint of the plugins
-the metadata contains the entry point to the plugins which is the user interface and the ineteraction endpoints which are other endpoints of a plugin that can be called by other plugins
-the coornator then calls the entry point of the of plugin and passes along a callback url to which the of plugin should make a post request when it is done with its setup
-after the user has entered the hyperparameters for the of plugin the user clicks submit and the of pluings saved the hyperparameters to the database and makes a post request to the callback url
-the callback url is the processing endpoint of the coordinator plugin
-the coordinator plugin then calls the entry point of the min plugin and passes along the callback url to which the min plugin should make a post request when it is done with its setup
-after the user has entered the hyperparameters for the min plugin the user clicks submit and the min pluings saved the hyperparameters to the database and makes a post request to the callback url
-the callback url is the processing endpoint of the coordinator plugin
 
 
 \section{Implementation of an Objective Function Plugin}
