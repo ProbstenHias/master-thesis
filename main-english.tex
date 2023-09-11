@@ -1090,10 +1090,38 @@ Figure \ref{fig:interaction_flow} shows the interaction flow for the two propose
 
 \chapter{Implementation}
 \label{chap:implementation}
-here we describe how we implemented the architecture
 
-how the uis of the pluings look like mostly how we defined them in the marshmallow schemas
-in order to show only of and min in the correct form we have the plugins labels
+In this chapter, we delve into the practicalities of realizing the architectural design, focusing on the actual implementation.
+The first part is on the implementation of the \glspl{ui} for the plugins.
+
+\section{Leveraging QHAna for UI Creation}
+The QHAna platform provides a streamlined mechanism to craft simple UIs with input fields, generated from marshmallow schemas.
+The primary step is to inherit from QHAna's \texttt{FrontendFormBaseSchema} class.
+This ensures that the \gls{ui} aligns with the platform's standards and practices while still providing the flexibility to define plugin-specific inputs.
+
+\subsection{Objective Function Plugin UI}
+For the \gls{of} plugin, the user inputs the hyperparameters needed by the loss function.
+As an illustration, let's consider the Ridge loss function.
+The hyperparameters is `alpha`.
+The corresponding marshmallow schema for the resulting schema is shown in \lstinputlisting[language=Python, caption=Hyperparameter Schema for Ridge Loss Function UI., label=lst:hyperparameter_schema_ridge]{code/hyperparameter_schema_ridge.py}
+
+\subsection{Minimizer Plugin UI}
+The minimizer plugin's UI is primarily concerned with the choice hyperparameters for the minimization function.
+Here's the schema definition for a minimizer plugin that uses Scipy as the minimization algorithm and requires the hyperparameter \emph{method} to be specified:
+
+\lstinputlisting[language=Python, caption=Hyperparameter Schema for Scipy Minimizer UI., label=lst:hyperparameter_schema_scipy]{code/hyperparameter_schema_scipy.py}
+
+\subsection{Coordinator Plugin UI}
+The coordinator plugin's UI acts as a control center.
+It facilitates the selection of the appropriate \gls{of} and minimizer plugins, the dataset of interest, and the specific target variable within that dataset.
+The corresponding schema is shown in \lstinputlisting[language=Python, caption=Coordinator Plugin UI Schema., label=lst:coordinator_schema]{code/ui_schema_coordinator.py}.
+
+A noteworthy feature is the utilization of the \emph{PluginUrl} class for the fields related to plugin selection.
+This custom class, which extends marshmallow's \emph{fields.Url} class, ensures that users can only select plugins that align with the required type.
+However, this also means that it's imperative for plugins to have their metadata accurately labeled with the correct type to ensure seamless integration.
+
+\section{Implementation of Interaction Endpoints Metadata}
+\label{sec:implementationOfInteractionEndpoints}
 
 what final methods the coordiantor plugin has
 * with callback endpoints and stuff
