@@ -554,7 +554,7 @@ The subsequent sections of this thesis will delve into the methodologies, implem
 \label{sec:conceptualFramework}
 
 This section outlines the theoretical and conceptual groundwork that anchors the methodology for this thesis.
-The framework is rooted in the principles of modularity, interactivity, and adaptability in the context of plugin-based architectures and optimization algorithms.
+The framework is rooted in the principles of modularity, interactivity, and interchangeability in the context of plugin-based architectures for optimization algorithms in \gls{qhana}.
 
 \subsection{Plugin-Based Architecture in QHana}
 \gls{qhana}, with its design centered on the Digital Humanities, provides an extensible platform for experimenting with various algorithms.
@@ -563,12 +563,12 @@ The objective is to leverage \gls{qhana}'s inherent modularity by enabling compo
 This brings us to the significance of modularity in optimization.
 
 \subsection{Significance of Modularity in Optimization}
-When VQAs are designed with modular components, it allows for increased flexibility.
+When \glspl{vqa} are designed with modular components, it allows for increased flexibility.
 Specifically, having distinct \glspl{of} and minimization functions means parts of the algorithm can be adjusted or replaced seamlessly.
 This reflects the goals of modularity and flexibility intrinsic to \gls{qhana}'s design.
 
 \subsection{Interactivity Between Plugins}
-Interactivity in \gls{qhana} encompasses various facets:
+Interactivity in \gls{qhana} should encompasses various facets:
 
 A plugin should be able to invoke the microfrontend of another plugin.
 Control should revert to the invoking plugin once the invoked plugin completes its tasks.
@@ -579,7 +579,7 @@ The need for such interactivity stems from the inherent nature of optimization.
 The \glspl{of} and minimization must closely interact to produce meaningful optimization results.
 Moreover, since an invoking plugin is unaware of the parameters or requirements of the invoked plugin, direct interaction becomes imperative for dynamic data exchange and collaborative processing.
 
-Drawing inspiration from existing systems, the interaction between the minimization and objective functions in implementations like Scipy's \emph{optimizer.minimize} \cite{Virtanen2020} function serves as a precedent.
+Drawing inspiration from existing systems, the interaction between the minimization and \glspl{of} in implementations like Scipy's \emph{optimizer.minimize} \cite{Virtanen2020} function serves as a precedent.
 
 To elevate the degree of interactivity between plugins within \gls{qhana}, this thesis introduces the innovative concept of \emph{interaction endpoints}.
 While QHana already employs a metadata field for plugins known as \emph{entry points} - endpoints invoked by the \gls{qhana} \gls{ui} to render the \gls{ui} of a plugin - interaction endpoints extend this paradigm by marking specific endpoints as callable by other plugins.
@@ -595,28 +595,29 @@ By enhancing the interactivity and modularity of plugins within \gls{qhana}, we 
 \section{Architectural Design Strategy}
 \label{sec:architecturalDesignStrategy}
 
-The architectural design process is a critical phase that dictates how the components of the solution will function and interaract with each other.
-The methodology undertaken for the architectural design of the service-based optimization framework consisted of a series of well-defined steps, ensuring clarity, modularity, and extensibility.
+The architectural design process is a critical phase that dictates how the components of the solution will function and interact with each other.
+The methodology undertaken for the architectural design of the plugin-based optimization framework consisted of a series of well-defined steps, ensuring clarity, modularity, and extensibility.
 
 \subsection{Decomposition into Plugins}
 The first step involved decomposing the optimization process into distinct plugins.
-This was achieved by reviewing relevant literature to understand common practices and methodologies in optimization \cite{Virtanen2020, Nocedal2006, ShalevShwartz2014, Weinan2017}.
-The main challenge was to find a good decomposition that on the one hand all functionalities that should later be interchangeable should be encompassed in an extra plugin,
-but on the other hand too many plugins would create an overhead that would lead to inefficiency because of commutation overhead.
+This is achieved by reviewing relevant literature to understand common practices and methodologies in optimization \cite{Virtanen2020, Nocedal2006, ShalevShwartz2014, Weinan2017}.
+The main challenge was to find a good decomposition so that on one hand all functionalities that should be interchangeable are encompassed in an extra plugin,
+on the other hand too many plugins would create an overhead that would lead to inefficiency.
 
 \subsection{Defining Plugin Responsibilities}
 Once the plugins were identified, the next step was to precisely define the responsibilities of each plugin.
 This ensured that every plugin had a well-defined purpose, preventing overlaps in functionality and ensuring clarity in their roles.
-Some challenges in this phase included the following:
+To delineate these responsibilities, several crucial decisions had to be made:
+
 \begin{itemize}
-  \item Which plugin should be responsible for the calculation of the loss function?
-  \item Which plugin should be responsible for doing the minimization?
-  \item Which plugin should ask the user for the \gls{of} hyperparameters?
-  \item Which plugin should ask the user for the minimization function hyperparameters?
-  \item Which plugin should ask the user which \gls{of} and which minimization algorithm to use?
-  \item Which plugin should ask the user for the input data?
-  \item Which plugin should ask the user for the target variable?
-  \item Which plugin should coordinate the whole process?
+  \item Which plugin is tasked with calculating the loss function?
+  \item Which one handles the minimization process?
+  \item Who prompts the user for the \gls{of} hyperparameters?
+  \item Who gathers the minimization function hyperparameters from the user?
+  \item Who inquires about the user's preference for the \gls{of} and minimization algorithm?
+  \item Who solicits the input data from the user?
+  \item Who requests the target variable?
+  \item And lastly, who oversees and coordinates the entire process?
 \end{itemize}
 
 \subsection{Universal Plugin Interface Design}
@@ -636,29 +637,27 @@ This interaction design should lay the foundation for all future plugin interact
 Scenarios that were considered included for instance a plugin invoking the microfrontend of another plugin, or it could call a specific endpoint of another plugin.
 Additionally, the interaction design also encompassed the flow of control between plugins.
 For instance, a plugin could invoke another plugin and then wait for it to complete its tasks before resuming its own tasks.
-It could also invoke another plugin and then stop execution all together, while providing the invoked plugin with a callback URL that the invoked plugin could call once it completes its tasks.
+A plugin could also invoke another plugin and then stop execution all together, while providing the invoked plugin with a callback URL that the invoked plugin could call once it completes its tasks.
 Alternatively, a plugin could invoke another plugin and then continue with its tasks without waiting for the invoked plugin to complete its tasks.
 Intrinsic to this step was also the design of a coordination mechanism that facilitated the interaction between plugins.
 
-\subsection{Component Diagrams}
+\subsection{UML Diagrams}
 To pictorially represent the responsibilities and interfaces of each plugin, component diagrams were formulated.
-Each diagram encapsulated the primary tasks of a plugin and the interfaces it provides, offering a clear understanding of the system's structure.
+A diagram encapsulated the primary tasks of a plugin and the interfaces it provides, offering a clear understanding of the system's structure.
 
-
-\subsection{Sequence Diagrams and Interaction Flow}
 To fathom the intricate interplay between plugins, sequence diagrams were devised.
 These diagrams capture the stepwise interaction between plugins.
 They detail the flow of control and data, spotlighting the sequence of plugin invocations and collaborative processes.
 
 
 \subsection{Feedback and Refinement}
-Throughout the design odyssey, continuous feedback loops were integrated. This involved:
+Throughout the design process, continuous feedback loops were integrated. This involved:
 \begin{itemize}
 \item Revisiting each stage, evaluating its alignment with overarching goals.
-\item Making necessary refinements to ensure the architecture was both robust and flexible.
+\item Making necessary refinements to ensure the architecture is both robust and flexible.
 \end{itemize}
 
-With the architectural design strategy in place, the next step was to define the implementation strategy.
+With the architectural design strategy in place, the next step is to define the implementation strategy.
 
 \section{Implementation Strategy}
 \label{sec:implementationStrategy}
@@ -734,7 +733,6 @@ For the context of this thesis, the following principles are deemed most signifi
 It's imperative to note that while the outlined principles are crucial for this thesis, \gls{qhana}'s overarching documentation provides a more exhaustive list of best practices and guidelines for plugin creation \cite{Buehler2022}.
 
 
-
 \subsection{Data Handling and Transfer}
 Flask-Smorest was instrumental in ensuring structured and accurate data transfer between plugins.
 It aided in validating the correctness of passed data, returning appropriate error codes, and managing errors efficiently.
@@ -798,14 +796,14 @@ This documentation serves as a guideline for developers aiming to extend the cap
 \section{Evaluation Strategy}
 \label{sec:evaluationStrategy}
 
-The implementation section of this thesis will ultimately present two distinct versions of a service-based optimization framework.
+The implementation section of this thesis will ultimately present two distinct versions of a plugin-based optimization framework.
 The evaluation will assess both versions to facilitate a comparison between the two approaches.
-Additionally, the evaluation will juxtapose these approaches with a non-service-based approach, presented in the form of a Jupyter notebook.
+Additionally, the evaluation will juxtapose these approaches with a non-plugin-based approach, presented in the form of a Jupyter notebook.
 To validate the effectiveness of the proposed solutions and to assess whether the goals set out in the problem statement have been achieved, the following evaluation methodologies are adopted:
 
 \subsection{Performance Benchmarking}
-Performance is paramount, especially in a service-based architecture.
-A direct comparison will be made between the two service-based approaches and the non-service-based approach.
+Performance is paramount, especially in a plugin-based architecture.
+A direct comparison will be made between the two plugin-based approaches and the non-service-based approach.
 Key metrics for this comparison include:
 
 \begin{itemize}
@@ -824,22 +822,28 @@ This metric is exclusive to the service-based approach.
 \item \textbf{Database Access Times}: It is essential to gauge the time required to retrieve data from the database since endpoints access context data from the database during each invocation.
 \end{itemize}
 
-This evaluation hinges on quantitative metrics, with results graphically depicted for enhanced clarity. The \emph{time.perf\_count} function from Python is employed to capture measurements, while the Google Chrome developer tools are used to measure network traffic.
+This evaluation hinges on quantitative metrics, with results graphically depicted for enhanced clarity.
+The \emph{time.perf\_count} function from Python is employed to capture measurements, while the Google Chrome developer tools are used to measure network traffic.
 
 \subsection{Interchangeability}
-A litmus test for modularity is its potential for component interchangeability without disruptions. Accordingly, every plugin of a particular type is tested against every other plugin of the same type to validate seamless interchangeability.
+The true measure of interchangeability is the ability to swap components without causing disruptions.
+Accordingly, every plugin of a particular type is tested against every other plugin of the same type to validate seamless interchangeability.
 
 \subsection{Standardization Adherence}
-Standardization, pivotal for ensuring compatibility and uniformity across diverse plugins, is put to the test. An evaluation is undertaken to ascertain whether all implemented plugins conform to the prescribed standards. This guarantees that all optimization plugins can be implemented uniformly, facilitating consistent and compatible integrations in the future.
+Standardization, pivotal for ensuring compatibility and uniformity across diverse plugins, is put to the test.
+An evaluation is undertaken to determine whether all implemented plugins conform to the prescribed standards.
+This guarantees that all optimization plugins can be implemented uniformly, facilitating consistent and compatible integrations in the future.
 
 \subsection{User Experience}
-While the primary audience for this thesis is developers for the \gls{qhana} platform, the user experience is not to be undermined. An assessment determines the ease and efficiency with which a developer can introduce a new plugin in the context of service-based optimization in \gls{qhana}. The lines of code required to integrate a new, interchangeable plugin for the optimization process are enumerated and compared across the approaches.
+While the primary audience for this thesis is developers for the \gls{qhana} platform, the user experience is not to be undermined.
+An assessment determines the ease and efficiency with which a developer can introduce a new plugin in the context of service-based optimization in \gls{qhana}.
+The complexity and the lines of code required to integrate a new, interchangeable plugin for the optimization process are enumerated and compared across the approaches.
 
 Through a meticulous evaluation across these parameters, this thesis endeavors to furnish a thorough appraisal of the solutions in relation to the challenges delineated in the problem statement.\section{Test Data Generation for Evaluation}
 
 To robustly evaluate the solutions proposed in this work, it's essential to test them on a diverse range of datasets, reflecting both size and complexity.
 The objective is to mimic real-world scenarios where optimization problems can range from simple tasks with a few data points to complex challenges with a vast number of features and data points.
-A minimal version of the code that was used to generate the test data can be found in the appendix \ref{appendix:generate_data}.
+The code that was used to generate the test data can be found in the appendix \ref{appendix:generate_data}.
 
 \subsection{Dataset Characteristics:}
 
@@ -863,7 +867,7 @@ A minimal version of the code that was used to generate the test data can be fou
     \end{itemize}
 \end{enumerate}
 
-By employing such multifaceted and representative datasets, the methodology aims to guarantee a holistic evaluation of the optimization solutions, assessing their performance, scalability, and robustness across diverse conditions.
+By employing such multifaceted and representative datasets, the methodology aims to guarantee a holistic evaluation of the optimization solutions, assessing their performance, interchangeability, and user experience across a diverse range of scenarios.
 
 \chapter{Resutling System Architecture}
 \label{chap:architecture}
@@ -934,7 +938,7 @@ This interface is also in accordance with the \gls{qhana} documentation \cite{Bu
 \item \textbf{HRef}: This endpoint is used to process the input from the \gls{of} microfrontend.
 It is usually triggered by the user clicking the \emph{submit} button on the microfrontend.
 This interface is also in accordance with the \gls{qhana} documentation \cite{Buehler2022}.
-\item \textbf{PassDataOF}: This endpoint is used to pass the input data and the target data to the \gls{of} plugin.
+\item \textbf{PassData}: This endpoint is used to pass the input data and the target data to the \gls{of} plugin.
 It returns the number of weights that is required for the optimization process.
 The number of weights is returned here since it is depandant on the data and possibly the hyperparameters.
 \item \textbf{CalculateLoss}: This endpoint is used to calculate the loss.
@@ -950,10 +954,6 @@ The minimizer plugin, responsible for optimizing the loss function provided by t
   \item \textbf{Metadata}: same as for the \gls{of} plugin
   \item \textbf{UIRef}: same as for the \gls{of} plugin
   \item \textbf{HRef}: same as for the \gls{of} plugin
-  \item \textbf{(Optional) PassDataMinimizer}: Similar to the \texttt{PassDataOF} endpoint, this endpoint is used to pass the input data and the target data to the minimizer plugin.
-  As the a minimizer does not necessarily need the data, this endpoint is optional.
-  The nescesscity of this endpoint is the difference in two alternative approaches that will be discussed in the following sections.
-  For now we just assume that the minimizer does not need the data.
   \item \textbf{Minimize}: This endpoint is used to minimize the loss function.
 \end{itemize}
 
@@ -1023,34 +1023,25 @@ They specifically define endpoints in the metadata that other plugins can invoke
 The core of interaction endpoints is their \emph{type}.
 All interaction endpoints with the same type must adhere to the same signature and return type.
 This uniformity ensures that they can be interchangeably invoked by other plugins.
-The \gls{of} plugin provides interaction endpoints of types \emph{objective-function\_calc}, \emph{objective-function\_gradient}, \emph{of-loss-and-grad}, and \emph{of_pass_data}.
-Similarly, the minimizer plugin offers the `minimization-step' type and optionally the `min-pass-data' type.
-These interaction endpoints correpsond to the endpoints defined in the previous section.
+The \gls{of} plugin provides interaction endpoints of types \emph{calc\_loss}, \emph{calc\_grad}, \emph{calc\_loss\_and\_grad}, and \emph{of\_pass\_data}.
+The minimizer plugin offers the `minimization' type.
+These interaction endpoints correspond to the endpoints defined in the previous section.
 The introduction of interaction endpoints significantly enhances the modularity and interchangeability within \gls{qhana}, paving the way for a more dynamic and adaptable plugin ecosystem.
 
 Below are the detailed specifications for these interaction endpoints:
 
 \begin{description}
-    \item[minimization-step]
+    \item[minimization]
     \begin{itemize}
         \item \textbf{Arguments:}
         \begin{description}
             \item[Required:] initial weights, URL to \emph{CalculateLoss} endpoint
-            \item[Optional:] URL to \emph{CalculateGradient}, URL to \emph{CalculateLossAndGradient}, URL to callback enpoint of invoking plugin
+            \item[Optional:] URL to \emph{CalculateGradient}, URL to \emph{CalculateLossAndGradient}, URL to callback enpoint of invoking plugin, x, y
         \end{description}
         \item \textbf{Returns:} URL to \gls{qhana}'s task view for the asynchronous task
     \end{itemize}
 
-    \item[min-pass-data]
-    \begin{itemize}
-        \item \textbf{Arguments:}
-        \begin{description}
-            \item[Required:] x, y
-        \end{description}
-        \item \textbf{Returns:} OK
-    \end{itemize}
-
-    \item[objective-function\_calc]
+    \item[calc\_loss]
     \begin{itemize}
         \item \textbf{Arguments:}
         \begin{description}
@@ -1060,7 +1051,7 @@ Below are the detailed specifications for these interaction endpoints:
         \item \textbf{Returns:} loss value
     \end{itemize}
 
-    \item[objective-function\_gradient]
+    \item[calc\_grad]
     \begin{itemize}
         \item \textbf{Arguments:}
         \begin{description}
@@ -1070,7 +1061,7 @@ Below are the detailed specifications for these interaction endpoints:
         \item \textbf{Returns:} gradient of the loss function
     \end{itemize}
 
-    \item[of-loss-and-grad]
+    \item[calc\_loss\_and\_grad]
     \begin{itemize}
         \item \textbf{Arguments:}
         \begin{description}
@@ -1080,7 +1071,7 @@ Below are the detailed specifications for these interaction endpoints:
         \item \textbf{Returns:} loss value, gradient of the loss function
     \end{itemize}
 
-    \item[of-pass-data]
+    \item[of\_pass\_data]
     \begin{itemize}
         \item \textbf{Arguments:}
         \begin{description}
@@ -1090,8 +1081,10 @@ Below are the detailed specifications for these interaction endpoints:
     \end{itemize}
 \end{description}
 
+The key difference between the two proposed service-based approaches is the optional arguments \emph{x} and \emph{y} of the \emph{calc\_loss}, \emph{calc\_grad}, \emph{calc\_loss\_and\_grad}, and \emph{minimize} interaction endpoints, where for one approach these arguemtns are required and for the other they are optional.
+
 \section{Final Interaction Flow}
-With the architecure now fully defined, the final interaction flow can be visualized.
+With the architecture now fully defined, the final interaction flow can be visualized.
 Figure \ref{fig:interaction_flow} shows the interaction flow for the two proposed approaches.
 
 
@@ -1113,8 +1106,8 @@ the format strings are then filled with the uuids of the plugins once the plugin
 introduction of numpy array format in marshmallow
 
 difference between the two approaches lies in the interaction between the of calc endpoint and the minimization Endpoint
-in one the data itself it not passed to the calc_loss enpoint but instead the data is loaded from the db in the calc_loss endpoint
-in the other approach the data is passed to the calc_loss endpoint and not loaded from the db
+in one the data itself it not passed to the calc\_loss enpoint but instead the data is loaded from the db in the calc\_loss endpoint
+in the other approach the data is passed to the calc\_loss endpoint and not loaded from the db
 
 what final methods the objective function plugin has
 what final methods the minimizer plugin has
