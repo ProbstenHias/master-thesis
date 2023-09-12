@@ -1,4 +1,3 @@
-import marshmallow as ma
 from qhana_plugin_runner.api.util import FileUrl, FrontendFormBaseSchema, PluginUrl
 
 
@@ -13,7 +12,7 @@ class OptimizerSetupTaskInputSchema(FrontendFormBaseSchema):
             "description": "URL to a csv file with optimizable data.",
         },
     )
-    target_variable = ma.fields.String(
+    target_variable = marshmallow.fields.String(
         required=True,
         allow_none=False,
         metadata={

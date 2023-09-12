@@ -1098,32 +1098,56 @@ The first part is on the implementation of the \glspl{ui} for the plugins.
 The QHAna platform provides a streamlined mechanism to craft simple UIs with input fields, generated from marshmallow schemas.
 The primary step is to inherit from QHAna's \texttt{FrontendFormBaseSchema} class.
 This ensures that the \gls{ui} aligns with the platform's standards and practices while still providing the flexibility to define plugin-specific inputs.
-
-\subsection{Objective Function Plugin UI}
 For the \gls{of} plugin, the user inputs the hyperparameters needed by the loss function.
-As an illustration, let's consider the Ridge loss function.
-The hyperparameters is `alpha`.
-The corresponding marshmallow schema for the resulting schema is shown in \lstinputlisting[language=Python, caption=Hyperparameter Schema for Ridge Loss Function UI., label=lst:hyperparameter_schema_ridge]{code/hyperparameter_schema_ridge.py}
-
-\subsection{Minimizer Plugin UI}
-The minimizer plugin's UI is primarily concerned with the choice hyperparameters for the minimization function.
-Here's the schema definition for a minimizer plugin that uses Scipy as the minimization algorithm and requires the hyperparameter \emph{method} to be specified:
-
-\lstinputlisting[language=Python, caption=Hyperparameter Schema for Scipy Minimizer UI., label=lst:hyperparameter_schema_scipy]{code/hyperparameter_schema_scipy.py}
-
-\subsection{Coordinator Plugin UI}
+The minimizer plugin's UI is concerned with the choice hyperparameters for the minimization function.
 The coordinator plugin's UI acts as a control center.
 It facilitates the selection of the appropriate \gls{of} and minimizer plugins, the dataset of interest, and the specific target variable within that dataset.
-The corresponding schema is shown in \lstinputlisting[language=Python, caption=Coordinator Plugin UI Schema., label=lst:coordinator_schema]{code/ui_schema_coordinator.py}.
 
-A noteworthy feature is the utilization of the \emph{PluginUrl} class for the fields related to plugin selection.
+The code in \ref{lst:coordinator_schema} demonstates how such a schema is defined for the coordinator plugin.
+This example shows the how one would define such an input schema for a sting, a file and a plugin.
+A noteworthy feature is the utilization of the \emph{PluginUrl} class plugin selection fields
 This custom class, which extends marshmallow's \emph{fields.Url} class, ensures that users can only select plugins that align with the required type.
 However, this also means that it's imperative for plugins to have their metadata accurately labeled with the correct type to ensure seamless integration.
 
-\section{Implementation of Interaction Endpoints Metadata}
+\lstinputlisting[language=Python, caption=Coordinator Plugin UI Schema., label=lst:coordinator_schema]{code/ui_schema_coordinator.py}.
+
+\section{Implementation of Plugin Endpoints}
 \label{sec:implementationOfInteractionEndpoints}
 
-what final methods the coordiantor plugin has
+\subsection{Custom Marshmallow Field for Data}
+\label{sec:customMarshmallowFieldForData}
+In order to facilitate the passing of input and target data between plugins, a custom marshmallow field was developed.
+This field, named \emph{NumpyArray} and shown in \ref{lst:numpy_array_schema}, is designed to handle numpy arrays.
+This field is able to handle numpy arrays of any dimensionality and any data type that is json serializable.
+Not only is this field used for passing the data between endpoints but also for storing the data effectively in the database.
+\lstinputlisting[language=Python, caption=Custom Marshmallow Field for Numpy Arrays., label=lst:numpy_array_schema]{code/numpy_array_schema.py}.
+
+
+\section{Implementation of Interaction Endpoints}
+\label{sec:implementationOfInteractionEndpointMetadata}
+interaction endpoints are now part of teh metatada of plugins.
+since the url of plugin endpoints include the database id interaction endpoints also have to be aware of the database id of the plugin
+since the database id is not yet known when the metadata is created interaction endpoint url are defined as format strings
+to make it easier for developers the types of interactions endpoints are defined as enums as can be seen in \ref{lst:interaction_endpoint_types}
+For the of pluing that implements ridge loss for example the interactoin endpoint defintions can look like depicted in
+the \emph{url\_for} method call creates the base url for the plugin and the rest of the endpoint url is concated to that base url
+\lstinputlisting[language=Python, caption=Enum for Interaction Endpoint Types., label=lst:interaction_endpoint_types]{code/interaction_endpoint_types.py}.
+\lstinputlisting[language=Python, caption=Interaction Endpoint Metadata for the Ridge Loss OF Plugin., label=lst:ridge_loss_interaction_endpoint_metadata]{code/interaction_endpoints_of.py.py}.
+
+The arugments passed to the interaction endpoints and returned by the interaction enpoints are defined as marshmallow schemas in the shared folder.
+For the \emph{calc\_loss} endpoint where the arguments are the weights for the loss function and optionally the input data and the target data and the return value is the loss value the schema looks like shown in \ref{lst:calc_loss_schema}.
+
+\lstinputlisting[language=Python, caption=Schema for the calc\_loss Interaction Endpoint., label=lst:calc_loss_schema]{code/calc_loss_schema.py}.
+
+\sectinon{Implementation differneces between the two approaches}
+the two approaches differ in the way the input and target data is passed to the of plugins calc\_loss endpoint
+in one approach the data is passed to the of\_pass\_data endpoint of the \gls{of} plugin and there the data is stored in the database
+in when caluculating the loss in the calc\_loss endpoint the data is loaded from the database and used to calculate the loss
+
+in the other approach the data is passed directly to the calc\_loss endpoint by the minimizer plugin and not loaded from the database
+that means that the coordinator plugin also has to pass the data to the minimizers minimize endpoint
+
+
 * with callback endpoints and stuff
 
 data is shared across pluings endpoints via db and uuids

@@ -1,9 +1,5 @@
-import marshmallow as ma
-from qhana_plugin_runner.api.util import FrontendFormBaseSchema
-
-
 class HyperparamterInputSchema(FrontendFormBaseSchema):
-    alpha = ma.fields.Float(
+    alpha = marshmallow.fields.Float(
         required=True,
         allow_none=False,
         metadata={
