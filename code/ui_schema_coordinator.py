@@ -1,6 +1,5 @@
 from qhana_plugin_runner.api.util import FileUrl, FrontendFormBaseSchema, PluginUrl
 
-
 class OptimizerSetupTaskInputSchema(FrontendFormBaseSchema):
     input_file_url = FileUrl(
         required=True,
