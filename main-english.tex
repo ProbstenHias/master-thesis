@@ -871,55 +871,56 @@ The introduction of interaction endpoints significantly enhances the modularity 
 Below are the detailed specifications for these interaction endpoints:
 
 \begin{description}
-    \item[minimization]
-    \begin{itemize}
-        \item \textbf{Arguments:}
-        \begin{description}
-            \item[Required:] initial weights, URL to \emph{CalculateLoss} endpoint
-            \item[Optional:] URL to \emph{CalculateGradient}, URL to \emph{CalculateLossAndGradient}, URL to callback enpoint of invoking plugin, x, y
-        \end{description}
-        \item \textbf{Returns:} URL to \gls{qhana}'s task view for the asynchronous task
-    \end{itemize}
+  \item[minimization] \hfill \\
+  \begin{itemize}
+      \item \textbf{Arguments:}
+      \begin{description}
+          \item[Required:] initial weights, URL to \emph{CalculateLoss} endpoint
+          \item[Optional:] URL to \emph{CalculateGradient}, URL to \emph{CalculateLossAndGradient}, URL to callback endpoint of invoking plugin, x, y
+      \end{description}
+      \item \textbf{Returns:} URL to \gls{qhana}'s task view for the asynchronous task
+  \end{itemize}
 
-    \item[calc\_loss]
-    \begin{itemize}
-        \item \textbf{Arguments:}
-        \begin{description}
-            \item[Required:] weights for the loss function
-            \item[Optional:] x, y
-        \end{description}
-        \item \textbf{Returns:} loss value
-    \end{itemize}
+  \item[calc\_loss] \hfill \\
+  \begin{itemize}
+      \item \textbf{Arguments:}
+      \begin{description}
+          \item[Required:] weights for the loss function
+          \item[Optional:] x, y
+      \end{description}
+      \item \textbf{Returns:} loss value
+  \end{itemize}
 
-    \item[calc\_grad]
-    \begin{itemize}
-        \item \textbf{Arguments:}
-        \begin{description}
-            \item[Required:] weights for the loss function
-            \item[Optional:] x, y
-        \end{description}
-        \item \textbf{Returns:} gradient of the loss function
-    \end{itemize}
+  \item[calc\_grad] \hfill \\
+  \begin{itemize}
+      \item \textbf{Arguments:}
+      \begin{description}
+          \item[Required:] weights for the loss function
+          \item[Optional:] x, y
+      \end{description}
+      \item \textbf{Returns:} gradient of the loss function
+  \end{itemize}
 
-    \item[calc\_loss\_and\_grad]
-    \begin{itemize}
-        \item \textbf{Arguments:}
-        \begin{description}
-            \item[Required:] weights for the loss function
-            \item[Optional:] x, y
-        \end{description}
-        \item \textbf{Returns:} loss value, gradient of the loss function
-    \end{itemize}
+  \item[calc\_loss\_and\_grad] \hfill \\
+  \begin{itemize}
+      \item \textbf{Arguments:}
+      \begin{description}
+          \item[Required:] weights for the loss function
+          \item[Optional:] x, y
+      \end{description}
+      \item \textbf{Returns:} loss value, gradient of the loss function
+  \end{itemize}
 
-    \item[of\_pass\_data]
-    \begin{itemize}
-        \item \textbf{Arguments:}
-        \begin{description}
-            \item[Required:] x, y
-        \end{description}
-        \item \textbf{Returns:} number of required weights for the loss function
-    \end{itemize}
+  \item[of\_pass\_data] \hfill \\
+  \begin{itemize}
+      \item \textbf{Arguments:}
+      \begin{description}
+          \item[Required:] x, y
+      \end{description}
+      \item \textbf{Returns:} number of required weights for the loss function
+  \end{itemize}
 \end{description}
+
 
 The key difference between the two proposed service-based approaches is the optional arguments \emph{x} and \emph{y} of the \emph{calc\_loss}, \emph{calc\_grad}, \emph{calc\_loss\_and\_grad}, and \emph{minimize} interaction endpoints, where for one approach these arguemtns are required and for the other they are optional.
 
