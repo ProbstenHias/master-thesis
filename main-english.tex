@@ -1132,14 +1132,14 @@ to make it easier for developers the types of interactions endpoints are defined
 For the of pluing that implements ridge loss for example the interactoin endpoint defintions can look like depicted in
 the \emph{url\_for} method call creates the base url for the plugin and the rest of the endpoint url is concated to that base url
 \lstinputlisting[language=Python, caption=Enum for Interaction Endpoint Types., label=lst:interaction_endpoint_types]{code/interaction_endpoint_types.py}.
-\lstinputlisting[language=Python, caption=Interaction Endpoint Metadata for the Ridge Loss OF Plugin., label=lst:ridge_loss_interaction_endpoint_metadata]{code/interaction_endpoints_of.py.py}.
+\lstinputlisting[language=Python, caption=Interaction Endpoint Metadata for the Ridge Loss OF Plugin., label=lst:ridge_loss_interaction_endpoint_metadata]{code/interaction_endpoints_of.py}.
 
 The arugments passed to the interaction endpoints and returned by the interaction enpoints are defined as marshmallow schemas in the shared folder.
 For the \emph{calc\_loss} endpoint where the arguments are the weights for the loss function and optionally the input data and the target data and the return value is the loss value the schema looks like shown in \ref{lst:calc_loss_schema}.
 
 \lstinputlisting[language=Python, caption=Schema for the calc\_loss Interaction Endpoint., label=lst:calc_loss_schema]{code/calc_loss_schema.py}.
 
-\sectinon{Implementation differneces between the two approaches}
+\section{Implementation differences between the two approaches}
 the two approaches differ in the way the input and target data is passed to the of plugins calc\_loss endpoint
 in one approach the data is passed to the of\_pass\_data endpoint of the \gls{of} plugin and there the data is stored in the database
 in when caluculating the loss in the calc\_loss endpoint the data is loaded from the database and used to calculate the loss
