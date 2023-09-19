@@ -122,19 +122,11 @@
 %Wird nur bei Verwendung von der lstlisting-Umgebung mit dem "caption"-Parameter benoetigt
 %\lstlistoflistings
 %ansonsten:
-\ifdeutsch
-  \listof{Listing}{Verzeichnis der Listings}
-\else
   \listof{Listing}{List of Listings}
-\fi
 
 %mittels \newfloat wurde die Algorithmus-Gleitumgebung definiert.
 %Mit folgendem Befehl werden alle floats dieses Typs ausgegeben
-\ifdeutsch
-  \listof{Algorithmus}{Verzeichnis der Algorithmen}
-\else
-  \listof{Algorithmus}{List of Algorithms}
-\fi
+\listof{Algorithmus}{List of Algorithms}
 %\listofalgorithms %Ist nur für Algorithmen, die mittels \begin{algorithm} umschlossen werden, nötig
 
 % Abkürzungsverzeichnis
@@ -419,7 +411,7 @@ The need for such interactivity stems from the inherent nature of optimization.
 The \glspl{of} and minimization must closely interact to produce meaningful optimization results.
 Moreover, since an invoking plugin is unaware of the parameters or requirements of the invoked plugin, direct interaction becomes imperative for dynamic data exchange and collaborative processing.
 
-Drawing inspiration from existing systems, the interaction between the minimization and \glspl{of} in implementations like Scipy's \emph{optimizer.minimize} \cite{Virtanen2020} function serves as a precedent.
+Drawing inspiration from existing systems, the interaction between the minimization and \glspl{of} in implementations like SciPy's \emph{optimizer.minimize} \cite{Virtanen2020} function serves as a precedent.
 
 To elevate the degree of interactivity between plugins within \gls{qhana}, this thesis introduces the innovative concept of \emph{interaction endpoints}.
 While QHana already employs a metadata field for plugins known as \emph{entry points} - endpoints invoked by the \gls{qhana} \gls{ui} to render the \gls{ui} of a plugin - interaction endpoints extend this paradigm by marking specific endpoints as callable by other plugins.
@@ -709,14 +701,14 @@ The code that was used to generate the test data can be found in the appendix \r
 
 By employing such multifaceted and representative datasets, the methodology aims to guarantee a holistic evaluation of the optimization solutions, assessing their performance, interchangeability, and user experience across a diverse range of scenarios.
 
-\chapter{Resutling System Architecture}
+\chapter{Resulting System Architecture}
 \label{chap:architecture}
 
 
-\section{Resutant Decompostion into Plugins and their Responsibilities}
+\section{Resultant Decomposition into Plugins and their Responsibilities}
 
 Following the decomposition strategy, the plugin-based optimization framework was divided into three primary plugin types:
-\gls{of} plugin, the minimizer plugin, and the coorinator plugin.
+\gls{of} plugin, the minimizer plugin, and the coordinator plugin.
 Each of these plugins was equipped with specific roles and responsibilities, ensuring a modular and efficient optimization process.
 This split is visualized in the component diagram in figure \ref{fig:component_diagram}.
 It is important to note that for both proposed plugin-based approaches, this decomposition and the associated responsibilities remain consistent.
@@ -783,12 +775,12 @@ Its interfaces are:
 \item \textbf{Metadata}: The plugin provides metadata about itself as specified in the \gls{qhana} documentation \cite{Buehler2022}.
 \item \textbf{UIRef}: This endpoint is used to obtain the microfrontend for the \gls{of} plugin, which is used to collect the hyperparameters from the user.
 This interface is also in accordance with the \gls{qhana} documentation \cite{Buehler2022}.
-\item \textbf{HRef}: This endpoint is used to process the input from the \gls{of} microfrontend and is therefore ususally called the \textbf{processing} endpoint.
+\item \textbf{HRef}: This endpoint is used to process the input from the \gls{of} microfrontend and is therefore usually called the \textbf{processing} endpoint.
 It is usually triggered by the user clicking the \emph{submit} button on the microfrontend.
 This interface is also in accordance with the \gls{qhana} documentation \cite{Buehler2022}.
 \item \textbf{PassData}: This endpoint is used to pass the input data and the target data to the \gls{of} plugin.
 It returns the number of weights that is required for the optimization process.
-The number of weights is returned here since it is depandant on the data and possibly the hyperparameters.
+The number of weights is returned here since it is dependent on the data and possibly the hyperparameters.
 \item \textbf{CalculateLoss}: This endpoint is used to calculate the loss.
 \item \textbf{CalculateGradient (Optional)}: This endpoint is used to calculate the gradient of the loss function. It is optional since not all optimization algorithms require the gradient.
 \item \textbf{CalculateLossAndGradient (Optinonal)}: This endpoint is used to calculate the loss and the gradient of the loss function. Similar to the previous endpoint, it is optional since not all optimization algorithms require the gradient.
@@ -840,7 +832,7 @@ This endpoint is called a callback endpoint.
 Instances of such interactions are:
 \begin{itemize}
     \item The coordinator schedules the microfrontend of the \gls{of} plugin.
-    The coordintor plugin provides a callback endpoint to the \gls{of} plugin that is called once the user entered the input and the input was processed.
+    The coordinator plugin provides a callback endpoint to the \gls{of} plugin that is called once the user entered the input and the input was processed.
     \item The coordinator schedules the microfrontend of the minimizer plugin.
     This mechanism works identical to the previous item.
     \item The coordinator plugin calls the minimization endpoint of the minimizer plugin.
@@ -873,7 +865,7 @@ The architecture's final interaction flow can be broken down into three main par
 They are visualized in the sequence diagrams in figures \ref{fig:interaction_flow_part1}, \ref{fig:interaction_flow_part2}, and \ref{fig:interaction_flow_part3}.
 
 The first part begins after selecting the optimization plugin and concludes when the \gls{of} plugin's \gls{ui} is set as the next step.
-Here, the coordinator plugin retrieves the user-selected \gls{of} and minimztion plugin metadata, including their interaction endpoints.
+Here, the coordinator plugin retrieves the user-selected \gls{of} and minimization plugin metadata, including their interaction endpoints.
 This flow is represented in Figure \ref{fig:interaction_flow_part1}.
 
 The second part starts with the retrieval of the \gls{of} plugin's microfrontend and ends when the minimizer plugin's \gls{ui} set as the next step.
@@ -883,7 +875,7 @@ This is depicted in Figure \ref{fig:interaction_flow_part2}.
 
 The last segment starts with the minimizer plugin's microfrontend retrieval and ends when the optimization process concludes.
 After users input the minimization hyperparameters, the minimizer processes the data, and sends a callback to the coordinator.
-The coordinator then triggers the minimization endpoint, initiating a long-runnging minimization task that continuously calls the \gls{of} calculation endpoint.
+The coordinator then triggers the minimization endpoint, initiating a long-running minimization task that continuously calls the \gls{of} calculation endpoint.
 Once this task completes, a final callback is made to the coordinator with the results
 This flow is shown in Figure \ref{fig:interaction_flow_part3}.
 
@@ -914,8 +906,15 @@ This flow is shown in Figure \ref{fig:interaction_flow_part3}.
 \chapter{Implementation}
 \label{chap:implementation}
 
-The resulting code that realized two different approaches to a plugin-based optimization formawork can be found in \gls{qhana}'s GitHub repository \cite{qhanaGithub}.
+The resulting code that realized two different approaches to a plugin-based optimization framework can be found in \gls{qhana}'s GitHub repository\footnote{\url{https://github.com/UST-QuAntiL/qhana-plugin-runner}}.
+As examples the code implements two types of minimizer plugins, the \emph{scipy} and \emph{scipy-grad} plugins, and three types of \gls{of} plugins, the \emph{ridge-loss}, \emph{hinge-loss}, and \emph{neural-network} plugins.
+More on their implementation can be found in the following sections.
 This chapter does not aim to provide a comprehensive overview of the code, but rather to highlight the key implementation details and differences between the two approaches.
+
+
+
+
+
 
 
 \section{Leveraging QHAna for UI Creation}
@@ -927,18 +926,105 @@ The minimizer plugin's UI is concerned with the choice hyperparameters for the m
 The coordinator plugin's UI acts as a control center.
 It facilitates the selection of the appropriate \gls{of} and minimizer plugins, the dataset of interest, and the specific target variable within that dataset.
 
-The code in \ref{lst:coordinator_schema} demonstates how such a schema is defined for the coordinator plugin.
+The code in \ref{lst:coordinator_schema} demonstrates how such a schema is defined for the coordinator plugin.
 This example shows the how one would define such an input schema for a sting, a file and a plugin.
 A noteworthy feature is the utilization of the \emph{PluginUrl} class plugin selection fields
 This custom class, which extends marshmallow's \emph{fields.Url} class, ensures that users can only select plugins that align with the required type.
 However, this also means that it's imperative for plugins to have their metadata accurately labeled with the correct type to ensure seamless integration.
 \lstinputlisting[language=Python, caption=Coordinator Plugin UI Schema., label=lst:coordinator_schema]{code/ui_schema_coordinator.py}.
 
-As the \glspl{ui} of the \gls{of} and minimizer plugins are desinged to be invoked by the coordinator plugin, their \emph{UIHref} endpoint accept a \emph{Callback URL} as query parameter.
+As the \glspl{ui} of the \gls{of} and minimizer plugins are designed to be invoked by the coordinator plugin, their \emph{UIHref} endpoint accept a \emph{Callback URL} as query parameter.
 
+
+
+
+
+\section{Invocation of Plugin Microfrontends by the Coordinator Plugin}
+\label{sec:invocationOfPluginMicrofrontendsByTheCoordinatorPlugin}
+
+As highlighted in the previous chapter, the coordinator plugin is responsible for invoking the microfrontends of both the \gls{of} and minimizer plugins.
+To achieve this, a adaptation of \gls{qhana}'s \emph{add\_step} function was developed.
+The \emph{add\_step} function is designed for multi-step plugins, calling another microfrontend of the same plugin after the user submits the current microfrontend.
+The function was enhanced and renamed to \emph{invoke\_task}.
+With this modification, the coordinator plugin can invoke another plugin's microfrontend by supplying the appropriate \emph{UIHref} and \emph{Href}.
+Furthermore, the coordinator plugin has the capability to provide a callback URL to the invoked plugin.
+This callback URL is incorporated as a query parameter within the \emph{Href} and \emph{UIHref} URLs.
+
+\section{Callback to the Coordinator Plugin}
+\label{sec:implementationOfCallbacksToTheCoordinatorPlugin}
+
+The coordinator plugin requires callbacks from invocable plugins in two distinct scenarios:
+\begin{enumerate}
+    \item After the user submits the microfrontend of either the minimization or the \gls{of} plugin.
+    \item Once the asynchronous minimization process concludes.
+\end{enumerate}
+
+For the first scenario, the process unfolds as follows:
+\begin{itemize}
+    \item The coordinator invokes the microfrontend of the invocable plugin using the \emph{invoke\_task} function, as elaborated in Section \ref{sec:invocationOfPluginMicrofrontendsByTheCoordinatorPlugin}.
+    \item On user submission of the microfrontend, the callback URL is passed to the processing endpoint of the invocable plugin via a query parameter.
+    \item Subsequently, the invocable plugin makes a post request to the aforementioned callback URL.
+\end{itemize}
+
+In contrast, the second scenario operates through the following mechanism:
+\begin{itemize}
+    \item The coordinator plugin initiates a post request to the minimizer plugin's minimization endpoint, embedding a callback URL within the body.
+    \item The minimizer plugin schedules an asynchronous celery task for loss function minimization.
+    It registers the callback URL in the database under the designation \emph{status\_changed\_callback\_urls}.
+    This label is pivotal for subsequent retrieval of the callback URL.
+    \item The endpoint returns, and the celery task commences the minimization process.
+    \item Following the task's completion, its status updates through the already implemented \emph{save\_task\_result} function.
+    This action now triggers a signal in case it finished or it ran into an error, courtesy of Python's \emph{blinker} library, indicating the status change and passing the database ID of the task as an argument.
+    \item A dedicated signal handler retrieves the callback URL and the task view URL from the database.
+    The handler then orchestrates a post request to the callback URL, embedding the task view URL within the body.
+\end{itemize}
+
+Listing \ref{lst:signal_handler} presents the implementation of the signal handler, while Listing \ref{lst:singal_emitter} illustrates the juncture where the signal is emitted.
+
+\lstinputlisting[language=Python, caption=Signal Handler for Callbacks., label=lst:signal_handler]{code/signal_handler.py}
+\lstinputlisting[language=Python, caption=Signal Emitter for Callbacks., label=lst:singal_emitter]{code/signal_emitter.py}
+
+\section{Implementation of Callbacks to the Coordinator Plugin}
+\label{sec:implementationOfCallbacksToTheCoordinatorPlugin}
+There are two scenarios in which a invocable Plugin needs to make a callback to the coordinator plugin.
+The first scenario is when the user has submitted the microfrontend of the minimization or the \gls{of} plugin.
+The second scenario is when the minimization process has finished and the minimizer plugin needs to return the results to the coordinator plugin.
+
+The mechanism for the first scenario is works as follows:
+The coordinator uses the \emph{invoke\_task} function to invoke the microfrontend of the invocable plugin as described in the \ref{sec:invokactionOfPluginMicrofrontendsByTheCoordinatorPlugin}.
+When the user submits the microfrontend, the callback URL is passed to the processing endpoint of the invocable plugin as a query parameter.
+The invocable plugin then makes a post request to the callback URL.
+
+The mechanism for the second scenario works as follows:
+The coordinator plugin makes a simple post request to the minimization endpoint of the minimizer plugin with a callback URL as body parameter.
+The minimizer plugin then scedules a asynchronous celery task that minimizes the loss function.
+Additionally the callback URL is saved saved in the database for the current task as \emph{status\_changed\_callback\_urls}.
+This name is crucial for the mechanism to find the callback URL later.
+Now the endpoint returns normally.
+The sceduled celery task then minimizes the provided loss function.
+To make a callback to the coordinator plugin, and event driven approach is used that uses pythons \emph{blinker} library.
+A asynchronous celery task in \gls{qhana} adds an entry to the database that specifies the current status of the task.
+This status is updated by \gls{qhana}'s \emph{save\_task\_result} function once the task is finished.
+This implementation now sends a signal once the status of the task changed.
+The signal includes the database id of the task as argument.
+A new signal handler is implemented that listens to this signal and takes the database id as argument.
+Once the signal is received, the signal handler retrieves the callback URL and the URL to the task view from the database.
+Finally the handler makes a post request to the callback URL with the task view URL as body parameter.
+
+The code in \ref{lst:signal_handler} shows the implementation of the signal handler, while the code in \ref{lst:singal_emitter} shows at which point the signal is sent.
 
 \section{Implementation of Plugin Endpoints}
 \label{sec:implementationOfInteractionEndpoints}
+
+\subsection{Context between Plugin Endpoints}
+\label{sec:contextBetweenPluginEndpoints}
+To save the context between the endpoints of a plugin, the implementation uses the \gls{qhana} concept for multistep plugins.
+A database task is created in the processing endpoint of the plugin that can be identified by a database ID.
+All context data is saved in the database task e.g. the hyperparameters for the minimization process.
+Endpoints that are called later, e.g. the minimization endpoint, can then retrieve the context data from the database task.
+The ID of the database task is part of the URL of the endpoint.
+
+
 The plugin endpoints are implemented as \gls{rest}ful endpoints using the Flask-Smorest library.
 Each endpoint has a corresponding marshmallow schema that defines the arguments and a schema that defines the return value.
 For the endpoints that are interaction endpoints those schemas are defined in the shared folder.
