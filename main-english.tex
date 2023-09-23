@@ -1139,9 +1139,35 @@ A visual representation of the final folder structure, with all plugins implemen
 \end{figure}
 
 
-\chapter{Performance Results}
-\label{chap:performanceResults}
+\chapter{Results}
+\label{chap:results}
+In this Chapter the results that can be achieved with the inplmenentation in place are presented.
+The resutls this chapter focuses on are the performance of the system, the interchangeability of plugins, and the usability for developers.
 
+\section{Performance Analysis}
+\label{sec:performanceAnalysis}
+
+
+\section{Interchangeability of Plugins}
+\label{sec:interchangeabilityOfPlugins}
+
+\begin{figure}[h]
+  \centering
+  \begin{tabular}{|c|c|c|c|}
+    \hline
+    & \textbf{ridge-loss} & \textbf{hinge-loss} & \textbf{neural-network} \\
+    \hline
+    \textbf{scipy} & \checkmark/\times & \checkmark/\times & \checkmark/\times \\
+    \hline
+    \textbf{scipy-grad} & \checkmark/\times & \checkmark/\times & \checkmark/\times \\
+    \hline
+  \end{tabular}
+  \caption{Compatibility between example implementation of plugins.}
+\end{figure}
+
+
+\section{Usability for Developers}
+\label{sec:usabilityForDevelopers}
 
 
 \chapter{Evaluation}
@@ -1199,13 +1225,6 @@ The benchmarks were conducted on a MacBook Pro. The detailed specifications of t
     \item \textbf{Operating System:} macOS, Version 13.4.1, Build Version: 22F770820d
 \end{itemize}
 
-
-\section{Accuracy Analysis}
-\label{sec:accuracyAnalysis}
-In terms of accuracy we compare the results of the plugin based system with the results of the jupyter notebook based system.
-The results of the two systems should be the same, since the same datasets and hyperparameters are used.
-Also, we should see the same results since the same actual code is executed in both systems, only the way of calling the code is different.
-The results are compared by calculating the mean squared error between the two results.
 
 
 
