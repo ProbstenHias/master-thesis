@@ -717,9 +717,9 @@ By employing such multifaceted and representative datasets, the methodology aims
 
 Following the decomposition strategy, the plugin-based optimization framework was divided into three primary plugin types:
 \gls{of} plugin, the minimizer plugin, and the coordinator plugin.
-Each of these plugins was equipped with specific roles and responsibilities, ensuring a modular and efficient optimization process.
+These plugins have specific roles and responsibilities, ensuring a modular and efficient optimization process.
 This split is visualized in the component diagram in figure \ref{fig:component_diagram}.
-It is important to note that for both proposed plugin-based approaches, this decomposition and the associated responsibilities remain consistent.
+It is important to note that this decomposition and the associated responsibilities remain consistent for both proposed plugin-based approaches.
 
 \subsection{Objective Function Plugin}
 
@@ -729,8 +729,9 @@ Its primary roles include:
 \begin{itemize}
 \item \textbf{Metadata Provision}: The plugin offers metadata about itself.
 \item \textbf{Hyperparameters Acquisition}: It prompts the user to provide the hyperparameters necessary for the loss function calculation.
-\item \textbf{Loss Calculation}: Based on the provided input data, the plugin computes the loss, representing the discrepancy between the predicted values and actual values.
-\item \textbf{Gradient Calculation (Optional)}: For optimization algorithms that leverage gradient-based methods, the plugin can optionally compute the gradient of the loss function. This aids in guiding the optimization process towards the desired minima.
+\item \textbf{Loss Calculation}: Based on the provided input data, the plugin computes the loss, representing the discrepancy between predicted and actual values.
+\item \textbf{Gradient Calculation (Optional)}: For optimization algorithms that leverage gradient-based methods, the plugin can optionally compute the gradient of the loss function.
+This aids in guiding the optimization process towards the desired minima.
 \end{itemize}
 
 \subsection{Minimizer Plugin}
@@ -750,7 +751,7 @@ The Coordinator plugin acts as the orchestrator, ensuring seamless interaction b
 Its primary responsibilities are:
 
 \begin{itemize}
-\item \textbf{Plugin Selection}: It prompts the user to select the desired \gls{of} and minimizer plugins to be used in the optimization process.
+\item \textbf{Plugin Selection}: It prompts the user to select the desired \gls{of} and minimizer plugins for optimization.
 \item \textbf{Data Acquisition}: The plugin gathers the necessary input data and the target variable from the user, which will be used in the optimization process.
 \item \textbf{Endpoint Acquisition}: It obtains the necessary endpoints from the selected plugins, which will be used for interaction.
 \item \textbf{Coordination Role}: It manages the interaction between the \gls{of} and minimizer plugins, ensuring that the loss (and optionally gradient) calculation function is provided to the minimizer plugin for the optimization process.
@@ -762,11 +763,10 @@ Additionally, it coordinates the interaction between the user and the selected p
 \section{Universal Plugin Interface Design}
 
 The process of optimization is inherently complex, with a multitude of variations and nuances.
-To ensure a streamlined interaction between different plugins, it was imperative to establish universal plugin interfaces for each type of plugin.
+It was imperative to establish universal plugin interfaces for each type of plugin to ensure a streamlined interaction between different plugins.
 This interface acts as a standard that every plugin of a specific type has to adhere to.
 The interfaces for each plugin are detailed below and are visualized in the component diagram in figure \ref{fig:component_diagram}.
 
-% include component diagram from svg here with
 \begin{figure}[ht]
     \centering
     \includegraphics[width=\textwidth]{graphics/plugin_decomposition.svg}
@@ -782,16 +782,16 @@ Its interfaces are:
 \begin{itemize}
 \item \textbf{Metadata}: The plugin provides metadata about itself as specified in the \gls{qhana} documentation \cite{Buehler2022}.
 \item \textbf{UIRef}: This endpoint is used to obtain the microfrontend for the \gls{of} plugin, which is used to collect the hyperparameters from the user.
-This interface is also in accordance with the \gls{qhana} documentation \cite{Buehler2022}.
+This interface also follows the \gls{qhana} documentation \cite{Buehler2022}.
 \item \textbf{HRef}: This endpoint is used to process the input from the \gls{of} microfrontend and is therefore usually called the \textbf{processing} endpoint.
 It is usually triggered by the user clicking the \emph{submit} button on the microfrontend.
-This interface is also in accordance with the \gls{qhana} documentation \cite{Buehler2022}.
-\item \textbf{PassData}: This endpoint is used to pass the input data and the target data to the \gls{of} plugin.
-It returns the number of weights that is required for the optimization process.
-The number of weights is returned here since it is dependent on the data and possibly the hyperparameters.
-\item \textbf{CalculateLoss}: This endpoint is used to calculate the loss.
-\item \textbf{CalculateGradient (Optional)}: This endpoint is used to calculate the gradient of the loss function. It is optional since not all optimization algorithms require the gradient.
-\item \textbf{CalculateLossAndGradient (Optinonal)}: This endpoint is used to calculate the loss and the gradient of the loss function. Similar to the previous endpoint, it is optional since not all optimization algorithms require the gradient.
+This interface also follows the \gls{qhana} documentation \cite{Buehler2022}.
+\item \textbf{PassData}: This endpoint is used to pass the input and target data to the \gls{of} plugin.
+It returns the number of weights that are required for the optimization process.
+The number of weights is returned here since it depends on the data and possibly the hyperparameters.
+\item \textbf{CalculateLoss}: This endpoint calculates the loss.
+\item \textbf{CalculateGradient (Optional)}: This endpoint is used to calculate the gradient of the loss function. It is optional since not all optimization algorithms require a gradient.
+\item \textbf{CalculateLossAndGradient (Optional)}: This endpoint calculates the loss and the gradient of the loss function. Similar to the previous endpoint, it is optional since not all optimization algorithms require a gradient.
 \end{itemize}
 
 \subsection{Minimizer Plugin Interfaces}
@@ -802,20 +802,20 @@ The minimizer plugin, responsible for optimizing the loss function provided by t
   \item \textbf{Metadata}: same as for the \gls{of} plugin
   \item \textbf{UIRef}: same as for the \gls{of} plugin
   \item \textbf{HRef}: same as for the \gls{of} plugin
-  \item \textbf{Minimize}: This endpoint is used to minimize the loss function.
+  \item \textbf{Minimize}: This endpoint minimizes the loss function.
 \end{itemize}
 
 \subsection{Coordinator Plugin Interfaces}
 
 The Coordinator plugin, orchestrating the interaction between the OF and Minimizer plugins, is equipped with the standard \gls{qhana} interfaces \textbf{Metadata}, \textbf{UIRef}, and \textbf{HRef}.
 
-By establishing these interfaces and ensuring that each plugin conforms to them, a systematic, consistent, and efficient optimization process is ensured.
-This structured approach not only facilitates seamless interactions but also fosters interchangeability, modularity, extensibility and Interchangeability and making it easy to add new \gls{of} and minimizer plugins in the future.
+A systematic, consistent, and efficient optimization process is ensured by establishing these interfaces and ensuring that each plugin conforms to them.
+This structured approach facilitates seamless interactions and fosters interchangeability, modularity, and extensibility, making it easy to add new \gls{of} and minimizer plugins in the future.
 
 \section{Plugin Interaction Design}
 
-The design of plugin interactions is pivotal to ensuring efficient and seamless coordination between different components of the system.
-Given the extensive possibilities of interactions within the \gls{qhana} environment, the design phase was meticulous, taking into consideration various scenarios and ensuring adaptability.
+The design of plugin interactions is pivotal to ensuring efficient and seamless coordination between different system components.
+Given the extensive possibilities of interactions within the \gls{qhana} environment, the design phase was meticulous, considering various scenarios and ensuring adaptability.
 The two primary modes of interactions were short-running and long-running, each catering to specific requirements.
 
 \subsection{Short-Running Interaction}
@@ -824,67 +824,67 @@ In short-running interactions, a plugin invokes another plugin's endpoint, typic
 This mode of interaction is synchronous, wherein the invoking plugin waits for the response before proceeding.
 Instances of such interactions in the optimization context are:
 \begin{itemize}
-    \item The coordinator plugin retrieving metadata from the \gls{of} and minimizer plugins.
-    \item The coordinator plugin passing data to the \gls{of} plugin.
+    \item The coordinator plugin retrieves metadata from the \gls{of} and minimizer plugins.
+    \item The coordinator plugin passes data to the \gls{of} plugin.
     \item The minimizer plugin calls the \texttt{CalculateLoss} endpoint of the \gls{of} plugin.
 \end{itemize}
 
 \subsubsection{Long-Running Interaction}
 
-For processes that demand extensive computation time or involve multiple steps, long-running interactions come into play.
-In such a case the calling plugin invokes the endpoint of the invocable plugin.
-This invoked endpoint then schedules a long-running task and returns immediately.
+Long-running interactions come into play for processes that demand extensive computation time or involve multiple steps.
+In such a case, the calling plugin invokes the endpoint of the invocable plugin.
+The invoked endpoint then schedules a long-running task and returns immediately.
 The calling plugin can then continue with its execution without waiting for the long-running task to finish.
 A new endpoint for the calling plugin is defined that can be called by the long-running task once it is finished.
 This endpoint is called a callback endpoint.
 Instances of such interactions are:
 \begin{itemize}
     \item The coordinator schedules the microfrontend of the \gls{of} plugin.
-    The coordinator plugin provides a callback endpoint to the \gls{of} plugin that is called once the user entered the input and the input was processed.
+    The coordinator plugin provides a callback endpoint to the \gls{of} plugin that is called once the user enters the input and the input is processed.
     \item The coordinator schedules the microfrontend of the minimizer plugin.
-    This mechanism works identical to the previous item.
+    This mechanism works identically to the previous item.
     \item The coordinator plugin calls the minimization endpoint of the minimizer plugin.
     The minimizer plugin schedules the minimization process and returns immediately.
     Once the minimization process is finished, the minimizer plugin calls a callback endpoint of the coordinator plugin.
 \end{itemize}
-The design of these interactions ensures that regardless of the complexity or duration of tasks, plugins can interact seamlessly and efficiently.
+The design of these interactions ensures that plugins can interact seamlessly and efficiently regardless of the complexity or duration of tasks.
 
 \section{Introduction of Interaction Endpoints}
 \label{sec:introie}
 
 Building upon the idea of plugins interacting with each other, as detailed in the previous section, there arises a crucial question:
 How does one plugin discover the available endpoints of another?
-To address this very challenge, this thesis introduces a novel concept called \textit{interaction endpoints} to \gls{qhana}.
+This thesis introduces a novel concept called \textit{interaction endpoints} to \gls{qhana} to address this very challenge.
 
-While \gls{qhana} already has a metadata field named `entry points', which are endpoints invoked by the \gls{qhana} UI to render a plugin's UI, interaction endpoints extend this idea further.
-They specifically define endpoints in the metadata that other plugins can invoke, facilitating seamless integration and interaction among them.
+While \gls{qhana} already has a metadata field named "entry points," which are endpoints invoked by the \gls{qhana} UI to render a plugin's UI, interaction endpoints extend this idea further.
+They specifically define endpoints in the metadata that other plugins can invoke, facilitating seamless integration and interaction.
 
 The core of interaction endpoints is their \emph{type}.
 All interaction endpoints with the same type must adhere to the same signature and return type.
-This uniformity ensures that they can be interchangeably invoked by other plugins.
+This uniformity ensures that other plugins can interchangeably invoke them.
 The \gls{of} plugin provides interaction endpoints of types \emph{calc\_loss}, \emph{calc\_grad}, \emph{calc\_loss\_and\_grad}, and \emph{of\_pass\_data}.
 The minimizer plugin offers the `minimization' type.
 These interaction endpoints correspond to the endpoints defined in the previous section.
 The introduction of interaction endpoints significantly enhances the modularity and interchangeability within \gls{qhana}, paving the way for a more dynamic and adaptable plugin ecosystem.
-More on how these interaction endpoints are implemented can be found in the implementation chapter \ref{chap:implementation}.
+More on how these interaction endpoints are implemented can be found in the implementation chapter \ref{chap: implementation}.
 
 \section{Final Interaction Flow}
-The architecture's final interaction flow can be broken down into three main parts, with each ending in a new \gls{ui} display to the user.
+The architecture's final interaction flow can be broken down into three main parts, each ending in a new \gls{ui} displayed to the user.
 They are visualized in the sequence diagrams in figures \ref{fig:interaction_flow_part1}, \ref{fig:interaction_flow_part2}, and \ref{fig:interaction_flow_part3}.
 
 The first part begins after selecting the optimization plugin and concludes when the \gls{of} plugin's \gls{ui} is set as the next step.
 Here, the coordinator plugin retrieves the user-selected \gls{of} and minimization plugin metadata, including their interaction endpoints.
 This flow is represented in Figure \ref{fig:interaction_flow_part1}.
 
-The second part starts with the retrieval of the \gls{of} plugin's microfrontend and ends when the minimizer plugin's \gls{ui} set as the next step.
+The second part starts with retrieving the \gls{of} plugin's microfrontend and ends when the minimizer plugin \gls{ui} is set as the next step.
 After the user inputs hyperparameters and submits, the \gls{of} processes the input and sends a callback to the coordinator plugin,
 The callback endpoint then passes the input and target data to the PassData endpoint.
 This is depicted in Figure \ref{fig:interaction_flow_part2}.
 
 The last segment starts with the minimizer plugin's microfrontend retrieval and ends when the optimization process concludes.
-After users input the minimization hyperparameters, the minimizer processes the data, and sends a callback to the coordinator.
+After users input the minimization hyperparameters, the minimizer processes the data and sends a callback to the coordinator.
 The coordinator then triggers the minimization endpoint, initiating a long-running minimization task that continuously calls the \gls{of} calculation endpoint.
-Once this task completes, a final callback is made to the coordinator with the results
+Once this task is completed, a final callback is made to the coordinator with the results.
 This flow is shown in Figure \ref{fig:interaction_flow_part3}.
 
 \newpage
