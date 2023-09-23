@@ -1090,60 +1090,68 @@ The invoking plugin is tasked with replacing the placeholder with the actual dat
 This distinction is foundational to the differences between the two approaches, explored further in the subsequent section.
 \lstinputlisting[language=Python, caption=Metadata of the Ridge Loss Plugin as a Multi-Step Plugin., label=lst:metadata_multistep]{code/metadata_multistep.py}
 
-\section{Example Minimizers and Objective Functions}
+
+\section{Exemplary Minimizers and Objective Functions}
 \label{sec:exampleMinimizersAndObjectiveFunctions}
-To demonstrate the plugin-based optimization framework, two minimizer plugins and three \gls{of} plugins were implemented.
-The minimizer plugins are named \emph{scipy-minimizer} and \emph{scipy-minimizer-grad}, while the \gls{of} plugins are named \emph{ridge-loss}, \emph{hinge-loss}, and \emph{neural-network}.
+
+To illustrate the capabilities of the plugin-based optimization framework, the development encompassed two distinct minimizer plugins and three \gls{of} plugins.
+Specifically, the minimizer plugins \emph{scipy-minimizer} and \emph{scipy-minimizer-grad} and the \gls{of} plugins \emph{ridge-loss}, \emph{hinge-loss}, and \emph{neural-network}.
 
 \subsection{Minimizer Plugins}
 \label{sec:minimizerPlugins}
-The minimizer plugins are implemented as wrappers around the \emph{scipy.optimize.minimize} function.
-The \emph{scipy-minimizer} plugin uses this function to minimize the loss function without the gradient.
-The input hyperparameter for this plugin is the minimization method, which are limited to the methods that do not require the gradient.
-The \emph{scipy-minimizer-grad} plugin uses the same function to minimize the loss function with the gradient.
-The input hyperparameters for this plugin are all methods that require the gradient.
-The output of both plugins is the same, namely the weights that minimize the loss function.
+
+At the core both plugins use \emph{scipy.optimize.minimize} as their minimization algorithm.
+The \emph{scipy-minimizer} plugin leverages this method to minimize the loss function, without the need for a gradient.
+Its sole input hyperparameter is the minimization method, restricted to methods that operate without a gradient.
+On the other hand, the \emph{scipy-minimizer-grad} plugin employs the same method but incorporates the gradient for loss minimization.
+It accepts input hyperparameters that exclusively pertain to methods necessitating the gradient.
+Regardless of their approach, both plugins yield the weights that optimize the loss function's minimization.
 
 \subsection{Objective Function Plugins}
 \label{sec:objectiveFunctionPlugins}
-The \emph{ridge-loss} plugin implements the ridge loss function as demonstrated in \ref{alg:ridge_loss}, where the input hyperparameter is the regularization parameter \emph{alpha}.
-The \emph{hinge-loss} plugin implements the hinge loss function as demonstrated in \ref{alg:hinge_loss}, where the input hyperparameter is the regularization parameter \emph{C}.
-The \emph{neural-network} plugin implements a neural network with one hidden layer.
-The input hyperparameters are the number of neurons in the hidden layer.
-This plugin provides the option to calculate the gradient of the loss function, which can be used together with the \emph{scipy-minimizer-grad} plugin.
-The output of all three plugins is the loss value, while the \emph{neural-network} plugin also returns the gradient of the loss function.
 
-\section{Differences between the Two Plugin-Based Implementation Approaches}
+The \emph{ridge-loss} plugin encapsulates the ridge loss function, as depicted in \ref{alg:ridge_loss}.
+It operates with the regularization parameter \emph{alpha} as its input hyperparameter.
+In a similar vein, the \emph{hinge-loss} plugin embodies the hinge loss function, showcased in \ref{alg:hinge_loss}, and uses the regularization parameter \emph{C} as its input.
+Diverging from these, the \emph{neural-network} plugin crafts a neural network featuring a single hidden layer.
+Its hyperparameters include the count of neurons present in this hidden layer.
+Notably, this plugin facilitates the gradient calculation for the loss function, making it compatible with the \emph{scipy-minimizer-grad} plugin.
+
+\section{Comparative Analysis of Plugin-Based Implementation Strategies}
 \label{sec:differencesBetweenTheTwoPluginBasedImplementationApproaches}
-This implementation brought forward two different approaches to a plugin-based optimization framework.
-This section highlights the key differences between the two approaches.
 
-\subsection{First Approach}
+The developmental journey resutlet in two distinct methodologies for constructing a plugin-based optimization framework.
+This section delineates the intrinsic differences that characterize each strategy.
+
+\subsection{Decoupled Plugin Approach}
 \label{sec:firstApproach}
-The key concept of the first approach is that the plugins are as loosly coupled as possible, meaning that as few data as possible is passed between the plugins and the data isntead data should always be retrieved from the database if possible.
-Version one of the implementation strictly adheres to this concept, especially when it comes to the \gls{of} plugin.
-The \gls{of} plugin stores its hyperparameters in the database.
-During the execution of the \emph{pass\_data} endpoint the input data and the target data is stored in the database.
-That means that for the \emph{pass\_data} endpoint, where the number of input weights is calculated, the hyperparameters are retrieved from the database and only the input data and the target data are passed to the emdpoint.
-The \emph{calc\_loss}, \emph{calc\_grad}, and \emph{calc\_loss\_and\_grad} endpoints only require the weights as input, since the hyperparameters and the data are already stored in the database.
-Exapmlaray the input schema of the \emph{calc\_loss} endpoint is shown in Listing \ref{lst:calc_loss_schema}.
-For the minimer plugin that means that at no point it needs to know the hyperparameters of the \gls{of} or event the data.
-That results i a sparce input schema for the \emph{minimization} endpoint, which is shown in Listing \ref{lst:minimization_schema}.
-But that also means that the database ID of the task has to be passed by the microfrontend callback process to the cooridnator plugin.
-The coordinator plugin needs this ID to handle the interaction endpoints URLs as described in \ref{sec:metadataEndpoint}.
 
-\subsection{Second Approach}
+The foundational ethos of the first approach is promoting maximal decoupling between plugins which particularly applies to the \gls{of} plugin.
+This entails minimizing data transfer between plugins and emphasizing data retrieval directly from the database whenever feasible.
+
+Specifically, the \gls{of} plugin archives its hyperparameters in the database.
+When the \emph{pass\_data} endpoint is invoked, both input and target data are storage in the database.
+Thus, for the \emph{pass\_data} endpoint, which determines the number of input weights, only input and target data are directly conveyed, while hyperparameters are fetched from the database.
+The loss caluclation endpoints \emph{calc\_loss}, \emph{calc\_grad}, and \emph{calc\_loss\_and\_grad} solely need the weights as input, leveraging already stored hyperparameters and data.
+An exemplary schema for the \emph{calc\_loss} endpoint is illustrated in Listing \ref{lst:calc_loss_schema}.
+
+Consequently, for the minimizer plugin, there's no occasion where knowledge of the \gls{of}'s hyperparameters or its data is essential, leading to a lean input schema for the \emph{minimization} endpoint, as depicted in Listing \ref{lst:minimization_schema}.
+However, it mandates that the task's database ID be communicated through the microfrontend callback process to the coordinator plugin, which is essential for managing interaction endpoint URLs, as discussed in \ref{sec:metadataEndpoint}.
+
+\subsection{Integrated Plugin Approach}
 \label{sec:secondApproach}
-The second approach is more tightly coupled than the first approach, when it comes to the \gls{of} plugin.
-The \gls{of} plugin is not implemted as a multi-step plugin, meaning no context can be shared between the endpoints of the plugin, meaning that all data necessary in an enpoint has to be passed during the invocation of the endpoint.
-That means that the microfrontend callback process has to pass the hyperparameters to the coordinator plugin, for later passing them to the \gls{of} plugin.
-The coordinator plugin then passes the hyperparameters and the data to the \emph{pass\_data} endpoint of the \gls{of} plugin.
-The minimizer plugin also has be aware of the hyperparameters and the data, since it now has to pass those to the \emph{calc\_loss} endpoint of the \gls{of} plugin.
-The input schema of the \emph{calc\_loss} endpoint is shown in Listing \ref{lst:calc_loss_schema_multistep}, while the input schema of the \emph{minimization} endpoint is shown in Listing \ref{lst:minimization_schema_multistep}.
-To keep this process as generalized as possible, indepenent of the \gls{of}'s implementation, the hyperparameters are passed as a dictionary.
-That way neither the cooditioner plugin nor the minimizer plugin has to know the exact hyperparameters of the \gls{of} plugin.
-In return no database ID has to be passed by the microfrontend callback process to the coordinator plugin.
 
+The second strategy embodies a tighter integration.
+In this approach, the \gls{of} plugin is not implemented as a multi-step plugin.
+This implies that no shared context exists among the plugin's endpoints, necessitating the conveyance of all required data during each endpoint invocation.
+
+In practice, this requires the microfrontend callback process to relay the hyperparameters to the coordinator plugin.
+The coordinator then transmits both the hyperparameters and data to the \gls{of} plugin's \emph{pass\_data} endpoint.
+In this setup, the minimizer plugin also needs know of the hyperparameters and data since it must relay this to the \gls{of} plugin's loss caluclation endpoint.
+Listing \ref{lst:calc_loss_schema_multistep} exhibits the input schema for the \emph{calc\_loss} endpoint, while Listing \ref{lst:minimization_schema_multistep} demonstrates the \emph{minimization} endpoint's schema.
+To uphold a degree of generalization across processes, irrespective of the \gls{of}'s internal mechanics, hyperparameters are channeled as a dictionary.
+This ensures that neither the coordinator nor the minimizer plugin requires in-depth knowledge of the \gls{of} plugin's specific hyperparameters.
+As a trade-off, there's no need to relay a task's database ID to the coordinator.
 
 \chapter{Results}
 \label{chap:results}
