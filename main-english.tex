@@ -973,14 +973,12 @@ In contrast, the second scenario operates through the following mechanism:
     \item A dedicated signal handler retrieves the callback URL and the task view URL from the database.
     The handler then orchestrates a post request to the callback URL, embedding the task view URL within the body.
 \end{itemize}
-
 Listing \ref{lst:signal_handler} presents the implementation of the signal handler, while Listing \ref{lst:singal_emitter} illustrates the juncture where the signal is emitted.
 
 \lstinputlisting[language=Python, caption=Signal Handler for Callbacks., label=lst:signal_handler]{code/signal_handler.py}
 \lstinputlisting[language=Python, caption=Signal Emitter for Callbacks., label=lst:singal_emitter]{code/signal_emitter.py}
 
-\section{Implementation of Plugin Endpoints}
-\label{sec:implementationOfInteractionEndpoints}
+
 
 \subsection{Context between Plugin Endpoints}
 \label{sec:contextBetweenPluginEndpoints}
@@ -991,108 +989,23 @@ Endpoints that are called later, e.g. the minimization endpoint, can then retrie
 The ID of the database task is part of the URL of the endpoint.
 
 
-The plugin endpoints are implemented as \gls{rest}ful endpoints using the Flask-Smorest library.
-Each endpoint has a corresponding marshmallow schema that defines the arguments and a schema that defines the return value.
-For the endpoints that are interaction endpoints those schemas are defined in the shared folder.
-Ok lets first concentrate on the first approach and define how endpoints are implemented
-after that we will look at the second approach and how it differs from the first one.
+\section{Implementation of Plugin Endpoints}
+\label{sec:implementationOfInteractionEndpoints}
 
-\subsection{First Approach}
-\label{sec:firstApproach}
-The key concept of the first appoach is that the plugins are as loosly coupled as possible, meaning that as few data as possible is passed between the plugins.
-Excpeccially for the \gls{of} plugin this means that it does not return its hyperparameters and for the minimizer plugin this means that it will not need the input data and the target data.
+Interaction endpoints are the crux of the plugin-based optimization framework, by standardizing the inputs and outputs of interchable endpoints.
+The implementation handles the standardized inputs and outputs with the help of marshmallow schemas.
 
-\subsubsection{Objective Function Plugin Endpoints}
-\label{sec:ofPluginEndpoints}
-The \gls{of} plugin implements the following endpoints:
-
-\begin{description}
-  \item[HRef] This endpoint get the hyperparameters given by the UI as form parameters and and the callback url as query parameters. This endpoint created a database entry for the task and stores the hyperparameters in the database. It makes a post request to the callback url with the db id of the task as input.
-  \item[PassData] This endpoint gets the feeatures and the target data as input, it loads hyperparameters from the database and returns the number of weights that are required for the loss function.
-  \item[CalculateLoss] This endpoint gets the weights for the loss function as input. It loads the features, the target data and the hyperparameters from the database and calucates the loss value and returns it.
-  \item[CalculateGradient] This endpoint gets the weights for the loss function as input. It loads the features, the target data and the hyperparameters from the database and calucates the gradient of the loss function and returns it.
-  \item[CalculateLossAndGradient] This endpoint gets the weights for the loss function as input. It loads the features, the target data and the hyperparameters from the database and calucates the loss value and the gradient of the loss function and returns them.
-\end{description}
-
-\subsubsection{Minimizer Plugin Endpoints}
-\label{sec:minimizerPluginEndpoints}
-The minimizer plugin implements the following endpoints:
-
-\begin{description}
-  \item[HRef] This endpoint get the hyperparameters given by the UI as form parameter and and the callback url as query parameters. This endpoint created a database entry for the task and stores the hyperparameters in the database. It makes a post request to the callback url with the db id of the task as input.
-  \item[Minimize] This endpoint gets the weights for the loss function and a callback url as input. It saves them in the database for the asynchronous celery taks. It schedules an asyncronous celery task that minimizes the loss function. It returns returns a url that points to the task view of the celery task.
-\end{description}
-
-\subsubsection{Coordinator Plugin Endpoints}
-\label{sec:coordinatorPluginEndpoints}
-The coordinator plugin implements the following endpoints:
-
-\begin{description}
-  \item[HRef] This endpoint gets the user selection for the \gls{of} plugin, the minimizer plugin, the dataset and the target variable as input. It creates a database entry for the task and stores the user selection in the database.
-  It gets the metadata of the \gls{of} plugin and the minimizer plugin via a post request to the \emph{Metadata} endpoint of the plugins. It stores the metadata in the database.
-  It gets the \emph{UIHref} endpoint of the \gls{of} plugin from the metadata and adds a callback url to its \emph{OFCallback} endpoint as query parameter. It schedules the invokaction of the \emph{UIHref} endpoint of the \gls{of} plugin and returs a url that points to the task view of the celery task.
-  \item[OFCallback] This endpoint gets the task of the \gls{of} plugin as input. It loads the minimizer plugin metadata from database and schedules the invocation of the \emph{UIHref} endpoint of the minimizer plugin. It again ads a callback url to the \emph{MinimizerCallback} endpoint of the minimizer plugin as query parameter. It returns a url that points to the task view of the celery task.
-  \item[MinimizerCallback] This endpoint gets the task of the minimizer plugin as input.
-  It loads the \gls{of} plugin metadata from database and schedules the invocation of the \emph{Minimize} endpoint of the minimizer plugin. It returns a url that points to the task view of the celery task.
-
-\end{description}
-
-
-
-\begin{description}
-  \item[minimization] \hfill \\
-  \begin{itemize}
-      \item \textbf{Arguments:}
-      \begin{description}
-          \item[Required:] initial weights, URL to \emph{CalculateLoss} endpoint
-          \item[Optional:] URL to \emph{CalculateGradient}, URL to \emph{CalculateLossAndGradient}, URL to callback endpoint of invoking plugin, x, y
-      \end{description}
-      \item \textbf{Returns:} URL to \gls{qhana}'s task view for the asynchronous task
-  \end{itemize}
-
-  \item[calc\_loss] \hfill \\
-  \begin{itemize}
-      \item \textbf{Arguments:}
-      \begin{description}
-          \item[Required:] weights for the loss function
-          \item[Optional:] x, y
-      \end{description}
-      \item \textbf{Returns:} loss value
-  \end{itemize}
-
-  \item[calc\_grad] \hfill \\
-  \begin{itemize}
-      \item \textbf{Arguments:}
-      \begin{description}
-          \item[Required:] weights for the loss function
-          \item[Optional:] x, y
-      \end{description}
-      \item \textbf{Returns:} gradient of the loss function
-  \end{itemize}
-
-  \item[calc\_loss\_and\_grad] \hfill \\
-  \begin{itemize}
-      \item \textbf{Arguments:}
-      \begin{description}
-          \item[Required:] weights for the loss function
-          \item[Optional:] x, y
-      \end{description}
-      \item \textbf{Returns:} loss value, gradient of the loss function
-  \end{itemize}
-
-  \item[of\_pass\_data] \hfill \\
-  \begin{itemize}
-      \item \textbf{Arguments:}
-      \begin{description}
-          \item[Required:] x, y
-      \end{description}
-      \item \textbf{Returns:} number of required weights for the loss function
-  \end{itemize}
-\end{description}
-
-
-The key difference between the two proposed service-based approaches is the optional arguments \emph{x} and \emph{y} of the \emph{calc\_loss}, \emph{calc\_grad}, \emph{calc\_loss\_and\_grad}, and \emph{minimize} interaction endpoints, where for one approach these arguemtns are required and for the other they are optional.
-
+\subsection{Interaction Endpoint Schemas}
+The schemas are defined in the shared folder of the \gls{qhana} repository.
+An input and an output schema is defined for each interaction endpoint type.
+A plugin that want to invoke an interaction endpoint of another plugin can now fill the input schema and use the output schema to parse the response.
+For the \gls{of} plugin the following interaction endpoints schemas are defined:
+\begin{itemize}
+  \item \textbf{pass\_data}: \emph{ObjectiveFunctionPassDataSchema} for the input and \emph{ObjectiveFunctionPassDataResponseSchema} for the output.
+  \item \textbf{calc\_loss}: The schemas depend on whether the gradient is calculated or not. For simply calucating the loss the input schema is \emph{CalcLossOrGradInputSchema} and the output schema is \emph{LossResponseSchema}.
+\end{itemize}
+For the minimizers' \emph{minimization} interaction endpoint the input schema is \emph{MinimizerInputSchema}, while the output is simply an acknowledgement with the status code 200 indicating that the minimization process was started.
+The other implementational challange is to make the endpoints of the plugins discoverable by other plugins.
 
 \subsection{Custom Marshmallow Field for Data}
 \label{sec:customMarshmallowFieldForData}
@@ -1102,51 +1015,79 @@ This field is able to handle numpy arrays of any dimensionality and any data typ
 Not only is this field used for passing the data between endpoints but also for storing the data effectively in the database.
 \lstinputlisting[language=Python, caption=Custom Marshmallow Field for Numpy Arrays., label=lst:numpy_array_schema]{code/numpy_array_schema.py}.
 
+\subsection{Metadata Endpoint}
+\label{sec:metadataEndpoint}
+Interaction endpoints are defined in the metadata of the plugins.
+Ad mentioned previously, the metadata endpoint of a plugin defined the \emph{EntryPoint} field which is up until now only used by the \gls{qhana} UI to find the microfrontend of a plugin.
+This thesis extends the \emph{EntryPoint} field to include interaction endpoints.
+An \emph{interactionEndpoints} field is a list that can contain multiple interaction endpoints.
+Each interaction endpoint is a dictionary that contains the \textbf{type} and an \textbf{href} field.
+The \textbf{type} field is a string that identifies the interaction endpoint type.
+To make it easier for developers to find the correct type, the \emph{InteractionEndpointType} enum is defined in the shared folder.
+The \textbf{href} field is a string that contains the URL of the interaction endpoint.
+Listing \ref{lst:metadata} shows InteractionEndpoints field in the metadata of the \emph{ridge-loss} plugin.
+\lstinputlisting[language=Python, caption=Metadata of the Ridge Loss Plugin., label=lst:metadata]{code/metadata.py}
 
-\section{Implementation of Interaction Endpoints}
-\label{sec:implementationOfInteractionEndpointMetadata}
-interaction endpoints are now part of teh metatada of plugins.
-since the url of plugin endpoints include the database id interaction endpoints also have to be aware of the database id of the plugin
-since the database id is not yet known when the metadata is created interaction endpoint url are defined as format strings
-to make it easier for developers the types of interactions endpoints are defined as enums as can be seen in \ref{lst:interaction_endpoint_types}
-For the of pluing that implements ridge loss for example the interactoin endpoint defintions can look like depicted in
-the \emph{url\_for} method call creates the base url for the plugin and the rest of the endpoint url is concated to that base url
-\lstinputlisting[language=Python, caption=Enum for Interaction Endpoint Types., label=lst:interaction_endpoint_types]{code/interaction_endpoint_types.py}.
-\lstinputlisting[language=Python, caption=Interaction Endpoint Metadata for the Ridge Loss OF Plugin., label=lst:ridge_loss_interaction_endpoint_metadata]{code/interaction_endpoints_of.py}.
+The syntax of how the interaction endpoint is defined in the metadata changes slightly when the plugin is implemented as a multi-step plugin.
+As mentioned in \ref{sec:contextBetweenPluginEndpoints}, the URL to an enpoint of a multi-step plugin contains the database ID of the task, that is only known at runtime.
+This is reflected in the metadata by making the \textbf{href} field a format string that contains the database ID of the task.
+Listing \ref{lst:metadata_multistep} shows the metadata of the \emph{ridge-loss} plugin, when it is implemented as a multi-step plugin.
+On the other hand the calling plugin needs to replace the placeholder with the actual database ID of the task once it is known.
+This difference already introduces the core difference between the two approaches, which is elaborated in the next section.
+\lstinputlisting[language=Python, caption=Metadata of the Ridge Loss Plugin as a Multi-Step Plugin., label=lst:metadata_multistep]{code/metadata_multistep.py}
 
-The arugments passed to the interaction endpoints and returned by the interaction enpoints are defined as marshmallow schemas in the shared folder.
-For the \emph{calc\_loss} endpoint where the arguments are the weights for the loss function and optionally the input data and the target data and the return value is the loss value the schema looks like shown in \ref{lst:calc_loss_schema}.
+\section{Example Minimizers and Objective Functions}
+\label{sec:exampleMinimizersAndObjectiveFunctions}
+To demonstrate the plugin-based optimization framework, two minimizer plugins and three \gls{of} plugins were implemented.
+The minimizer plugins are named \emph{scipy} and \emph{scipy-grad}, while the \gls{of} plugins are named \emph{ridge-loss}, \emph{hinge-loss}, and \emph{neural-network}.
 
-\lstinputlisting[language=Python, caption=Schema for the calc\_loss Interaction Endpoint., label=lst:calc_loss_schema]{code/calc_loss_schema.py}.
+\subsection{Minimizer Plugins}
+\label{sec:minimizerPlugins}
+The minimizer plugins are implemented as wrappers around the \emph{scipy.optimize.minimize} function.
+The \emph{scipy} plugin uses this function to minimize the loss function without the gradient.
+The input hyperparameter for this plugin is the minimization method, which are limited to the methods that do not require the gradient.
+The \emph{scipy-grad} plugin uses the same function to minimize the loss function with the gradient.
+The input hyperparameters for this plugin are all methods that require the gradient.
+The output of both plugins is the same, namely the weights that minimize the loss function.
 
-\section{Implementation differences between the two approaches}
-the two approaches differ in the way the input and target data is passed to the of plugins calc\_loss endpoint
-in one approach the data is passed to the of\_pass\_data endpoint of the \gls{of} plugin and there the data is stored in the database
-in when caluculating the loss in the calc\_loss endpoint the data is loaded from the database and used to calculate the loss
+\subsection{Objective Function Plugins}
+\label{sec:objectiveFunctionPlugins}
+The \emph{ridge-loss} plugin implements the ridge loss function as demonstrated in \ref{alg:ridge_loss}, where the input hyperparameter is the regularization parameter \emph{alpha}.
+The \emph{hinge-loss} plugin implements the hinge loss function as demonstrated in \ref{alg:hinge_loss}, where the input hyperparameter is the regularization parameter \emph{C}.
+The \emph{neural-network} plugin implements a neural network with one hidden layer.
+The input hyperparameters are the number of neurons in the hidden layer.
+This plugin provides the option to calculate the gradient of the loss function, which can be used together with the \emph{scipy-grad} plugin.
+The output of all three plugins is the loss value, while the \emph{neural-network} plugin also returns the gradient of the loss function.
 
-in the other approach the data is passed directly to the calc\_loss endpoint by the minimizer plugin and not loaded from the database
-that means that the coordinator plugin also has to pass the data to the minimizers minimize endpoint
+\section{Differences between the Two Plugin-Based Implementation Approaches}
+\label{sec:differencesBetweenTheTwoPluginBasedImplementationApproaches}
+This implementation brought forward two different approaches to a plugin-based optimization framework.
+This section highlights the key differences between the two approaches.
+
+\subsection{First Approach}
+\label{sec:firstApproach}
+The key concept of the first appoach is that the plugins are as loosly coupled as possible, meaning that as few data as possible is passed between the plugins and the data isntead data should always be retrieved from the database if possible.
+Version one of the implementation strictly adheres to this concept, especially when it comes to the \gls{of} plugin.
+The \gls{of} plugin stores its hyperparameters in the database.
+During the execution of the \emph{pass\_data} endpoint the input data and the target data is stored in the database.
+That means that for the \emph{pass\_data} endpoint, where the number of input weights is calculated, the hyperparameters are retrieved from the database and only the input data and the target data are passed to the emdpoint.
+The \emph{calc\_loss}, \emph{calc\_grad}, and \emph{calc\_loss\_and\_grad} endpoints only require the weights as input, since the hyperparameters and the data are already stored in the database.
+For the minimer plugin that means that at no point it needs to know the hyperparameters of the \gls{of} or event the data.
+But that also means that the database ID of the task has to be passed by the microfrontend callback process to the cooridnator plugin.
+The coordinator plugin needs this ID to handle the interaction endpoints URLs as described in \ref{sec:metadataEndpoint}.
+
+\section{Second Approach}
+\label{sec:secondApproach}
+The second approach is more tightly coupled than the first approach, when it comes to the \gls{of} plugin.
+The \gls{of} plugin is not implemted as a multi-step plugin, meaning no context can be shared between the endpoints of the plugin, meaning that all data necessary in an enpoint has to be passed during the invocation of the endpoint.
+That means that the microfrontend callback process has to pass the hyperparameters to the coordinator plugin, for later passing them to the \gls{of} plugin.
+The coordinator plugin then passes the hyperparameters and the data to the \emph{pass\_data} endpoint of the \gls{of} plugin.
+The minimizer plugin also has be aware of the hyperparameters and the data, since it now has to pass those to the \emph{calc\_loss} endpoint of the \gls{of} plugin.
+To keep this process as generalized as possible, indepenent of the \gls{of}'s implementation, the hyperparameters are passed as a dictionary.
+That way neither the cooditioner plugin nor the minimizer plugin has to know the exact hyperparameters of the \gls{of} plugin.
+In return no database ID has to be passed by the microfrontend callback process to the coordinator plugin.
 
 
-* with callback endpoints and stuff
-
-data is shared across pluings endpoints via db and uuids
-
-interactions enpoitns are defined in the metadata of the plugins as format strings
-the format strings are then filled with the uuids of the plugins once the plugins ui was finished, the processing enpoint returns the uuids of the plugins
-
-introduction of numpy array format in marshmallow
-
-difference between the two approaches lies in the interaction between the of calc endpoint and the minimization Endpoint
-in one the data itself it not passed to the calc\_loss enpoint but instead the data is loaded from the db in the calc\_loss endpoint
-in the other approach the data is passed to the calc\_loss endpoint and not loaded from the db
-
-what final methods the objective function plugin has
-what final methods the minimizer plugin has
-
-then we do show example implementations
-these are the two minimizers grad and no grad
-and the three ob function ridge, hinge, and nn
 
 \section{Directory Structure and Plugin Loading}
 \label{sec:directoryStructure}
@@ -1197,144 +1138,10 @@ A visual representation of the final folder structure, with all plugins implemen
   \label{fig:folderStructure}
 \end{figure}
 
-\section{Key differneces between the two approaches}
-\label{sec:keyDifferencesBetweenTheTwoApproaches}
-The key differences between the two plugin-based approches is the way the \gls{of} plugin handles context between its endpoints.
-The idea behind the first approach is that the \gls{of} plugin is as loosly coupled as possible, meaning that as few data as possible is passed between the plugins.
-This means that in its the \emph{HRef} endpoint the \gls{of} plugin creates a database entry for the task and stores the hyperparameters in the database.
-ultimately the database id of the task is returned to the coordinator plugin.
-For the second approach \emph{HRef} endpoint of the \gls{of} does not create a database entry and returns a dictionary with the hyperparameters instead.
-For the first approach the url to the \emph{PassData} endpoint now includes the database id of the task. This allows the endpoint to laod the hyperparameters needed for caluclating the number of weights for the loss function from the database.
-For the second approach the url to the \emph{PassData} does not include a database id but instead the hyperparameters are passed via the body of the request.
-For all the calcucation endpoints the first approach loads the hyperparameters from the database and the data from the database given the database id of the task in the url.
-In the second approach the hyperparameters and the data are passed via the body of the request.
 
-For the interaction endpoint urls those differences mean that in the first appraoch the urls are format strings that are filled with the database id by the coorodinator plugin.
-This is not necessary for the second approach.
-For the coordinator plugin the first apprach means that not hyperparameters of the \gls{of} have to be stored and are not passed to the pass data endpoint or the minimization plugin
-For the second approach the hyperparameters of the \gls{of} plugin have to be passed to the pass data endpoint and the minimization plugin.
+\chapter{Performance Results}
+\label{chap:performanceResults}
 
-For the minimization plugin the first appraoch means that nor the hyperparameters for the \gls{of} plugin nor the data has to be kwown as all that information is encoded in the url.
-For the second approach the minimization plugin has to know the hyperparameters of the \gls{of} plugin and the data and pass them to the \gls{of} plugin when calling the calcucation endpoints.
-
-
-\section{Interaction Endpoints}
-\label{sec:interactionEndpoints}
-this thesis introduces the concept of interaction endpoints to \gls{qhana}
-qhana already defines a metadata field for pluings called entry points which are edndpoints called by the qhana ui to render the ui of a plugin
-interaction endpoints add to this conecpt by defining endpoints that are callable by other plugins
-an interaction endoint has a type.
-all interaction endpoints which the same type must have the same signature and return type and can be called in the same way by other plugins
-in the case of of objective function plugins for example one interaction endpoint type is the \emph{objectivefunctioncalc} type which is used to calculate the loss function
-all plugins that have this type of interaction endpoint can be used as an objective function plugin
-
-this concept has several advantages
-* it allows for full interchangeability of plugins
-* it allows the developer that want to interact with a plugin to know what endpoints are available and how to call them
-* an alternatiev would be to return the url of available endpoitns after passing through the ui, now we can completely skip the ui alltogether and just call the endpoint directly
-
-
-\section{Implementation of an Objective Function Plugin}
-\label{sec:implementationOfAnObjectiveFunctionPlugin}
-
-to go over the taks of an of plugin again:
-* parameter acquisition
-* loss computation
-* loss return
-
-\subsection{Parameter Acquisition}
-\label{subsec:parameterAcquisition}
-parameter acquisition is done via an ui that is rendered by the plugin.
-the ui is no new concept but follows the standard concept of an microfrontend in qhana
-it presents the user with a form that is defined in a marshmallow schema
-that schema holds the hyperparameters of the of plugin
-in case of a ridge loss plugin this hyperparameter is the alpha value as described in the background section
-when clicking submit the ui makes a post request to the processing endpoint of the plugin
-this processing endpoint saves the hyperparameters to the database and makes a post
-
-to allow for interaction between plugins the ui has some additional functionality
-since it is a invocable plugin a callback url to and invoking plugin endpoint is passed to the ui via a query parameter
-it is a query parameter since the has to be called with an get request and get requests can only have query parameters
-the ui endpoint forwards the callback url to the processing endpoint of the of plugin as a query parameter
-the processing endpoint then makes a post request to the callback url when it is done with its setup
-
-\subsection{Objective Function interaction endpoints}
-\label{subsec:objectiveFunctionInteractionEndpoints}
-the of plugin should provide several interaction endpoints
-on is the pass data endpoint
-this endpoint is called to pass input data to the of plugin
-there are several reasons why this is done via an interaction endpoint and not via ui input
-* the data is not specific to the of plugin but is shared between the of plugin and the min plugin, so therefore the user should not have to enter it here but rather in the coordinator plugin
-* one could think that the cooridnator plugin could just pass the data to the of plugin via the ui endpoint, but this would mean passing huge ammonts of data via a get request which is not a good idea
-* one could think about passing a link to a file that contains the data, but this would mean that the of plugin would have to download the file and parse it, this should not be the job of the of plugin
-* the minimization plugin could pass the data to the of plugin when calling the of plugin to calculate the loss, but this would mean that one the min pluing needs to know the data, which otherwise is not necessary, 2. the min plugin would have to pass the data to the of plugin every time it calls the of plugin to calculate the loss, which would cause a lot of network traffic, 3. it would make the process less generic, since the min plugin would have to know how to pass the data to the of plugin
-
-this endpoint can simply be called by a invoking plugin via a post request and returns directly after saving the data to the database
-this endpoint also returns the metadata numberofweights which is the number of weights that the of plugin needs to calculate the loss function
-this is needed by a minimization plugin to know how many weights it needs to pass to the of plugin when calling the of plugin to calculate the loss function
-the number of weights is passed here since it is can depend on the data and the of hyperparameters and therefore is not known when the metadata is requested
-
-one interaction endpoint is the loss fucntion calculation endpoint
-this endpoint is called to calculate the loss function
-it can be called by a invoking plugin via a post request
-the arugments passed to the endpoints are the weights of the model
-the endpoint then calculates the loss function and returns it
-
-an optinal interaction endpoint is the gradient calculation endpoint
-this endpoint is called to calculate the gradient of the loss function
-it can be called by a invoking plugin via a post request
-the arugments passed to the endpoints are the weights of the model
-the endpoint then calculates the gradient of the loss function and returns it
-
-another optional interaction endpoitn is the gradient and loss function calculation endpoint
-this endpoint combined the two previous endpoints into one since the loss function and the gradient of the loss function are often calculated together and so makes the process more efficient
-it can be called by a invoking plugin via a post request
-the arugments passed to the endpoints are the weights of the model
-the endpoint then calculates the loss function and the gradient of the loss function and returns them
-
-
-\section{Implementation of a Minimization Function Plugin}
-\label{sec:implementationOfAMinimizationFunctionPlugin}
-to go over the taks of an min plugin again:
-* parameter acquisition
-* function minimization
-* result return
-
-\subsection{Parameter Acquisition}
-\label{subsec:parameterAcquisition}
-parameter acquisition is done the same way as for the of plugin
-as an example for the min plugin that uses the scipy minimize function the hyperparameter is the method that is used to minimize the function
-
-\subsection{Minimization Function interaction endpoints}
-\label{subsec:minimizationFunctionInteractionEndpoints}
-
-a minimization plugin provides a single interaction endpoint
-this endpoint is called to minimize the of
-the arugments passed to the endpoints is the url of the of plugin loss calculation endpoint, the weights of the model, and a callback url to the invoking plugin
-some optinal arguments can be the url of the of plugin gradient calculation endpoint and the url of the of plugin gradient and loss function calculation endpoint
-these optional arguments are only considrered if the minimization plugin implements a minimization function that uses the gradient of the loss function
-the endpoint schedules an asyncronous celery task that minimizes the of
-it return directly after scheduling the task
-
-the celery task minimizes the of by calling the calcucation endpoint over and over again
-a novel approach is used to make a callback to the invoking plugin
-qhana provides a way url to an celery task of a plugin that can be called to get the status of the task
-this status is stored in a database
-the python library blinker is used to to track changes to the status of the task
-now when the status of a task changes the blinker library calls a function that is registered to the status change event
-this function then makes a post request to the callback url of the invoking plugin
-this way the invoking plugin is notified when the task is done and does not have to poll the status of the task
-
-\section{Implementation of a Coordinator Plugin}
-
-\section{Plugin Infrastructure}
-\label{sec:pluginInfrastructure}
-\section{Plugin Interaction}
-\label{sec:pluginInteraction}
-\section{Minimizer Plugin}
-\label{sec:minimizerPlugin}
-\section{Objective Function Plugins}
-\label{sec:objectiveFunctionPlugins}
 
 
 \chapter{Evaluation}
@@ -1404,6 +1211,13 @@ The results are compared by calculating the mean squared error between the two r
 
 \chapter{Discussion}
 \label{chap:discussion}
+
+Interaciton endpoints
+this concept has several advantages
+* it allows for full interchangeability of plugins
+* it allows the developer that want to interact with a plugin to know what endpoints are available and how to call them
+* an alternatiev would be to return the url of available endpoitns after passing through the ui, now we can completely skip the ui alltogether and just call the endpoint directly
+
 \section{Achievements and Contribution}
 \label{sec:achievementsAndContribution}
 \section{Limitations}
