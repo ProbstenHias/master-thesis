@@ -887,7 +887,6 @@ The coordinator then triggers the minimization endpoint, initiating a long-runni
 Once this task is completed, a final callback is made to the coordinator with the results.
 This flow is shown in Figure \ref{fig:interaction_flow_part3}.
 
-\newpage
 \begin{figure}[ht]
   \centering
   \includegraphics[width=\textwidth]{graphics/interaction_flow_1.svg}
@@ -915,9 +914,67 @@ This flow is shown in Figure \ref{fig:interaction_flow_part3}.
 \label{chap:implementation}
 
 The resulting code that realized two different approaches to a plugin-based optimization framework can be found in \gls{qhana}'s GitHub repository\footnote{\url{https://github.com/UST-QuAntiL/qhana-plugin-runner}}.
-As examples the code implements two types of minimizer plugins, the \emph{scipy} and \emph{scipy-grad} plugins, and three types of \gls{of} plugins, the \emph{ridge-loss}, \emph{hinge-loss}, and \emph{neural-network} plugins.
+As examples the code implements two types of minimizer plugins, the \emph{scipy-minimizer} and \emph{scipy-minimizer-grad} plugins, and three types of \gls{of} plugins, the \emph{ridge-loss}, \emph{hinge-loss}, and \emph{neural-network} plugins.
 More on their implementation can be found in the following sections.
 This chapter does not aim to provide a comprehensive overview of the code, but rather to highlight the key implementation details and differences between the two approaches.
+
+\section{Directory Structure and Plugin Loading}
+\label{sec:directoryStructure}
+
+\gls{qhana} maintains two primary directories for plugin management: the \textit{plugins} and the \textit{stable plugins} directories.
+The former hosts plugins undergoing development, while the latter contains plugins that are deployment-ready.
+Within these directories, individual plugins are neatly organized into dedicated subfolders.
+Upon initiation, \gls{qhana} scans and loads plugins from these designated subfolders.
+
+The focus of this thesis, the optimization plugin, resides in the \textit{plugins/optimization} directory.
+To promote clarity and a structured layout, further divisions were made:
+
+\begin{itemize}
+  \item \textit{plugins/optimization/coordinator} – For the coordinator plugin.
+  \item \textit{plugins/optimization/objective\_functions} – Where each \gls{of} plugin occupies its respective subfolder.
+  \item \textit{plugins/optimization/minimizer} – Where each minimizer plugin occupies its respective subfolder.
+\end{itemize}
+
+Given that \gls{qhana}'s native architecture does not support the direct loading of plugins from nested subdirectories, a recursive plugin loader was developed for this purpose.
+This loader traverses through the \textit{plugins} directory and its subdirectories.
+The presence of an \textit{\_\_init\_\_.py} file within a folder acts as a confirmation for the plugin's legitimacy.
+If any plugin needs to be excluded from the loading process, a \textit{.ignore} file is placed in its respective folder to act as a loading deterrent.
+
+To ensure that the recursive process doesn’t compromise system performance, the recursion depth is capped at 4.
+This threshold sufficiently accommodates the current plugin structure but can be adjusted upwards if future needs arise.
+
+The folder hierarchy is further enriched by the inclusion of an \textit{interaction\_utils} directory, dedicated to housing utility functions for generalized plugin interactions.
+Additionally, there's a \textit{shared} directory, which stores data structures and schemas utilized across the plugins related to optimization plugin.
+A visual representation of the final folder structure, with all plugins implemented for this thesis, is shown in \cref{fig:folderStructure}.
+
+
+\begin{figure}[h!]
+  \dirtree{%
+      .1 plugins.
+      .2 optimizer.
+      .3 coordinator.
+      .3 interaction\_utils.
+      .3 minimizer.
+      .4 scipy\_minimizer.
+      .4 scipy\_minimizer\_grad.
+      .3 objective\_functions.
+      .4 hinge\_loss.
+      .4 neural\_network.
+      .4 ridge\_loss.
+      .3 shared.
+  }
+  \caption{QHana Plugin Folder Structure.}
+  \label{fig:folderStructure}
+\end{figure}
+
+\section{Maintaining Context Across Plugin Endpoints}
+\label{sec:contextBetweenPluginEndpoints}
+
+To preserve the continuity of information across different plugin endpoints, the implementation leverages the multi-step plugin concept inherent to \gls{qhana}.
+In the \emph{processing} endpoint of a plugin, a database task is established, identifiable by a unique database ID.
+This task stores all relevant context data, such as the hyperparameters designated for the minimization process.
+Subsequent endpoints, like the \emph{minimization} endpoint, can access this stored context data by referencing the database task.
+Importantly, the endpoints URL incorporates the database task's ID.
 
 
 \section{UI Creation for Plugin Interaction}
@@ -945,7 +1002,7 @@ For that reason all \emph{UIHref} endpoints of invocable plugins must include th
 \label{sec:invocationOfPluginMicrofrontendsByTheCoordinatorPlugin}
 
 As highlighted in the previous chapter, the coordinator plugin is responsible for invoking the microfrontends of both the \gls{of} and minimizer plugins.
-To achieve this, a adaptation of \gls{qhana}'s \emph{add\_step} function was developed.
+To achieve this, an adaptation of \gls{qhana}'s \emph{add\_step} function was developed.
 The \emph{add\_step} function is designed for multi-step plugins, calling another microfrontend of the same plugin after the user submits the current microfrontend.
 The function was enhanced and renamed to \emph{invoke\_task}.
 With this modification, the coordinator plugin can invoke another plugin's microfrontend by supplying the appropriate \emph{UIHref} and \emph{Href}.
@@ -986,74 +1043,64 @@ Listing \ref{lst:signal_handler} presents the implementation of the signal handl
 \lstinputlisting[language=Python, caption=Signal Emitter for Callbacks., label=lst:singal_emitter]{code/signal_emitter.py}
 
 
-
-\subsection{Context between Plugin Endpoints}
-\label{sec:contextBetweenPluginEndpoints}
-To save the context between the endpoints of a plugin, the implementation uses the \gls{qhana} concept for multistep plugins.
-A database task is created in the processing endpoint of the plugin that can be identified by a database ID.
-All context data is saved in the database task e.g. the hyperparameters for the minimization process.
-Endpoints that are called later, e.g. the minimization endpoint, can then retrieve the context data from the database task.
-The ID of the database task is part of the URL of the endpoint.
-
-
 \section{Implementation of Plugin Endpoints}
 \label{sec:implementationOfInteractionEndpoints}
 
-Interaction endpoints are the crux of the plugin-based optimization framework, by standardizing the inputs and outputs of interchable endpoints.
-The implementation handles the standardized inputs and outputs with the help of marshmallow schemas.
+The essence of the plugin-based optimization framework lies in its interaction endpoints.
+These endpoints standardize the interchangeability of inputs and outputs.
+To manage this standardized data exchange, marshmallow schemas serve as the backbone of the implementation.
 
 \subsection{Interaction Endpoint Schemas}
-The schemas are defined in the shared folder of the \gls{qhana} repository.
-An input and an output schema is defined for each interaction endpoint type.
-A plugin that want to invoke an interaction endpoint of another plugin can now fill the input schema and use the output schema to parse the response.
-For the \gls{of} plugin the following interaction endpoints schemas are defined:
+The repository's shared folder contains the defined schemas.
+Each interaction endpoint type has an associated input and output schema.
+If a plugin wishes to invoke another plugin's interaction endpoint, it can populate the input schema and subsequently parse the response using the output schema.
+In the implementation, the \gls{of} plugin defines schemas for the following interaction endpoints:
 \begin{itemize}
-  \item \textbf{pass\_data}: \emph{ObjectiveFunctionPassDataSchema} for the input and \emph{ObjectiveFunctionPassDataResponseSchema} for the output.
-  \item \textbf{calc\_loss}: The schemas depend on whether the gradient is calculated or not. For simply calucating the loss the input schema is \emph{CalcLossOrGradInputSchema} and the output schema is \emph{LossResponseSchema}.
+  \item \textbf{pass\_data}: Uses \emph{ObjectiveFunctionPassDataSchema} for input and \emph{ObjectiveFunctionPassDataResponseSchema} for output.
+  \item \textbf{calc\_loss}: Uses \emph{CalcLossOrGradInputSchema} for input and \emph{LossResponseSchema} for output.
 \end{itemize}
-For the minimizers' \emph{minimization} interaction endpoint the input schema is \emph{MinimizerInputSchema}, while the output is simply an acknowledgement with the status code 200 indicating that the minimization process was started.
-The other implementational challange is to make the endpoints of the plugins discoverable by other plugins.
+For the minimizers' \emph{minimization} endpoint, the input schema is \emph{MinimizerInputSchema}.
+The output, meanwhile, is a simple 200 status code, signaling the initiation of the minimization process.
+Another implementation challenge revolves around ensuring that plugins can easily discover the endpoints of other plugins, but first a custom marshmallow field for data is introduced.
 
 \subsection{Custom Marshmallow Field for Data}
 \label{sec:customMarshmallowFieldForData}
-In order to facilitate the passing of input and target data between plugins, a custom marshmallow field was developed.
-This field, named \emph{NumpyArray} and shown in \ref{lst:numpy_array_schema}, is designed to handle numpy arrays.
-This field is able to handle numpy arrays of any dimensionality and any data type that is json serializable.
-Not only is this field used for passing the data between endpoints but also for storing the data effectively in the database.
-\lstinputlisting[language=Python, caption=Custom Marshmallow Field for Numpy Arrays., label=lst:numpy_array_schema]{code/numpy_array_schema.py}.
+To streamline the input and target data exchange between plugins, a custom marshmallow field, \emph{NumpyArray}, was introduced (see \ref{lst:numpy_array_schema}).
+Specifically crafted to handle NumPy arrays, this versatile field can accommodate arrays of any dimensionality with JSON-serializable data types.
+It aids not only in data transfer between endpoints but also ensures efficient data storage in the database.
+\lstinputlisting[language=Python, caption=Custom Marshmallow Field for NumPy Arrays., label=lst:numpy_array_schema]{code/numpy_array_schema.py}
 
-\subsection{Metadata Endpoint}
+\subsection{Metadata Endpoint and Interaction Endpoint Discovery}
 \label{sec:metadataEndpoint}
-Interaction endpoints are defined in the metadata of the plugins.
-Ad mentioned previously, the metadata endpoint of a plugin defined the \emph{EntryPoint} field which is up until now only used by the \gls{qhana} UI to find the microfrontend of a plugin.
-This thesis extends the \emph{EntryPoint} field to include interaction endpoints.
-An \emph{interactionEndpoints} field is a list that can contain multiple interaction endpoints.
-Each interaction endpoint is a dictionary that contains the \textbf{type} and an \textbf{href} field.
-The \textbf{type} field is a string that identifies the interaction endpoint type.
-To make it easier for developers to find the correct type, the \emph{InteractionEndpointType} enum is defined in the shared folder.
-The \textbf{href} field is a string that contains the URL of the interaction endpoint.
-Listing \ref{lst:metadata} shows InteractionEndpoints field in the metadata of the \emph{ridge-loss} plugin.
-\lstinputlisting[language=Python, caption=Metadata of the Ridge Loss Plugin., label=lst:metadata]{code/metadata.py}
+The metadata of plugins houses the definitions for interaction endpoints.
+Traditionally, the \emph{EntryPoint} field in the metadata was reserved for guiding the \gls{qhana} UI to a plugin's microfrontend.
+However, this thesis expands the \emph{EntryPoint} field to encompass interaction endpoints.
+The \emph{interactionEndpoints} field is essentially a list, potentially containing multiple interaction endpoints.
+Each list entry is a dictionary consisting of a \textbf{type} and an \textbf{href} field.
+The \textbf{type} field, a string, denotes the endpoint type.
+It is made user-friendly by providing the \emph{InteractionEndpointType} enum in the shared folder, which lists all possible endpoint types for the optimization process.
+The \textbf{href} field houses the endpoint's URL.
+Listing \ref{lst:metadata} illustrates this using the \emph{ridge-loss} plugin's metadata.
 
-The syntax of how the interaction endpoint is defined in the metadata changes slightly when the plugin is implemented as a multi-step plugin.
-As mentioned in \ref{sec:contextBetweenPluginEndpoints}, the URL to an enpoint of a multi-step plugin contains the database ID of the task, that is only known at runtime.
-This is reflected in the metadata by making the \textbf{href} field a format string that contains the database ID of the task.
-Listing \ref{lst:metadata_multistep} shows the metadata of the \emph{ridge-loss} plugin, when it is implemented as a multi-step plugin.
-On the other hand the calling plugin needs to replace the placeholder with the actual database ID of the task once it is known.
-This difference already introduces the core difference between the two approaches, which is elaborated in the next section.
+For multi-step plugins, the interaction endpoint's definition in metadata slightly deviates.
+As discussed in \ref{sec:contextBetweenPluginEndpoints}, multi-step plugins incorporate a runtime-specific database ID into the URL.
+This dynamic nature is captured in the metadata by making the \textbf{href} field a format string.
+Listing \ref{lst:metadata_multistep} offers a glimpse into this, showcasing the \emph{ridge-loss} plugin implemented as a multi-step entity.
+The invoking plugin is tasked with replacing the placeholder with the actual database ID when known.
+This distinction is foundational to the differences between the two approaches, explored further in the subsequent section.
 \lstinputlisting[language=Python, caption=Metadata of the Ridge Loss Plugin as a Multi-Step Plugin., label=lst:metadata_multistep]{code/metadata_multistep.py}
 
 \section{Example Minimizers and Objective Functions}
 \label{sec:exampleMinimizersAndObjectiveFunctions}
 To demonstrate the plugin-based optimization framework, two minimizer plugins and three \gls{of} plugins were implemented.
-The minimizer plugins are named \emph{scipy} and \emph{scipy-grad}, while the \gls{of} plugins are named \emph{ridge-loss}, \emph{hinge-loss}, and \emph{neural-network}.
+The minimizer plugins are named \emph{scipy-minimizer} and \emph{scipy-minimizer-grad}, while the \gls{of} plugins are named \emph{ridge-loss}, \emph{hinge-loss}, and \emph{neural-network}.
 
 \subsection{Minimizer Plugins}
 \label{sec:minimizerPlugins}
 The minimizer plugins are implemented as wrappers around the \emph{scipy.optimize.minimize} function.
-The \emph{scipy} plugin uses this function to minimize the loss function without the gradient.
+The \emph{scipy-minimizer} plugin uses this function to minimize the loss function without the gradient.
 The input hyperparameter for this plugin is the minimization method, which are limited to the methods that do not require the gradient.
-The \emph{scipy-grad} plugin uses the same function to minimize the loss function with the gradient.
+The \emph{scipy-minimizer-grad} plugin uses the same function to minimize the loss function with the gradient.
 The input hyperparameters for this plugin are all methods that require the gradient.
 The output of both plugins is the same, namely the weights that minimize the loss function.
 
@@ -1063,7 +1110,7 @@ The \emph{ridge-loss} plugin implements the ridge loss function as demonstrated 
 The \emph{hinge-loss} plugin implements the hinge loss function as demonstrated in \ref{alg:hinge_loss}, where the input hyperparameter is the regularization parameter \emph{C}.
 The \emph{neural-network} plugin implements a neural network with one hidden layer.
 The input hyperparameters are the number of neurons in the hidden layer.
-This plugin provides the option to calculate the gradient of the loss function, which can be used together with the \emph{scipy-grad} plugin.
+This plugin provides the option to calculate the gradient of the loss function, which can be used together with the \emph{scipy-minimizer-grad} plugin.
 The output of all three plugins is the loss value, while the \emph{neural-network} plugin also returns the gradient of the loss function.
 
 \section{Differences between the Two Plugin-Based Implementation Approaches}
@@ -1073,77 +1120,29 @@ This section highlights the key differences between the two approaches.
 
 \subsection{First Approach}
 \label{sec:firstApproach}
-The key concept of the first appoach is that the plugins are as loosly coupled as possible, meaning that as few data as possible is passed between the plugins and the data isntead data should always be retrieved from the database if possible.
+The key concept of the first approach is that the plugins are as loosly coupled as possible, meaning that as few data as possible is passed between the plugins and the data isntead data should always be retrieved from the database if possible.
 Version one of the implementation strictly adheres to this concept, especially when it comes to the \gls{of} plugin.
 The \gls{of} plugin stores its hyperparameters in the database.
 During the execution of the \emph{pass\_data} endpoint the input data and the target data is stored in the database.
 That means that for the \emph{pass\_data} endpoint, where the number of input weights is calculated, the hyperparameters are retrieved from the database and only the input data and the target data are passed to the emdpoint.
 The \emph{calc\_loss}, \emph{calc\_grad}, and \emph{calc\_loss\_and\_grad} endpoints only require the weights as input, since the hyperparameters and the data are already stored in the database.
+Exapmlaray the input schema of the \emph{calc\_loss} endpoint is shown in Listing \ref{lst:calc_loss_schema}.
 For the minimer plugin that means that at no point it needs to know the hyperparameters of the \gls{of} or event the data.
+That results i a sparce input schema for the \emph{minimization} endpoint, which is shown in Listing \ref{lst:minimization_schema}.
 But that also means that the database ID of the task has to be passed by the microfrontend callback process to the cooridnator plugin.
 The coordinator plugin needs this ID to handle the interaction endpoints URLs as described in \ref{sec:metadataEndpoint}.
 
-\section{Second Approach}
+\subsection{Second Approach}
 \label{sec:secondApproach}
 The second approach is more tightly coupled than the first approach, when it comes to the \gls{of} plugin.
 The \gls{of} plugin is not implemted as a multi-step plugin, meaning no context can be shared between the endpoints of the plugin, meaning that all data necessary in an enpoint has to be passed during the invocation of the endpoint.
 That means that the microfrontend callback process has to pass the hyperparameters to the coordinator plugin, for later passing them to the \gls{of} plugin.
 The coordinator plugin then passes the hyperparameters and the data to the \emph{pass\_data} endpoint of the \gls{of} plugin.
 The minimizer plugin also has be aware of the hyperparameters and the data, since it now has to pass those to the \emph{calc\_loss} endpoint of the \gls{of} plugin.
+The input schema of the \emph{calc\_loss} endpoint is shown in Listing \ref{lst:calc_loss_schema_multistep}, while the input schema of the \emph{minimization} endpoint is shown in Listing \ref{lst:minimization_schema_multistep}.
 To keep this process as generalized as possible, indepenent of the \gls{of}'s implementation, the hyperparameters are passed as a dictionary.
 That way neither the cooditioner plugin nor the minimizer plugin has to know the exact hyperparameters of the \gls{of} plugin.
 In return no database ID has to be passed by the microfrontend callback process to the coordinator plugin.
-
-
-
-\section{Directory Structure and Plugin Loading}
-\label{sec:directoryStructure}
-
-\gls{qhana} maintains two primary directories for plugin management: the \textit{plugins} and the \textit{stable plugins} directories.
-The former hosts plugins undergoing development, while the latter contains plugins that are deployment-ready.
-Within these directories, individual plugins are neatly organized into dedicated subfolders.
-Upon initiation, \gls{qhana} scans and loads plugins from these designated subfolders.
-
-The focus of this thesis, the optimization plugin, resides in the \textit{plugins/optimization} directory.
-To promote clarity and a structured layout, further divisions were made:
-
-\begin{itemize}
-  \item \textit{plugins/optimization/coordinator} – For the main optimization plugin.
-  \item \textit{plugins/optimization/objective\_functions} – Where each \gls{of} plugin occupies its respective subfolder.
-  \item \textit{plugins/optimization/minimizer} – Where each minimizer plugin occupies its respective subfolder.
-\end{itemize}
-
-Given that \gls{qhana}'s native architecture does not support the direct loading of plugins from nested subdirectories, a recursive plugin loader was developed for this purpose.
-This loader traverses through the \textit{plugins} directory and its subdirectories.
-The presence of an \textit{\_\_init\_\_.py} file within a folder acts as a confirmation for the plugin's legitimacy.
-If any plugin needs to be excluded from the loading process, a \textit{.ignore} file is placed in its respective folder to act as a loading deterrent.
-
-To ensure that the recursive process doesn’t compromise system performance, the recursion depth is capped at 4.
-This threshold sufficiently accommodates the current plugin structure but can be adjusted upwards if future needs arise.
-
-The folder hierarchy is further enriched by the inclusion of an \textit{interaction\_utils} directory, dedicated to housing utility functions for generalized plugin interactions.
-Additionally, there's a \textit{shared} directory, which stores data structures and schemas utilized across the plugins related to optimization plugin.
-A visual representation of the final folder structure, with all plugins implemented for this thesis, is shown in \cref{fig:folderStructure}.
-
-
-\begin{figure}[h!]
-  \dirtree{%
-      .1 plugins.
-      .2 optimizer.
-      .3 coordinator.
-      .3 interaction\_utils.
-      .3 minimizer.
-      .4 scipy\_minimizer.
-      .4 scipy\_minimizer\_grad.
-      .3 objective\_functions.
-      .4 hinge\_loss.
-      .4 neural\_network.
-      .4 ridge\_loss.
-      .3 shared.
-  }
-  \caption{QHana Plugin Folder Structure.}
-  \label{fig:folderStructure}
-\end{figure}
 
 
 \chapter{Results}
