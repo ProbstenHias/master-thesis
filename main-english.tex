@@ -47,10 +47,7 @@
 
 %tex4ht-Konvertierung verschönern
 \iftex4ht
-  % tell tex4ht to create picures also for formulas starting with '$'
-  % WARNING: a tex4ht run now takes forever!
   \Configure{$}{\PicMath}{\EndPicMath}{}
-  %$ % <- syntax highlighting fix for emacs
   \Css{body {text-align:justify;}}
 
   %conversion of .pdf to .png
@@ -217,8 +214,13 @@ This allows microservices with an integrated UI to be used as plugins by multipl
 
 Central to this thesis is the integration of \glspl{vqa}
 The envisioned approach allows for plugins to interact and collaborate, enabling the implementation of \glspl{vqa} as modular components within \gls{qhana}.
-qhana has multiple parts ui, plugins, ... diagram
-thesis is about plugins
+\gls{qhana} has multiple parts: \gls{ui}, plugins, ...
+Take the architectural diagram form \cite{Buehler2022} and explain it here.
+Thesis is about plugins.
+%TODO here
+
+
+
 \section{Quantum Computing}
 \label{sec:quantumComputing}
 Quantum computing is a cutting-edge field that exploits the principles of quantum mechanics to process information.
@@ -401,7 +403,7 @@ Specifically, having distinct \glspl{of} and minimization functions means parts 
 This reflects the goals of modularity and flexibility intrinsic to \gls{qhana}'s design.
 
 \subsection{Interactivity Between Plugins}
-Interactivity in \gls{qhana} should encompasses various facets:
+Interactivity in \gls{qhana} should encompass various facets:
 
 A plugin should be able to invoke the microfrontend of another plugin.
 Control should revert to the invoking plugin once the invoked plugin completes its tasks.
