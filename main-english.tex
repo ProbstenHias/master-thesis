@@ -640,6 +640,7 @@ Additionally, the evaluation will juxtapose these approaches with a non-plugin-b
 To validate the effectiveness of the proposed solutions and to assess whether the goals set out in the problem statement have been achieved, the following evaluation methodologies are adopted:
 
 \subsection{Performance Benchmarking}
+\label{subsec:performanceBenchmarking}
 Performance is paramount, especially in a plugin-based architecture.
 A direct comparison will be made between the two plugin-based approaches and the non-service-based approach.
 Critical metrics for this comparison include:
@@ -714,6 +715,7 @@ By employing such multifaceted and representative datasets, the methodology aims
 
 
 \section{Resultant Decomposition into Plugins and their Responsibilities}
+\label{sec:decomposition}
 
 Following the decomposition strategy, the plugin-based optimization framework was divided into three primary plugin types:
 \gls{of} plugin, the minimizer plugin, and the coordinator plugin.
@@ -983,17 +985,19 @@ The primary step is to inherit from QHAna's \texttt{FrontendFormBaseSchema} clas
 For the \gls{of} plugin, the input fields are the hyperparameters the loss function needs.
 Listing \ref{lst:ridge_loss_schema} shows the \emph{ridge\-loss} plugin's hyperparameter, which is the regularization parameter \emph{alpha}.
 
+\lstinputlisting[language=Python, caption={Ridge Loss Plugin Hyperparameter Schema.}, label=lst:ridge_loss_schema]{code/hyperparameter_schema_ridge.py}
+
 The minimizer and \gls{of} plugin selection field is a critical input field for the coordinator plugin.
 The \texttt{PluginUrl} class,  a custom class that extends marshmallow's \texttt{fields.Url} class generates that field.
 It ensures that only plugins of the correct type are selected by checking a plugin's metadata for the correct label.
 Imperative for this to work is that all minimizer plugins have the \emph{minimization} and all \gls{of} plugins have the \emph{objective-function} label.
 Listing \ref{lst:coordinator_schema} shows the minimizer plugin selection field in the coordinator plugin's \gls{ui}.
 
+\lstinputlisting[language=Python, caption=Coordinator Plugin UI Schema., label=lst:coordinator_schema]{code/ui_schema_coordinator.py}
+
 As the \glspl{ui} of the \gls{of} and minimizer plugins are designed to be invoked by the coordinator plugin, the \emph{UIHref} which serves the \gls{ui} needs to accept a callback URL.
 Therefore, all \emph{UIHref} endpoints of invocable plugins must include the \emph{CallbackUrlSchema} marshmallow schema as a query parameter.
 
-\lsinputlisting[language=Python, caption=Ridge Loss Plugin UI Schema., label=lst:ridge_loss_schema]{code/hyperparameter_schema_ridge.py}
-\lstinputlisting[language=Python, caption=Coordinator Plugin UI Schema., label=lst:coordinator_schema]{code/hyperparameter_schema_scipy.py}
 
 
 \section{Invocation of Plugin Microfrontends by the Coordinator Plugin}
@@ -1041,7 +1045,7 @@ Listing \ref{lst:signal_handler} presents the implementation of the signal handl
 \lstinputlisting[language=Python, caption=Signal Emitter for Callbacks., label=lst:singal_emitter]{code/signal_emitter.py}
 
 
-\section{Implementation of Plugin Endpoints}
+\section{Implementation of Interaction Endpoints}
 \label{sec:implementationOfInteractionEndpoints}
 
 The essence of the plugin-based optimization framework lies in its interaction endpoints.
@@ -1081,6 +1085,8 @@ It is made user-friendly by providing the \emph{InteractionEndpointType} enum in
 The \textbf{href} field houses the endpoint's URL.
 Listing \ref{lst:metadata} illustrates this using the \emph{ridge-loss} plugin's metadata.
 
+\lstinputlisting[language=Python, caption=Metadata of the Ridge Loss Plugin., label=lst:metadata]{code/metadata.py}
+
 For multi-step plugins, the interaction endpoint's definition in metadata slightly deviates.
 As discussed in \ref{sec:contextBetweenPluginEndpoints}, multi-step plugins incorporate a runtime-specific database ID into the URL.
 The \emph{href} field functions as a format string that allows the substitution of a placeholder with the actual database ID.
@@ -1102,6 +1108,7 @@ Specifically, the minimizer plugins \emph{scipy-minimizer} and \emph{scipy-minim
 At the core, both plugins use \emph{scipy.optimize.minimize} as their minimization algorithm.
 The \emph{scipy-minimizer} plugin leverages this method to minimize the loss function without needing a gradient.
 Its sole input hyperparameter is the minimization method, restricted to methods that operate without a gradient.
+
 On the other hand, the \emph{scipy-minimizer-grad} plugin employs the same method but incorporates the gradient for loss minimization.
 It accepts input hyperparameters that exclusively pertain to methods necessitating the gradient.
 Regardless of their approach, both plugins yield the weights that optimize the loss function's minimization.
@@ -1112,9 +1119,54 @@ Regardless of their approach, both plugins yield the weights that optimize the l
 The \emph{ridge-loss} plugin encapsulates the ridge loss function, as depicted in \ref{alg:ridge_loss}.
 It operates with the regularization parameter \emph{alpha} as its input hyperparameter.
 In a similar vein, the \emph{hinge-loss} plugin embodies the hinge loss function, showcased in \ref{alg:hinge_loss}, and uses the regularization parameter \emph{C} as its input.
+
 The \emph{neural-network} plugin employs a neural network featuring a single hidden layer.
 Its hyperparameters include the count of neurons present in this hidden layer.
 Notably, this plugin facilitates the gradient calculation for the loss function, making it compatible with the \emph{scipy-minimizer-grad} plugin.
+The user is highly encouraged to refer to the code repository for a more in-depth understanding of how a more sophisticated method is implemented for loss calculation.
+
+
+\begin{lstlisting}[caption={Ridge Loss Calculation}, label=alg:ridge_loss]
+  def ridge_loss(X, w, y, alpha):
+      # Calculate the predicted values using the weight vector
+      y_pred = X.dot(w)
+
+      # Compute the mean squared error between actual and predicted values
+      mse = mean((y - y_pred) ** 2)
+
+      # Calculate the ridge penalty using the weight vector
+      ridge_penalty = alpha * sum(w**2)
+
+      # Combine the mean squared error and ridge penalty to get the total ridge loss
+      total_loss = mse + ridge_penalty
+
+      return total_loss
+\end{lstlisting}
+
+\begin{lstlisting}[caption={Hinge Loss Calculation}, label=alg:hinge_loss]
+  def hinge_loss(X, w, y, C):
+      # Get the number of samples from the input matrix
+      n_samples, _ = X.shape
+
+      # Initialize the loss to zero
+      loss = 0.0
+
+      # Iterate over each sample in the dataset
+      for i in range(n_samples):
+          # Calculate the score for the current sample using the weight vector
+          score = np.dot(w, X[i])
+
+          # Compute the hinge loss for the current sample and accumulate
+          loss += max(0, 1 - y[i] * score)
+
+      # Apply the regularization term to the accumulated loss
+      loss = C * loss / n_samples
+
+      # Add the l2 regularization term to the loss
+      loss += 0.5 * np.dot(w, w)
+
+      return loss
+\end{lstlisting}
 
 \section{Comparative Analysis of Plugin-Based Implementation Strategies}
 \label{sec:differencesBetweenTheTwoPluginBasedImplementationApproaches}
@@ -1159,66 +1211,10 @@ The resutls this chapter focuses on are the performance of the system, the inter
 \section{Performance Analysis}
 \label{sec:performanceAnalysis}
 
+In this section the performance of the system is measured as described in section \ref{subsec:performanceBenchmarking} and the results are presented.
 
-\section{Interchangeability of Plugins}
-\label{sec:interchangeabilityOfPlugins}
-
-\begin{figure}[h]
-  \centering
-  \begin{tabular}{|c|c|c|c|}
-    \hline
-    & \textbf{ridge-loss} & \textbf{hinge-loss} & \textbf{neural-network} \\
-    \hline
-    \textbf{scipy} & \checkmark/\times & \checkmark/\times & \checkmark/\times \\
-    \hline
-    \textbf{scipy-grad} & \checkmark/\times & \checkmark/\times & \checkmark/\times \\
-    \hline
-  \end{tabular}
-  \caption{Compatibility between example implementation of plugins.}
-\end{figure}
-
-
-\section{Usability for Developers}
-\label{sec:usabilityForDevelopers}
-
-
-\chapter{Evaluation}
-\label{chap:evaluation}
-\section{Sample Machine Learning Experiment}
-\label{sec:sampleMachineLearningExperiment}
-\section{Interchangeability of Plugins}
-\label{sec:interchangeabilityOfPlugins}
-\section{Performance Analysis}
-\label{sec:performanceAnalysis}
-
-The performance of the system is evaluated by measuring the time the system takes to complete a machine learning experiment.
-The time that it takes for a user to input the data is not measured.
-This benchmark should only measure the time that it takes for the system to complete the experiment.
-We compare the performance of the plugin based system with the performance of a jupyter notebook based system.
-There are several steps that are benchmarked in the plugin based system, since there is user interaction between the steps.
-\begin{itemize}
-  \item The time that it takes after the user has selected the plugins until the user can input the hyperparameters for the of plugin.
-  \item The time that it takes after the user has input the of plugin hyperparameters until the user can input the hyperparameters for the minimizer plugin.
-  \item The time that it takes after the user has input the minimizer plugin hyperparameters until the user gets the result of the experiment.
-\end{itemize}
-The times of those steps are summed up to get the total time that it takes for the plugin based system to complete the experiment.
-The time that it takes for the jupyter notebook based system is measured from the start of the notebook until the user gets the result of the experiment.
-The time is measured by adding a timestamp at the start of the step and at the end of the step.
-The difference between the two timestamps is the time that it takes for the step to complete.
-The time that it takes for the plugin based system to complete the experiment is compared to the time that it takes for the jupyter notebook based system to complete the experiment.
-In order to get a more accurate result, the experiment is repeated several times and the average time is taken.
-To make it as comparable as possible, the same datasets and hyperparameters are used for both systems.
-The output file of the experiment should also have the same exact format.
-
-Since the benchmark of the plugin based system shows worse performance than the jupyter notebook based system, we want to explore where the most time is spent.
-Therefore, we measure the time it takes to call to calculate the loss function.
-In case of the plugin based system this includes the network latency between the plugins.
-We want to see how much time is spent in the network and how much time is spent in the actual calculation of the loss function.
-
-For more sophisticated loss functions (in this case the neural network) we want to see how much time is spent for the setup of the neural network.
-Since a microservice does not have state, the neural network has to be setup for every call of to calculate loss function.
-
-\section{Hardware and System Specifications}
+\subsection{Hardware and System Specifications}
+\label{subsec:hardwareAndSystemSpecifications}
 
 The benchmarks were conducted on a MacBook Pro. The detailed specifications of the machine are as follows:
 
@@ -1237,7 +1233,184 @@ The benchmarks were conducted on a MacBook Pro. The detailed specifications of t
     \item \textbf{Operating System:} macOS, Version 13.4.1, Build Version: 22F770820d
 \end{itemize}
 
+\subsection{Benchmarking Results}
+\label{subsec:benchmarkingResults}
 
+The most time consuming part of the minimization process is the calculation of the loss function, since it is called several times during the minimization process.
+For the benchmarking the \emph{ridge-loss} plugin is used as the \gls{of} with \emph{alpha} set to 0.5 and the \emph{scipy-minimizer} plugin is used as the minimizer with the \emph{method} set to \emph{L-BFGS-B}.
+
+Table \ref{table:of_calls} shows how often the loss is evaluated during the minimization process across different datasets, underlying the importance of the performance of the loss function calculation.
+
+
+\begin{table}[h!]
+  \centering
+  \begin{tabular}{cc}
+  \toprule
+  \textbf{Number of Data Points} & \textbf{Number of Evaluations} \\
+  \midrule
+  200 & 264 \\
+  400 & 341 \\
+  600 & 370 \\
+  800 & 430 \\
+  1000 & 480 \\
+  1200 & 520 \\
+  1400 & 570 \\
+  \bottomrule
+  \end{tabular}
+  \caption{Number of times the loss function is evaluated during minimization across different dataset sizes.}
+  \label{table:of_calls}
+\end{table}
+
+Figure \ref{fig:of_call_time_version1} shows the time it takes for a single call of the loss function for different dataset sizes for the first plugin-based implementation approach.
+The \emph{Calculation Time} captures only the actual time it takes to calculate ridge loss.
+The \emph{Database Time} measures the time it takes to retrieve the data from the database.
+The \emph{Network Time} measures the time it takes to send the data to the \gls{of} plugin and receive the result.
+The total time it takes from the point at which the minimizer plugin calls the calculation endpoint until it receives the result is the sum of the \emph{Calculation Time}, \emph{Database Time}, and \emph{Network Time}.
+
+\begin{figure}
+  \centering
+  \includegraphics[width=\textwidth]{graphics/of_call_times_version1.png}
+  \caption{Time it takes for a single call to the \emph{calc\_loss} endpoint of the \emph{ridge-loss} plugin for different dataset sizes for the first plugin-based implementation approach.}
+  \label{fig:of_call_time_version1}
+\end{figure}
+
+Figure \ref{fig:of_call_time_version2} caputes the same measurements for the second plugin-based implementation approach.
+Since the \gls{of} plugin is not implemented as a multi-step plugin, the \emph{Database Time} is not measured.
+
+\begin{figure}
+  \centering
+  \includegraphics[width=\textwidth]{graphics/of_call_times_version2.png}
+  \caption{Time it takes for a single call to the \emph{calc\_loss} endpoint of the \emph{ridge-loss} plugin for different dataset sizes for the second plugin-based implementation approach.}
+  \label{fig:of_call_time_version2}
+\end{figure}
+
+Figure \ref{fig:coparison_of_of} shows a comparison between the total times it takes to calcualte the loss function across different implementations including the jupyter notebook based implementation.
+
+\begin{figure}
+  \centering
+  \includegraphics[width=\textwidth]{graphics/comparison_of_of.png}
+  \caption{Comparison of the total time it takes to get the loss value across different implementations including the jupyter notebook based implementation.}
+  \label{fig:coparison_of_of}
+\end{figure}
+
+Figure \ref{fig:time_for_of_calc} measures the same metrics as Figure \ref{fig:coparison_of_of} but this time it ignores the \emph{Database Time} and the \emph{Network Time} only measuring the actual \emph{Calculation Time}.
+
+\begin{figure}
+  \centering
+  \includegraphics[width=\textwidth]{graphics/time_for_of_calc.png}
+  \caption{Comparison of the time the actual loss calculation takes across different implementations including the jupyter notebook based implementation.}
+  \label{fig:time_for_of_calc}
+\end{figure}
+
+Obviously one can see that the jupyter notebook based implementation is the fastest, since it does not have to deal with network latency.
+Especially for the first plugin-based implementation approach the database latency is a bottleneck, that can be avoided.
+
+% \subsection{Caching of Data}
+% \label{subsec:cachingOfData}
+
+% In order to avoid the database latency, a caching mechanism is implemented for the first plugin-based implementation approach.
+% Since the input and target data and the hyperparameters do not change during the minimization process, they can be cached.
+% That means during the first call of the \emph{calc\_loss} endpoint the data is retrieved from the database and cached for subsequent calls.
+% For the implementation the \emph{flask-caching} library is used.
+% Figure \ref{fig:of_call_time_version1_cached} compares the loss calculation time for the first plugin-based implementation approach with and without caching.
+
+% \begin{figure}
+%   \centering
+%   \includegraphics[width=\textwidth]{graphics/of_call_times_version1_cached.png}
+%   \caption{Time it takes for a single call to the \emph{calc\_loss} endpoint of the \emph{ridge-loss} plugin for different dataset sizes for the first plugin-based implementation approach with caching.}
+%   \label{fig:of_call_time_version1_cached}
+% \end{figure}
+
+% Figure \ref{fig:coparison_of_of_cached} shows a comparison between the total times it takes to get the loss across between the different implementations including a cached version of the first plugin-based implementation approach.
+
+% \begin{figure}
+%   \centering
+%   \includegraphics[width=\textwidth]{graphics/comparison_of_of_cached.png}
+%   \caption{Comparison of the total time it takes to get the loss value across different implementations including a cached version of the first plugin-based implementation approach.}
+%   \label{fig:coparison_of_of_cached}
+% \end{figure}
+
+% Finally, Figure \ref{fig:time_for_minimization} shows the total time it takes to complete the minimization process for the different implementations.
+% The measurements for the plugin-based implementations do not include the time it takes a user to input data, but instead starts when the coordinator plugin calls the minimization endpoint of the minimizer plugin.
+
+% \begin{figure}
+%   \centering
+%   \includegraphics[width=\textwidth]{graphics/time_for_minimization.png}
+%   \caption{Comparison of the total time it takes to complete the minimization process across different implementations.}
+%   \label{fig:time_for_minimization}
+% \end{figure}
+
+\section{Interchangeability and Standardization of Plugins}
+\label{sec:interchangeabilityOfPlugins}
+
+This section explores if the plugins are interchangeable and if they adhere to the standards developed in this thesis.
+The standards are defined in architecture Chapter \ref{chap:architecture} and the implementation Chapter \ref{chap:implementation}.
+In summery the standards are:
+\begin{description}
+  \item[Metadata] Invocable plugins have to provide metadata that includes the interaction endpoints.
+  \item[Interaction Endpoints] Invocable plugins have to provide interaction endpoints that adhere to the interaction endpoint schemas.
+  \item[Callback Mechanisms] Invoking and invocable plugins have to provide the callback mechanism that is described in Section \ref{sec:implementationOfCallbacksToTheCoordinatorPlugin}.
+  That includes the standard callback mechanism for the microfrontend invocation and the callback mechanism for the asynchronous minimization process.
+  \item[Plugin Functionality] Each plugin has to implement the functionality it is supposed to implement as described in Section \ref{sec:decomposition}.
+\end{description}
+
+When a plugin fulfills all those standards it is interchangeable with other plugins that also fulfill the standards.
+In the implementation part of the thesis all example plugins are implemented such that they fulfill the standards.
+Therefore, they are interchangeable with each other, i.e. any minimizer plugin can be used with any \gls{of} plugin without the user having to change any code.
+It is important to note thought that to leverage the gradient calculation that is provided by the \emph{neural-network} plugin, the \emph{scipy-minimizer-grad} plugin has to be used.
+
+To make sure that there is no doubt that the plugins are interchangeable, we tested the combination of all minimizer plugins with all \gls{of} plugins and documented the results in Table \ref{table:interchangeability}.
+
+
+\begin{table}[h!]
+  \centering
+  \begin{tabular}{|c|c|c|c|}
+    \hline
+    & \textbf{ridge-loss} & \textbf{hinge-loss} & \textbf{neural-network} \\
+    \hline
+    \textbf{scipy-minimizer} & \checkmark & \checkmark & \checkmark \\
+    \hline
+    \textbf{scipy-minimizer-grad} & \checkmark & \checkmark & \checkmark \\
+    \hline
+  \end{tabular}
+  \caption{Compatibility between example implementation of plugins.}
+  \label{table:interchangeability}
+\end{table}
+
+
+
+\section{Usability for Developers}
+\label{sec:usabilityForDevelopers}
+
+In this section the usability of the system for developers is explored.
+The usability is shown by listing the steps a developer has to take to implement a new minimizer and \gls{of} plugin.
+The first step is always to copy a already existing plugin into a new folder, since only a few lines of code have to be changed to provide new functionality.
+At no point does a developer have to change any code of the coordinator plugin.
+
+\subsection{Implementing a Minimizer Plugin}
+\label{subsec:implementingAMinimizerPlugin}
+
+In order to implement a new minimizer plugin, the developer has to follow these steps:
+
+\begin{enumerate}
+  \item Copy the \emph{scipy-minimizer} plugin into a new folder.
+  \item Rename the plugin in the \emph{\_\_init\_\_.py} file.
+  \item Add any needed hyperparameters to the \emph{MinimizerSetupTaskInputSchema} schema.
+  \item Implement the minimization algorithm in the \emph{minimize\_task} function.
+\end{enumerate}
+
+\subsection{Implementing an Objective Function Plugin}
+\label{subsec:implementingAnObjectiveFunctionPlugin}
+
+In order to implement a new \gls{of} plugin, the developer has to follow these steps:
+
+\begin{enumerate}
+  \item Copy the \emph{ridge-loss} plugin into a new folder.
+  \item Rename the plugin in the \emph{\_\_init\_\_.py} file.
+  \item Add any needed hyperparameters to the \emph{HyperparamterInputSchema} schema.
+  \item Implement the calculation for the number of input weights in the \emph{of\_pass\_data} endpoint.
+  \item Implement the calculation of the loss function in the \emph{calc\_loss} endpoint.
+\end{enumerate}
 
 
 \chapter{Discussion}

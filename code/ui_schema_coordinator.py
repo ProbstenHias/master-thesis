@@ -1,6 +1,3 @@
-from qhana_plugin_runner.api.util import FrontendFormBaseSchema, PluginUrl
-
-
 class OptimizerSetupTaskInputSchema(FrontendFormBaseSchema):
     minimizer_plugin_selector = PluginUrl(
         required=True,
