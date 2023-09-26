@@ -342,16 +342,7 @@ The choice of minimization function can significantly influence the efficiency a
 While some minimization functions may perform well on certain problems, they may yield different results on others.
 Therefore, it is crucial to understand the underlying mechanisms of these functions and their suitability to the specific problem at hand.
 
-
-\section{RESTful API Design}
-In the evolving software design landscape, microservices have emerged as a preferred architectural style, prized for their modularity, scalability, and independent deployability.
-At the heart of \gls{qhana}'s design is a microservices-based plugin approach, which facilitates its dynamic and extensible nature.
-Central to the orchestration of these microservices is the application of \gls{rest}ful API design.
-\gls{rest} is an architectural style that sets forth constraints for creating web services.
-\gls{rest}ful APIs, built upon these constraints, are pivotal in ensuring seamless communication between individual microservices, enabling efficient data exchange and service integration.
-
-For those seeking a deeper dive into the intricacies of \gls{rest}ful design and microservice architectures, influential works by Fielding \cite{Fielding2000} and practical insights by Richardson and Amundsen \cite{Richardson2013} are recommended.
-
+\
 \chapter{Problem Statement and Objectives}
 \label{chap:problem}
 
@@ -636,7 +627,7 @@ This documentation serves as a guideline for developers aiming to extend the cap
 
 The implementation section of this thesis will ultimately present two distinct versions of a plugin-based optimization framework.
 The evaluation will assess both versions to facilitate a comparison between the two approaches.
-Additionally, the evaluation will juxtapose these approaches with a non-plugin-based approach, presented as a Jupyter Notebook.
+Additionally, the evaluation will juxtapose these approaches with a non-plugin-based approach, presented as a jupyter notebook.
 To validate the effectiveness of the proposed solutions and to assess whether the goals set out in the problem statement have been achieved, the following evaluation methodologies are adopted:
 
 \subsection{Performance Benchmarking}
@@ -1218,12 +1209,12 @@ This chapter elucidates the outcomes achieved with the current implementation, e
 \section{Performance Metrics}
 \label{sec:performanceAnalysis}
 
-This section presents a performance assessment, based on the methodologies outlined in section \ref{subsec:performanceBenchmarking}.
+This section presents a performance assessment based on the methodologies outlined in section \ref{subsec:performanceBenchmarking}.
 
 \subsection{Test Environment Specifications}
 \label{subsec:hardwareAndSystemSpecifications}
 
-Performance benchmarks were conducted on a MacBook Pro. The system's detailed specifications include:
+Performance benchmarks are conducted on a MacBook Pro. The system's detailed specifications include:
 
 \begin{itemize}
     \item \textbf{Model:} MacBookPro18,1
@@ -1258,7 +1249,7 @@ Table \ref{table:of_calls} displays the frequency of loss evaluations during the
   1400 & 570 \\
   \bottomrule
   \end{tabular}
-  \caption{Number of times the loss function is evaluated during minimization across different dataset sizes.}
+  \caption{Number of times the loss function gets evaluated during minimization across different dataset sizes.}
   \label{table:of_calls}
 \end{table}
 
@@ -1275,8 +1266,8 @@ The total time it takes from the point at which the minimizer plugin calls the c
   \label{fig:of_call_time_version1}
 \end{figure}
 
-Figure \ref{fig:of_call_time_version2} caputes the same measurements for the second plugin-based implementation approach.
-Since the \gls{of} plugin is not implemented as a multi-step plugin, the \emph{Database Time} is not measured.
+Figure \ref{fig:of_call_time_version2} captures the same measurements as \ref{fig:of_call_time_version1} but for the second plugin-based implementation approach.
+The diagram does not show the \emph{Database Time} since this version does not make calls to the database.
 
 \begin{figure}
   \centering
@@ -1285,33 +1276,33 @@ Since the \gls{of} plugin is not implemented as a multi-step plugin, the \emph{D
   \label{fig:of_call_time_version2}
 \end{figure}
 
-Figure \ref{fig:coparison_of_of} shows a comparison between the total times it takes to calcualte the loss function across different implementations including the jupyter notebook based implementation.
+Figure \ref{fig:coparison_of_of} compares the total times it takes to get the loss value across different implementations, including the Jupyter Notebook implementation.
 
 \begin{figure}
   \centering
   \includegraphics[width=\textwidth]{graphics/comparison_of_of.png}
-  \caption{Comparison of the total time it takes to get the loss value across different implementations including the jupyter notebook based implementation.}
+  \caption{Comparison of the total time it takes to get the loss value across different implementations, including the Jupyter Notebook implementation.}
   \label{fig:coparison_of_of}
 \end{figure}
 
-Figure \ref{fig:time_for_of_calc} measures the same metrics as Figure \ref{fig:coparison_of_of} but this time it ignores the \emph{Database Time} and the \emph{Network Time} only measuring the actual \emph{Calculation Time}.
+Figure \ref{fig:time_for_of_calc} measures the same metrics as Figure \ref{fig:coparison_of_of}, but this time it ignores the \emph{Database Time} and the \emph{Network Time} only measuring the actual \emph{Calculation Time}.
 
 \begin{figure}
   \centering
   \includegraphics[width=\textwidth]{graphics/time_for_of_calc.png}
-  \caption{Comparison of the time the actual loss calculation takes across different implementations including the jupyter notebook based implementation.}
+  \caption{Comparison of the time the actual loss calculation takes across different implementations, including the Jupyter Notebook implementation.}
   \label{fig:time_for_of_calc}
 \end{figure}
 
-Obviously one can see that the jupyter notebook based implementation is the fastest, since it does not have to deal with network latency.
-Especially for the first plugin-based implementation approach the database latency is a bottleneck, that can be avoided.
+One can see that the Jupyter Notebook implementation is the fastest as it does not have to deal with network or database latency.
+Especially for the first plugin-based implementation approach, the database latency is a bottleneck that can be avoided.
 
 % \subsection{Caching of Data}
 % \label{subsec:cachingOfData}
 
-% In order to avoid the database latency, a caching mechanism is implemented for the first plugin-based implementation approach.
+% To avoid database latency, a caching mechanism is implemented for the first plugin-based implementation approach.
 % Since the input and target data and the hyperparameters do not change during the minimization process, they can be cached.
-% That means during the first call of the \emph{calc\_loss} endpoint the data is retrieved from the database and cached for subsequent calls.
+% That means the data is retrieved from the database during the first call of the \emph{calc\_loss} endpoint and cached for subsequent calls.
 % For the implementation the \emph{flask-caching} library is used.
 % Figure \ref{fig:of_call_time_version1_cached} compares the loss calculation time for the first plugin-based implementation approach with and without caching.
 
@@ -1322,17 +1313,17 @@ Especially for the first plugin-based implementation approach the database laten
 %   \label{fig:of_call_time_version1_cached}
 % \end{figure}
 
-% Figure \ref{fig:coparison_of_of_cached} shows a comparison between the total times it takes to get the loss across between the different implementations including a cached version of the first plugin-based implementation approach.
+% Figure \ref{fig:coparison_of_of_cached} compares the total times it takes to get the loss across different implementations, including a cached version of the first plugin-based implementation approach.
 
 % \begin{figure}
 %   \centering
 %   \includegraphics[width=\textwidth]{graphics/comparison_of_of_cached.png}
-%   \caption{Comparison of the total time it takes to get the loss value across different implementations including a cached version of the first plugin-based implementation approach.}
+%   \caption{Comparison of the total time it takes to get the loss value across different implementations, including a cached version of the first plugin-based implementation approach.}
 %   \label{fig:coparison_of_of_cached}
 % \end{figure}
 
 % Finally, Figure \ref{fig:time_for_minimization} shows the total time it takes to complete the minimization process for the different implementations.
-% The measurements for the plugin-based implementations do not include the time it takes a user to input data, but instead starts when the coordinator plugin calls the minimization endpoint of the minimizer plugin.
+% The measurements for the plugin-based implementations do not include the time it takes a user to input data but instead start when the coordinator plugin calls the minimization endpoint of the minimizer plugin.
 
 % \begin{figure}
 %   \centering
@@ -1348,18 +1339,18 @@ This segment evaluates the plugins' adherence to predefined standards and their 
 The governing standards, as enumerated in Chapters \ref{chap:architecture} and \ref{chap:implementation}, encompass:
 
 \begin{description}
-  \item[Metadata] All invocable plugins should furnish metadata, inclusive of interaction endpoints.
+  \item[Metadata] All invocable plugins should furnish interaction endpoints in their metadata.
   \item[Interaction Endpoints] Such plugins must also offer interaction endpoints compliant with respective argument and response schemas.
-  \item[Callback Protocols] Both invoker and invokee plugins should uphold the callback mechanisms delineated in Section \ref{sec:implementationOfCallbacksToTheCoordinatorPlugin}.
+  \item[Callback Protocols] Both invoking and invoked plugins should uphold the callback mechanisms delineated in Section \ref{sec:implementationOfCallbacksToTheCoordinatorPlugin}.
   \item[Functionality] Each plugin should retain its intended functionality as specified in Section \ref{sec:decomposition}.
 \end{description}
 
 Successful compliance ensures plugin interchangeability.
-All example plugins in the implementation segment conform to these standards, thereby ensuring mutual compatibility.
-Therefore, they are interchangeable with each other, i.e. any minimizer plugin can be used with any \gls{of} plugin without the user having to change any code.
-It is important to note thought that to leverage the gradient calculation that is provided by the \emph{neural-network} plugin, the \emph{scipy-minimizer-grad} plugin has to be used.
+All example plugins in the implementation segment conform to these standards, ensuring mutual compatibility.
+So, users can combine any minimizer plugin with any \gls{of} without changing any code.
+It is important to note, though, that to leverage the gradient calculation provided by the \emph{neural-network} plugin, the \emph{scipy-minimizer-grad} plugin has to be used.
 
-To make sure that there is no doubt that the plugins are interchangeable, we tested the combination of all minimizer plugins with all \gls{of} plugins and documented the results in Table \ref{table:interchangeability}.
+The combination of all minimizer plugins with all \gls{of} plugins was extensively tested manually, and the results have been documented in Table \ref{table:interchangeability} to ensure that the plugins are fully interchangeable.
 
 
 \begin{table}[h!]
@@ -1383,7 +1374,7 @@ To make sure that there is no doubt that the plugins are interchangeable, we tes
 \label{sec:usabilityForDevelopers}
 
 This section assesses the system's developer-friendliness.
-The evaluation is underpinned by the steps required to implement new minimizer and \gls{of} plugins.
+The steps required to implement new minimizer and \gls{of} plugins are documented to underpin the evaluation.
 While every plugin's inception is based on an existing template, the first step is to copy the template into a new directory.
 
 \subsection{Minimizer Plugin Development}
@@ -1421,7 +1412,7 @@ This chapter delves into the critical discussions surrounding architectural choi
 \label{sec:decomposition}
 
 Decomposing the minimization process into separate minimizer and \gls{of} plugins aligns perfectly with the plugin-based optimization framework's ethos.
-This delineation not only ensures clarity and specificity but also establishes a transparent interface between the two plugins.
+This delineation ensures clarity and specificity and establishes a transparent interface between the two plugins.
 The success of libraries like SciPy and how it handles the minimization process \cite{Virtanen2020} reinforces the effectiveness of this decomposition.
 Entrusting the coordinator plugin with the responsibility of overseeing the optimization eliminates the need for the minimizer and \gls{of} plugins to manage interactions, enabling developers to concentrate solely on enhancing plugin functionalities.
 
@@ -1430,19 +1421,19 @@ Entrusting the coordinator plugin with the responsibility of overseeing the opti
 
 Interaction endpoints serve as the core of the plugin-based optimization framework, offering a unified mode of interaction across plugins.
 This standardization supports developers by delineating available endpoints and their operational functionalities.
-By presenting these endpoints even before passing though the \gls{ui} process, developers have the flexibility to bypass the \gls{ui} and directly trigger the requisite endpoint.
+By presenting these endpoints even before passing through the \gls{ui} process, developers can bypass the \gls{ui} and directly trigger the requisite endpoint.
 Such a setup is invaluable for those seeking automation.
 By precisely defining input-output expectations, this approach also ensures seamless plugin interchangeability.
 
 \section{Callback Protocols}
 \label{sec:callackMechanism}
 
-The callback mechanism is an indispensable facet of the plugin-based optimization framework
-Its design ensures a distinct separation of duties.
+The callback mechanism is an essential facet of the plugin-based optimization framework.
+Its design ensures a distinct separation of responsibilities.
 The coordinator plugin, devoid of internal insights into the minimizer or \gls{of} plugin, solely relies on available endpoints.
-This mechanism obviates the need for database polling, offering real-time updates upon minimization completion.
+This mechanism prevents the need for database polling, offering real-time updates upon minimization completion.
 The distinctive implementation of the callback mechanism for the minimization endpoint further underlines the modularity, as it fully decouples the procedure from the minimizer plugin.
-The event-driven model propels adaptability, for all kinds of asynchronous processes in \gls{qhana}
+The event-driven model drives adaptability for all kinds of asynchronous processes in \gls{qhana}
 
 \section{Data Passing Endpoint}
 \label{sec:passDataEndpoint}
@@ -1451,41 +1442,42 @@ The rationale behind the \emph{pass\_data} endpoint merits discussion.
 While it introduces an additional layer, the trade-offs justify its existence.
 Directly passing vast datasets as query parameters to the \gls{ui} endpoint is not feasible.
 Transferring data as files to the \gls{ui} endpoint burdens the \gls{of} plugin with data extraction – a responsibility it should not shoulder.
-The \emph{pass\_data} endpoint, by receiving data as a NumPy array, allows the \gls{of} plugin to focus on its primary role: loss value computation.
+Receiving data as a NumPy array allows the \gls{of} plugin to focus on its primary role: loss value computation.
 
 \section{Comparision of Plugin-Based Implementation Strategies}
 \label{sec:differencesBetweenTheTwoPluginBasedImplementationApproaches}
 
-The two plugin-based implementation strategies shows the trade-off between the complexity of handling interaction endpoints and the ammount of data that has to be passed between plugins.
-The first approach, where the \gls{of} plugin is implemented as a multi-step plugin, is more complex, since the coordinator plugin has to handle the formatting of the interaction endpoint URL.
-But it also has the advantage that the minimizer plugin does not have to pass the hyperparameters and data to the \gls{of} plugin, since the \gls{of} plugin can retrieve them from the database.
+The two plugin-based implementation strategies show the trade-off between the complexity of handling interaction endpoints and the amount of data that has to be passed between plugins.
+The first approach, where the \gls{of} plugin is implemented as a multi-step plugin, is more complex since the coordinator plugin has to format the interaction endpoint URL to reflect the database ID.
+Nevertheless, it also has the advantage that the minimizer plugin does not have to pass the hyperparameters and data to the \gls{of} plugin since the \gls{of} plugin retrieves them from the database.
+In general, that means by passing along a single parameter, the database ID, any volume of data can be loaded and used for context.
 
-The second approach, where the \gls{of} plugin is not implemented as a multi-step plugin, is less complex, since the coordinator plugin does not have to handle the formatting of the interaction endpoint URL.
-But it also has the disadvantage that the minimizer plugin has to pass the hyperparameters and data to the \gls{of} plugin, since the \gls{of} plugin cannot retrieve them from the database.
+The second approach, where the \gls{of} plugin is not implemented as a multi-step plugin, is less complex since the coordinator plugin does not have to handle formatting the interaction endpoint URL.
+However, it also has the disadvantage that the minimizer plugin has to pass the hyperparameters and data to the \gls{of} plugin since the \gls{of} plugin cannot retrieve them from the database.
 
-Both appraches have their advantages and disadvantages and should rather show that the plugin-based optimization framework is flexible enough to support both approaches.
+Both approaches have advantages and disadvantages and should show that the plugin-based optimization framework is flexible enough to support both approaches.
 As the benchmarking results show, by caching the data, the first approach is arguably the better one of the two.
 
 \section{Performance Insights}
 \label{sec:performanceAnalysis}
 
-Performance metrics underscore the plugin-based optimization framework's viability when juxtaposed against the jupyter notebook-based model.
-Absent caching, both plugin methodologies grapple with network and database latencies.
-However, Figure \ref{fig:time_for_of_calc} stands out, as it highlights that the intrinsic time for loss function computation remains unaffected across methods.
+Performance metrics underscore the plugin-based optimization framework's viability when compared against the Jupyter Notebook model.
+Absent caching, both plugin methodologies suffer from network and database latencies.
+However, Figure \ref{fig:time_for_of_calc} stands out, highlighting that the intrinsic time for loss function computation remains unaffected across methods.
 
-Caching within the first plugin-based model significantly augments performance, as evidenced by Figure \ref{fig:of_call_time_version1_cached}.
-However, network latencies still persist and cannot be further minimized as data sent and received is already minimal.
-Additionally, some database overhead is still present, as the data has to be retrieved from the database and stored in the cache.
-As dataset sizes burgeon, these latencies diminish in relative significance.
-Overall, when fortified with caching, the plugin-based approach emerges as a compelling counterpart to the jupyter notebook-based paradigm.
+Caching within the first plugin-based model increases performance significantly, as evidenced by Figure \ref{fig:of_call_time_version1_cached}.
+However, network latencies persist and cannot be minimized further as data sent and received is already minimal.
+Additionally, some database overhead is still present, as the data has to be retrieved from the database once and stored in the cache.
+As dataset sizes increase, these latencies diminish in relative significance.
+When fortified with caching, the plugin-based approach emerges as a compelling alternative to the Jupyter Notebook implementation.
 
 \section{Plugin Interchangeability and Standardization}
 \label{sec:interchangeabilityAndStandardization}
 
 Standardization is paramount in the plugin-based optimization framework.
-The metadata, interaction endpoints, callback protocols, and plugin functionalities are all meticulously defined to foster uniformity.
+The metadata, interaction endpoints, callback protocols, and plugin functionalities are meticulously defined to foster uniformity.
 This regimented structure fosters seamless plugin interchangeability.
-The modular nature of this framework not only simplifies the optimization process but also galvanizes a modular development trajectory, paving the path for holistic plugin interactions within \gls{qhana}.
+The modular nature of this framework not only simplifies the optimization process but also encourages a modular development course, paving the path for universal plugin interactions within \gls{qhana}.
 
 \section{Developer Experience}
 \label{sec:developerUsabilityAssessment}
@@ -1493,8 +1485,8 @@ The modular nature of this framework not only simplifies the optimization proces
 The plugin-based optimization framework epitomizes developer-centricity.
 Shielded from the intricacies of plugin interactions, developers can emphasize plugin functionalities.
 The regimented structure of the interaction endpoints liberates developers from concerns about other plugins.
-The standardized architecture means that developers can focus on hyperparameter customization and core calculations.
-Contrasted with the jupyter notebook approach, this framework not only offers simplicity but, guided by comprehensive documentation, also facilitates the smooth realization of plugin functionalities.
+The standardized architecture means developers can focus on hyperparameter customization and core calculations.
+Contrasted with the Jupyter Notebook approach, this framework offers simplicity and, guided by comprehensive documentation, facilitates the smooth realization of plugins.
 
 
 
@@ -1503,29 +1495,29 @@ Contrasted with the jupyter notebook approach, this framework not only offers si
 \label{chap:zusfas}
 
 This thesis embarked on the challenging journey of conceptualizing and realizing the plugin-based optimization framework within the \gls{qhana} environment.
-What emerged was not just an innovative approach to optimization but also a pioneering framework that establishes protocols for plugin interactions within \gls{qhana}.
+What emerged was an innovative approach to optimization and a pioneering framework that establishes protocols for plugin interactions within \gls{qhana}.
 This framework's versatility hints at its potential applicability beyond just optimization tasks.
 
-The example implementations of both the minimizer and the \gls{of} plugins stand as a testament to the system's functionality and adaptability.
-Performance benchmarks, especially with the inclusion of caching, highlight the framework's robustness and efficiency.
+The example implementations of both the minimizer and the \gls{of} plugins are a testament to the system's functionality and adaptability.
+Performance benchmarks highlight the framework's robustness and efficiency, especially with caching.
 A particularly commendable aspect is the strict adherence to standardization, which ensures modularity and paves the way for seamless plugin interchangeability.
-This design philosophy also accentuates the developer-centric approach, simplifying plugin development while ensuring versatility.
+This design philosophy also emphasizes the developer-centric approach, simplifying plugin development while ensuring versatility.
 
 Looking ahead, the horizons for this work are vast.
-The current ecosystem provides a tangible opportunity to diversify by introducing a broader array of minimizer and \gls{of} plugins.
+The current ecosystem provides a substantial opportunity to diversify by introducing a broader array of minimizer and \gls{of} plugins.
 Expanding this repertoire will not only enrich the optimization solutions available but also enhance the robustness and adaptability of the system.
 
-As not yet fully implemented in this thesis, a new \gls{of} plugin that handles \glspl{vqa} would be a valuable and easily implementable addition.
-The energy state of a quantum system is then perceived as the loss value, while an already existing minimizer plugin can be used to minimize this loss.
+As yet to be fully implemented in this thesis, a new \gls{of} plugin that handles \glspl{vqa} would be a valuable and easily implementable addition.
+The energy state of a quantum system is then perceived as the loss value, while an existing minimizer plugin is used to minimize this loss.
 
-Building upon the inherent interchangeability and modularity of the current design, there's a novel concept that beckons exploration: viewing the objective function or the minimizer as hyperparameters themselves.
-In a traditional setting, hyperparameters are parameters that are set before the learning process begins.
-However, in our context, given the modularity, one could envision running parallel optimization processes with different \gls{of} plugins but with the same minimizer.
-This would be akin to a hyperparameter search, where each \gls{of} is a candidate, and the aim is to find the best fitting \gls{of} for a given dataset or problem.
+Building upon the inherent interchangeability and modularity of the current design, a novel concept draws attention: viewing the objective function or the minimizer as hyperparameters themselves.
+In a traditional setting, hyperparameters are parameters set before the learning process begins.
+However, in our context, given the modularity, one could envision running parallel optimization processes with different \gls{of} plugins with the same minimizer.
+This would be similar to a hyperparameter search, where each \gls{of} is a candidate and aims to find the best fitting \gls{of} for a given dataset or problem.
 Similarly, different minimizers can be benchmarked against a fixed \gls{of}.
 
-In conclusion, the plugin-based optimization framework, with its modularity and standardization, offers a plethora of opportunities.
-From diversifying its offerings to delving deep into quantum algorithms, and even reimagining the very nature of optimization components, the journey ahead is teeming with potential.
+In conclusion, with its modularity, standardization, and user-friendliness, the plugin-based optimization framework offers many opportunities.
+From diversifying its offerings to delving deep into quantum algorithms and even reimagining the very nature of optimization components, the journey ahead is teeming with potential.
 
 \printbibliography
 
