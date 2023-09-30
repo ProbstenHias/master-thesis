@@ -123,7 +123,7 @@
 
 %mittels \newfloat wurde die Algorithmus-Gleitumgebung definiert.
 %Mit folgendem Befehl werden alle floats dieses Typs ausgegeben
-\listof{Algorithmus}{List of Algorithms}
+% \listof{Algorithmus}{List of Algorithms}
 %\listofalgorithms %Ist nur für Algorithmen, die mittels \begin{algorithm} umschlossen werden, nötig
 
 % Abkürzungsverzeichnis
@@ -214,10 +214,9 @@ This concept allows microservices with an integrated UI to be used as plugins by
 
 Central to this thesis is the integration of \glspl{vqa}
 The envisioned approach allows for plugins to interact and collaborate, enabling the implementation of \glspl{vqa} as modular components within \gls{qhana}.
-\gls{qhana} has multiple parts: \gls{ui}, plugins, ...
-Take the architectural diagram form \cite{Buehler2022} and explain it here.
-The thesis is about plugins.
-%TODO here
+
+TODO go into more detail still
+%TODO
 
 
 
@@ -373,7 +372,18 @@ The subsequent sections of this thesis will delve into the methodologies, implem
 
 \chapter{Related Work}
 
-\cite{Beisel2023} \cite{Beisel2023a} \cite{Thullier2021}
+Beisel et al. \cite{Beisel2023} describe how \glspl{vqa} can be implmeneted in a workflow-based system.
+They go into detail of how to the quantum part of the algorithm can be implemented in a workflow-based system and focus less on the interaction between the different components.
+In their work they split the traditional computing part of the algorithm into two services, the \textbf{Objective Evaluation Service} and the \textbf{Optimization Service}.
+Similar to this thesis the Optimization Service also emply SciPy to perform the optimization.
+
+In a succeeding paper \cite{Beisel2023a} they discribe their architecture in more detail, showing how the different components interact with each other.
+They describe how the different compoenents of the system are implemented as microservices that provide a \gls{rest}ful API to interact with.
+The \textbf{Quokka Gateway} acts as a central component that unites the different microservices and provides a single \gls{rest}ful interface to interact with the system.
+
+
+
+\cite{Thullier2021} \cite{Mayer_2003}
 
 
 
@@ -492,7 +502,7 @@ With the architectural design strategy in place, the next step is to define the 
 \label{sec:implementationStrategy}
 
 \subsection{Preliminary Analysis and Design}
-Before diving into the implementation, an in-depth study of the \gls{qhana} documentation and a related paper on \gls{qhana}'s architecture \cite{Buehler2022} was undertaken to gain a comprehensive understanding of the system.
+Before diving into the implementation, an in-depth study of the \gls{qhana} documentation \cite{FabianBuehler} and a related paper on \gls{qhana}'s architecture \cite{Buehler2022} was undertaken to gain a comprehensive understanding of the system.
 With component and sequence diagrams already in place, the next step was to define the implementation strategy.
 
 \subsection{Development Environment and Toolset}
@@ -559,7 +569,7 @@ For the context of this thesis, the following principles are deemed most signifi
     \end{itemize}
 \end{itemize}
 
-It is imperative to note that while the outlined principles are crucial for this thesis, \gls{qhana}'s overarching documentation provides a more exhaustive list of best practices and guidelines for plugin creation \cite{Buehler2022}.
+It is imperative to note that while the outlined principles are crucial for this thesis, \gls{qhana}'s overarching documentation provides a more exhaustive list of best practices and guidelines for plugin creation \cite{FabianBuehler}.
 
 
 \subsection{Data Handling and Transfer}
@@ -773,12 +783,12 @@ The \gls{of} plugin interface is designed to accommodate a wide range of loss fu
 Its interfaces are:
 
 \begin{itemize}
-\item \textbf{Metadata}: The plugin provides metadata about itself as specified in the \gls{qhana} documentation \cite{Buehler2022}.
+\item \textbf{Metadata}: The plugin provides metadata about itself as specified in the \gls{qhana} documentation \cite{FabianBuehler}.
 \item \textbf{UIRef}: This endpoint is used to obtain the microfrontend for the \gls{of} plugin, which is used to collect the hyperparameters from the user.
-This interface also follows the \gls{qhana} documentation \cite{Buehler2022}.
+This interface also follows the \gls{qhana} documentation \cite{FabianBuehler}.
 \item \textbf{HRef}: This endpoint is used to process the input from the \gls{of} microfrontend and is therefore usually called the \textbf{processing} endpoint.
 It is usually triggered by the user clicking the \emph{submit} button on the microfrontend.
-This interface also follows the \gls{qhana} documentation \cite{Buehler2022}.
+This interface also follows the \gls{qhana} documentation \cite{FabianBuehler}.
 \item \textbf{PassData}: This endpoint is used to pass the input and target data to the \gls{of} plugin.
 It returns the number of weights that are required for the optimization process.
 The number of weights is returned here since it depends on the data and possibly the hyperparameters.
@@ -1297,14 +1307,14 @@ Figure \ref{fig:time_for_of_calc} measures the same metrics as Figure \ref{fig:c
 One can see that the Jupyter Notebook implementation is the fastest as it does not have to deal with network or database latency.
 Especially for the first plugin-based implementation approach, the database latency is a bottleneck that can be avoided.
 
-% \subsection{Caching of Data}
-% \label{subsec:cachingOfData}
+\subsection{Caching of Data}
+\label{subsec:cachingOfData}
 
-% To avoid database latency, a caching mechanism is implemented for the first plugin-based implementation approach.
-% Since the input and target data and the hyperparameters do not change during the minimization process, they can be cached.
-% That means the data is retrieved from the database during the first call of the \emph{calc\_loss} endpoint and cached for subsequent calls.
-% For the implementation the \emph{flask-caching} library is used.
-% Figure \ref{fig:of_call_time_version1_cached} compares the loss calculation time for the first plugin-based implementation approach with and without caching.
+To avoid database latency, a caching mechanism is implemented for the first plugin-based implementation approach.
+Since the input and target data and the hyperparameters do not change during the minimization process, they can be cached.
+That means the data is retrieved from the database during the first call of the \emph{calc\_loss} endpoint and cached for subsequent calls.
+For the implementation the \emph{flask-caching} library is used.
+Figure \ref{fig:of_call_time_version1_cached} compares the loss calculation time for the first plugin-based implementation approach with and without caching.
 
 % \begin{figure}
 %   \centering
@@ -1313,7 +1323,7 @@ Especially for the first plugin-based implementation approach, the database late
 %   \label{fig:of_call_time_version1_cached}
 % \end{figure}
 
-% Figure \ref{fig:coparison_of_of_cached} compares the total times it takes to get the loss across different implementations, including a cached version of the first plugin-based implementation approach.
+Figure \ref{fig:coparison_of_of_cached} compares the total times it takes to get the loss across different implementations, including a cached version of the first plugin-based implementation approach.
 
 % \begin{figure}
 %   \centering
@@ -1322,8 +1332,8 @@ Especially for the first plugin-based implementation approach, the database late
 %   \label{fig:coparison_of_of_cached}
 % \end{figure}
 
-% Finally, Figure \ref{fig:time_for_minimization} shows the total time it takes to complete the minimization process for the different implementations.
-% The measurements for the plugin-based implementations do not include the time it takes a user to input data but instead start when the coordinator plugin calls the minimization endpoint of the minimizer plugin.
+Finally, Figure \ref{fig:time_for_minimization} shows the total time it takes to complete the minimization process for the different implementations.
+The measurements for the plugin-based implementations do not include the time it takes a user to input data but instead start when the coordinator plugin calls the minimization endpoint of the minimizer plugin.
 
 % \begin{figure}
 %   \centering
