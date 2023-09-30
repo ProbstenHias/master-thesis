@@ -370,21 +370,6 @@ This problem encompasses several challenges:
 Addressing this problem is essential to enhance the capabilities of \gls{qhana}, transforming it into a dynamic, adaptable, and user-centric platform for optimization and VQAs.
 The subsequent sections of this thesis will delve into the methodologies, implementations, and evaluations related to this problem.
 
-\chapter{Related Work}
-
-Beisel et al. \cite{Beisel2023} describe how \glspl{vqa} can be implmeneted in a workflow-based system.
-They go into detail of how to the quantum part of the algorithm can be implemented in a workflow-based system and focus less on the interaction between the different components.
-In their work they split the traditional computing part of the algorithm into two services, the \textbf{Objective Evaluation Service} and the \textbf{Optimization Service}.
-Similar to this thesis the Optimization Service also emply SciPy to perform the optimization.
-
-In a succeeding paper \cite{Beisel2023a} they discribe their architecture in more detail, showing how the different components interact with each other.
-They describe how the different compoenents of the system are implemented as microservices that provide a \gls{rest}ful API to interact with.
-The \textbf{Quokka Gateway} acts as a central component that unites the different microservices and provides a single \gls{rest}ful interface to interact with the system.
-
-
-
-\cite{Thullier2021} \cite{Mayer_2003}
-
 
 
 \chapter{Methodology}
@@ -1499,6 +1484,35 @@ The standardized architecture means developers can focus on hyperparameter custo
 Contrasted with the Jupyter Notebook approach, this framework offers simplicity and, guided by comprehensive documentation, facilitates the smooth realization of plugins.
 
 
+\chapter{Related Work}
+
+Beisel et al. \cite{Beisel2023} detail the implementation of \glspl{vqa} within a workflow-based system.
+They delve into the intricacies of incorporating the quantum aspect of the algorithm into such a system while emphasizing the interaction between its various components less.
+In their approach, the conventional computing segment of the algorithm is split into two services: the \textbf{Objective Evaluation Service} and the \textbf{Optimization Service}.
+Similar to this thesis, the \textbf{Optimization Service} utilizes SciPy for optimization tasks.
+
+In a subsequent paper \cite{Beisel2023a}, Beisel et al. elaborate on the architecture of the workflow-based system, shedding light on the interplay between its components.
+They explain that the system's components are realized as microservices, each offering a \gls{rest}ful API for interaction.
+Central to this architecture is a \textbf{Gateway}, which handles the internal communication with the various microservices and presents a unified \gls{rest}ful interface to the outside.
+
+Mayer et al. \cite{Mayer_2003} advocate simplifying the intricacies of expansive software systems through a \emph{plugin-based architecture}.
+They argue that the system gains flexibility and becomes more maintainable by minimizing the core system and encapsulating most functionalities as plugins.
+They introduce the concept of \textbf{Plugin-in Component Architecture} (PICA), where each plugin must provide a list of interfaces that the core can call and a description of how to use the interfaces.
+
+Wolfinger et al. \cite{Wolfinger2006} present a plugin architecture tailored for the .NET platform, drawing parallels with the Eclipse platform.
+The authors emphasize the structured interaction between plugins through the concepts of \textbf{slots} and \textbf{extensions}.
+A plugin host defines slots, indicating how they can be extended, while plugin contributors provide extensions to fill these slots.
+This structured interaction ensures seamless integration of plugins.
+The architecture also leverages .NET features to embed relevant plugin information directly within the application's source code, arguing for improved readability and maintainability.
+
+Birsan et al. \cite{Birsan2005} delve into the {plugin architectures of the Eclipse platform.
+Birsan underscores the importance of well-defined \textbf{extension points}, allowing plugins to interact seamlessly.
+The work highlights the intricate interplay between plugins, emphasizing the need for structured interfaces for effective interaction.
+
+Thullier et al. \cite{Thullier2021} introduce a \emph{machine learning workbench}, emphasizing a modular approach to machine learning processes for smart homes.
+The workbench divides the machine learning workflow into distinct services: the \textbf{Windowing Module}, the \textbf{Feature Extraction Module}, and the \textbf{Machine Learning Module}.
+This modular design ensures efficient parallel processing and scalability.
+The paper does not aim to split the machine learning service into different components.
 
 
 \chapter{Conclusion and Outlook}
