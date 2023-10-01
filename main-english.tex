@@ -191,6 +191,42 @@
 \chapter{Introduction}
 \label{chap:introduction}
 
+The dawn of quantum computing has revolutionized the landscape of computational research.
+With its unparalleled processing capabilities and the potential to solve problems deemed intractable for classical computers, quantum computing heralds a new era of possibilities \cite{Shor}.
+However, with these possibilities come challenges that demand innovative solutions, particularly in harnessing the power of quantum algorithms for diverse applications.
+
+One domain that stands to benefit immensely from the quantum revolution is the \gls{dh}.
+Traditionally, the humanities have been viewed through a lens of qualitative analysis.
+However, with the advent of digital tools and methodologies, a quantitative dimension has emerged, enabling researchers to analyze vast datasets, uncover patterns, and derive insights that were previously unavailable \cite{Barzen2019}.
+With its inherent strengths, Quantum computing offers the potential to elevate the Digital Humanities to new heights, enabling analyses of unprecedented complexity and depth \cite{Barzen2022}.
+
+Enter \gls{qhana} \cite{Buehler2022}, a pioneering system meticulously crafted for \gls{qdh}.
+While its core architecture is robust and versatile, there lies an untapped potential: integrating variational algorithms, specifically \glspl{vqa} in a modular fashion.
+The vision is ambitious yet clear - components of variational algorithms encapsulated as distinct, interchangeable plugins within \gls{qhana}.
+Such a modular approach promises enhanced adaptability and a user-centric platform where researchers can tailor their quantum optimization strategies with unparalleled precision.
+
+However, the path to realizing this vision is fraught with challenges.
+Integrating optimization as multiple plugins demands a robust communication mechanism, ensuring seamless interaction and data sharing.
+Furthermore, the user experience must remain intuitive, allowing both quantum novices and experts to harness the full potential of the modular quantum optimization framework.
+
+The thesis embarks on a journey to navigate challenges and aims to design and implement a modular framework within \gls{qhana}. Delving into the intricacies of plugin-based architectures, the nuances of quantum optimization algorithms, and the challenges of ensuring seamless interaction between distinct components.
+
+Moreover, the implications of this research extend beyond the limits of \gls{vqa} in \gls{qhana}.
+By pioneering a methodology for \gls{vqa} plugin interactions within \gls{qhana}, this work lays the foundation for a broader paradigm of modular system design in the \gls{qdh}.
+
+The thesis undertakes on a comprehensive journey through modular \glspl{vqa} within \gls{qhana}.
+In Chapter \ref{chap:background}, the groundwork is laid by delving into the foundational principles and concepts that underpin the entire thesis
+Chapter \ref{chap:problem} sharpens the focus, presenting a clear and concise problem statement and outlining the objectives aimed to be achieved.
+With a clear understanding of the problem at hand, Chapter \ref{chap:methodology} dives deep into the methodology.
+Here, the strategies and approaches employed to develop and evaluate the modular framework within \gls{qhana} are explored.
+Chapter \ref{chap:architecture} unveils the architectural blueprint of the modular framework.
+Moving from design to action, Chapter \ref{chap:implementation} delves into the details of the framework's implementation.
+In Chapter \ref{chap:results}, the design and implementation are put to the test. Through rigorous evaluations, the architectural design's efficacy and real-world implementation are measured, drawing insights from the results.
+Chapter \ref{chap:discussion} delves into a thorough analysis of the findings, and checks if set problems where properly solved.
+To place the work in a broader context, Chapter \ref{chap:relatedWork} explores the landscape of related research.
+Finally, Chapter \ref{chap:conclusion} brings the journey to an end, summarizing the resulting framwork and looking ahead to future possibilities and roads for further extension.
+
+
 \chapter{Background}
 \label{chap:background}
 
@@ -208,12 +244,15 @@ While the primary vision of \gls{qhana} was to assess the potential advantages o
 \gls{qhana} is designed to be extensible, allowing the integration of new data sources and quantum algorithms as plugins.
 However, plugins are built for specific applications, limiting their reusability in other contexts.
 Moreover, an application's plugins must be developed in the same programming language as the application.
-Even if a plugin can be reused in another application, its \gls{ui} has to adapt to the new application. Otherwise, users may need help understanding the plugin's functionality.
+Even if a plugin can be reused in another application, its \gls{ui} has to adapt to the new application.
+Otherwise, users may need help understanding the plugin's functionality.
 To address this limitation, \gls{qhana} is built on a novel concept of \glspl{ramp}.
 This concept allows microservices with an integrated UI to be used as plugins by multiple applications, enhancing the reusability of the plugins across different applications \cite{Buehler2022}.
 
-Central to this thesis is the integration of \glspl{vqa}
-The envisioned approach allows for plugins to interact and collaborate, enabling the implementation of \glspl{vqa} as modular components within \gls{qhana}.
+\subsection{QHAna's Architecture}
+\label{subsec:qhanaArchitecture}
+
+\subsection{RAMPs}
 
 TODO go into more detail still
 %TODO
@@ -1485,6 +1524,7 @@ Contrasted with the Jupyter Notebook approach, this framework offers simplicity 
 
 
 \chapter{Related Work}
+\label{chap:relatedWork}
 
 Beisel et al. \cite{Beisel2023} detail the implementation of \glspl{vqa} within a workflow-based system.
 They delve into the intricacies of incorporating the quantum aspect of the algorithm into such a system while emphasizing the interaction between its various components less.
@@ -1516,7 +1556,7 @@ The paper does not aim to split the machine learning service into different comp
 
 
 \chapter{Conclusion and Outlook}
-\label{chap:zusfas}
+\label{chap:conclusion}
 
 This thesis embarked on the challenging journey of conceptualizing and realizing the plugin-based optimization framework within the \gls{qhana} environment.
 What emerged was an innovative approach to optimization and a pioneering framework that establishes protocols for plugin interactions within \gls{qhana}.
