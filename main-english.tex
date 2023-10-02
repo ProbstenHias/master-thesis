@@ -75,10 +75,24 @@
 
 %Kurzfassung / abstract
 %auch im Stil vom Inhaltsverzeichnis
-  \section*{Kurzfassung}
-  \section*{Abstract}
-Quantum computing, with its transformative processing capabilities, has ushered in a new computational era, presenting both unparalleled opportunities and intricate challenges \cite{Shor}. One significant beneficiary of this quantum revolution is the Digital Humanities (\gls{dh}), which, through digital tools, has added a quantitative dimension to its traditionally qualitative realm \cite{Barzen2019}. \gls{qhana}, designed specifically for Quantum Digital Humanities (\gls{qdh}), emerges as a pivotal system in this context \cite{Buehler2022}. This thesis focuses on enhancing \gls{qhana} by integrating variational algorithms, especially \glspl{vqa}, in a modular manner. The objective is to encapsulate components of variational algorithms as distinct, interchangeable plugins, ensuring adaptability and user-centricity. Addressing challenges like robust plugin communication and intuitive user experience, the research delves into the design, implementation, and evaluation of this modular framework. Beyond \gls{vqa}, the findings lay a foundation for modular system design in \gls{qdh}. The journey spans from foundational principles in Chapter \ref{chap:background} to a reflective analysis in Chapter \ref{chap:discussion}, culminating in conclusions and future prospects in Chapter \ref{chap:conclusion}.
 
+\section*{Abstract}
+Quantum computing, with its transformative processing capabilities, has ushered in a new computational era, presenting both unparalleled opportunities and intricate challenges.
+One significant beneficiary of this quantum revolution is the \gls{dh}, which, through digital tools, has added a quantitative dimension to its traditionally qualitative realm.
+\gls{qhana}, designed specifically for \gls{qdh}, emerges as a pivotal system in this context.
+This thesis focuses on enhancing \gls{qhana} by integrating variational algorithms, especially \glspl{vqa}, in a modular manner.
+The objective is to encapsulate components of variational algorithms as distinct, interchangeable plugins, ensuring adaptability and user-centricity.
+Addressing challenges like robust plugin communication and intuitive user experience, the research delves into the design, implementation, and evaluation of this modular framework.
+Beyond \gls{vqa}, the findings lay a foundation for modular system design in \gls{qdh}
+
+\section*{Kurzfassung}
+Quantum computing, mit ihren transformativen Verarbeitungsfähigkeiten, hat eine neue Ära der Berechnung eingeläutet und bietet sowohl beispiellose Möglichkeiten als auch komplexe Herausforderungen.
+Ein bedeutender Profiteur dieser Quantenrevolution ist die \gls{dh}, die durch digitale Werkzeuge ihrer traditionell qualitativen Domäne eine quantitative Dimension hinzugefügt hat.
+\gls{qhana}, speziell für \gls{qdh} entwickelt, tritt in diesem Kontext als ein zentrales System hervor.
+Diese Arbeit konzentriert sich auf die Verbesserung von \gls{qhana} durch die Integration von variationalen Algorithmen, insbesondere \glspl{vqa}, auf modulare Weise.
+Das Ziel ist es, Komponenten von variationalen Algorithmen als eigenständige, austauschbare Plugins zu kapseln, um Anpassungsfähigkeit und Benutzerzentriertheit zu gewährleisten.
+Die Forschung geht auf Herausforderungen wie robuste Plugin-Kommunikation und intuitive Benutzererfahrung ein und vertieft das Design, die Implementierung und die Bewertung dieses modularen Frameworks.
+Jenseits von \gls{vqa} legen die Ergebnisse eine Grundlage für das modulare Systemdesign in \gls{qdh}.
 
 \cleardoublepage
 
@@ -741,7 +755,7 @@ By employing such multifaceted and representative datasets, the methodology aims
 
 
 \section{Resultant Decomposition into Plugins and their Responsibilities}
-\label{sec:decomposition}
+\label{sec:resdecomposition}
 
 Following the decomposition strategy, the plugin-based optimization framework was divided into three primary plugin types:
 \gls{of} plugin, the minimizer plugin, and the coordinator plugin.
