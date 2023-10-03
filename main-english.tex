@@ -86,7 +86,7 @@ Addressing challenges like robust plugin communication and intuitive user experi
 Beyond \gls{vqa}, the findings lay a foundation for modular system design in \gls{qdh}
 
 \section*{Kurzfassung}
-Quantum computing, mit ihren transformativen Verarbeitungsfähigkeiten, hat eine neue Ära der Berechnung eingeläutet und bietet sowohl beispiellose Möglichkeiten als auch komplexe Herausforderungen.
+Quantum computing, mit ihren transformativen Verarbeitungsfähigkeiten, hat eine neue Ära der Berechnung eingeläutet und bietet sowohl noch nie dagewesene Chancen als auch komplexe Herausforderungen.
 Ein bedeutender Profiteur dieser Quantenrevolution ist die \gls{dh}, die durch digitale Werkzeuge ihrer traditionell qualitativen Domäne eine quantitative Dimension hinzugefügt hat.
 \gls{qhana}, speziell für \gls{qdh} entwickelt, tritt in diesem Kontext als ein zentrales System hervor.
 Diese Arbeit konzentriert sich auf die Verbesserung von \gls{qhana} durch die Integration von variationalen Algorithmen, insbesondere \glspl{vqa}, auf modulare Weise.
@@ -266,13 +266,42 @@ This concept allows microservices with an integrated UI to be used as plugins by
 
 \subsection{QHAna's Architecture}
 \label{subsec:qhanaArchitecture}
+\gls{qhana}'s architecture, as depicted in Figure \ref{fig:qhanaarch}, is characterized by its \gls{ui} and backend components.
+The \gls{ui} offers users platform to navigate and interact with the system's functionalities, including the integrated quantum algorithms.
+It acts as the primary touchpoint, bridging users with the system's underlying computational capabilities and data sources.
 
-\subsection{RAMPs}
+Conversely, the backend stands as QHAna's computational core, orchestrating the execution of quantum algorithms, managing data sources, and ensuring fluid communication with the UI.
+Its modular design facilitates the integration of new algorithms and data sources, adapting to the evolving needs of the \gls{dh} community.
 
-TODO go into more detail still
-%TODO
+Integral to QHAna's extensible architecture are the \glspl{ramp}.
+These components not only enhance the system's capabilities but also ensure that their UI elements cohesively integrate with the primary application interface, fostering a unified user experience.
 
+\subsection{RAMPs: Bridging UI and Data Processing}
+\label{subsec:ramps}
 
+At their core, \glspl{ramp} are designed to serve as plugins, but they go beyond traditional plugin functionalities by offering a more holistic approach to both user interaction and data processing.
+
+\textbf{User Interface (UI) Integration}:
+One of the standout features of RAMPs is their ability to seamlessly integrate UI components.
+Unlike traditional plugins that might require significant adjustments to fit into an application's existing UI, RAMPs come equipped with micro frontends.
+These micro frontends are designed to be context-aware, ensuring that they align with the primary application's interface.
+Furthermore, \glspl{ramp} introduce the possibility of multi-step \gls{ui} interactions, where users can be presented with sequential interfaces based on prior inputs or processing results, enhancing the depth and interactivity of the user experience.
+
+\textbf{Data Processing Capabilities}:
+Beyond the \gls{ui}, \glspl{ramp} are adept at handling intricate data processing tasks.
+They encapsulate specific functionalities and offer them as self-contained services.
+This modular approach to data processing ensures that \glspl{ramp} can be easily integrated, replaced, or updated without disrupting the overall system's functionality.
+The multi-step nature of \glspl{ramp} also allows for iterative processing, where data can undergo multiple rounds of processing based on user inputs or intermediate results.
+
+In essence, RAMPs represent a paradigm shift in how plugins are perceived and integrated within applications
+By merging \gls{ui} and data processing functionalities into a single, reusable unit and introducing multi-step interactions, they enhance the flexibility and adaptability of a system.
+
+\begin{figure}
+  \centering
+  \includegraphics[width=\textwidth]{graphics/qhanaarch.png}
+  \caption{\gls{qhana}'s Architecture as depicted in \cite{Buehler2022}}
+  \label{fig:qhanaarch}
+\end{figure}
 
 \section{Quantum Computing}
 \label{sec:quantumComputing}
@@ -1602,7 +1631,7 @@ From diversifying its offerings to delving deep into quantum algorithms and even
 
 All links were last followed on October 15, 2023.
 
-\appendix
+\chapter*{Appendix}
 \lstinputlisting[language=Python, caption={Source code for generating a sample test dataset for benchmarking with 1000 samples, 47 features, 10 noise and 1 target}., label=lst:generate_test_dataset]{code/ridge_loss_data.py}.
 
 \pagestyle{empty}
