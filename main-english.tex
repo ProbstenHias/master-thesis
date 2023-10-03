@@ -207,20 +207,20 @@ Jenseits von \gls{vqa} legen die Ergebnisse eine Grundlage für das modulare Sys
 \label{chap:introduction}
 
 The dawn of quantum computing has revolutionized the landscape of computational research.
-With its unparalleled processing capabilities and the potential to solve problems deemed intractable for classical computers, quantum computing heralds a new era of possibilities \cite{Shor}.
+With its unparalleled processing capabilities and the potential to solve problems deemed undoable for classical computers, quantum computing heralds a new era of possibilities \cite{Shor}.
 However, with these possibilities come challenges that demand innovative solutions, particularly in harnessing the power of quantum algorithms for diverse applications.
 
 One domain that stands to benefit immensely from the quantum revolution is the \gls{dh}.
 Traditionally, the humanities have been viewed through a lens of qualitative analysis.
 However, with the advent of digital tools and methodologies, a quantitative dimension has emerged, enabling researchers to analyze vast datasets, uncover patterns, and derive insights that were previously unavailable \cite{Barzen2019}.
-With its inherent strengths, Quantum computing offers the potential to elevate the Digital Humanities to new heights, enabling analyses of unprecedented complexity and depth \cite{Barzen2022}.
+With its inherent strengths, Quantum computing offers the potential to elevate the \glspl{dh} to new heights, enabling analyses of unprecedented complexity and depth \cite{Barzen2022}.
 
 Enter \gls{qhana} \cite{Buehler2022}, a pioneering system meticulously crafted for \gls{qdh}.
 While its core architecture is robust and versatile, there lies an untapped potential: integrating variational algorithms, specifically \glspl{vqa} in a modular fashion.
 The vision is ambitious yet clear - components of variational algorithms encapsulated as distinct, interchangeable plugins within \gls{qhana}.
-Such a modular approach promises enhanced adaptability and a user-centric platform where researchers can tailor their quantum optimization strategies with unparalleled precision.
+Such a modular approach promises enhanced adaptability and a user-centric platform where researchers can precisely tailor their quantum optimization strategies.
 
-However, the path to realizing this vision is fraught with challenges.
+However, the path to realizing this vision is full of challenges.
 Integrating optimization as multiple plugins demands a robust communication mechanism, ensuring seamless interaction and data sharing.
 Furthermore, the user experience must remain intuitive, allowing both quantum novices and experts to harness the full potential of the modular quantum optimization framework.
 
@@ -229,17 +229,17 @@ The thesis embarks on a journey to navigate challenges and aims to design and im
 Moreover, the implications of this research extend beyond the limits of \gls{vqa} in \gls{qhana}.
 By pioneering a methodology for \gls{vqa} plugin interactions within \gls{qhana}, this work lays the foundation for a broader paradigm of modular system design in the \gls{qdh}.
 
-The thesis undertakes on a comprehensive journey through modular \glspl{vqa} within \gls{qhana}.
-In Chapter \ref{chap:background}, the groundwork is laid by delving into the foundational principles and concepts that underpin the entire thesis
+The thesis undertakes a comprehensive journey through modular \glspl{vqa} within \gls{qhana}.
+In Chapter \ref{chap:background}, the groundwork is laid by delving into the foundational principles and concepts that underpin the entire thesis.
 Chapter \ref{chap:problem} sharpens the focus, presenting a clear and concise problem statement and outlining the objectives aimed to be achieved.
 With a clear understanding of the problem at hand, Chapter \ref{chap:methodology} dives deep into the methodology.
 Here, the strategies and approaches employed to develop and evaluate the modular framework within \gls{qhana} are explored.
 Chapter \ref{chap:architecture} unveils the architectural blueprint of the modular framework.
 Moving from design to action, Chapter \ref{chap:implementation} delves into the details of the framework's implementation.
-In Chapter \ref{chap:results}, the design and implementation are put to the test. Through rigorous evaluations, the architectural design's efficacy and real-world implementation are measured, drawing insights from the results.
-Chapter \ref{chap:discussion} delves into a thorough analysis of the findings, and checks if set problems where properly solved.
+In Chapter \ref{chap:results}, the design and implementation are put to the test. The architectural design's efficacy and real-world implementation are measured through rigorous evaluations, drawing insights from the results.
+Chapter \ref{chap:discussion} delves into a thorough analysis of the findings and checks if set problems were adequately solved.
 To place the work in a broader context, Chapter \ref{chap:relatedWork} explores the landscape of related research.
-Finally, Chapter \ref{chap:conclusion} brings the journey to an end, summarizing the resulting framwork and looking ahead to future possibilities and roads for further extension.
+Finally, Chapter \ref{chap:conclusion} brings the journey to an end, summarizing the resulting framework and looking ahead to future possibilities and roads for further extension.
 
 
 \chapter{Background}
@@ -752,7 +752,7 @@ Through meticulously evaluating these parameters, this thesis thoroughly apprais
 \section{Test Data Generation for Evaluation}
 To robustly evaluate the solutions proposed in this work, testing them on diverse datasets, reflecting both size and complexity is essential.
 The objective is to mimic real-world scenarios where optimization problems can range from simple tasks with a few data points to complex challenges with many features and data points.
-The code used to generate the test data can be found in the appendix \ref{appendix:generate_data}.
+The code used to generate the test data can be found in the appendix \ref{chap:appendix}.
 
 \subsection{Dataset Characteristics:}
 
@@ -771,7 +771,7 @@ The code used to generate the test data can be found in the appendix \ref{append
 
     \item \textbf{Adherence to QHana Standards}:
    \begin{itemize}
-        \item \textbf{Unique Entity IDs}: Each data point in the dataset is allocated a unique ID in the format "entityX," where X represents the entity number.
+        \item \textbf{Unique Entity IDs}: Each data point in the dataset is allocated a unique ID in the format \emph{entityX}, where X represents the entity number.
 This aligns with \gls{qhana}'s data standard that mandates every data point to have an identifiable ID.
         \item \textbf{Data Format and Storage}: All datasets are stored in the CSV (Comma Separated Values) format, adhering to \gls{qhana}'s accepted data formats.
     \end{itemize}
@@ -800,9 +800,9 @@ Its primary roles include:
 \begin{itemize}
 \item \textbf{Metadata Provision}: The plugin offers metadata about itself.
 \item \textbf{Hyperparameters Acquisition}: It prompts the user to provide the hyperparameters necessary for the loss function calculation.
-\item \textbf{Loss Calculation}: Based on the provided input data, the plugin computes the loss, representing the discrepancy between predicted and actual values.
+\item \textbf{Loss Calculation}: Based on the provided input data, the plugin computes the loss, representing the discrepancy between predicted and tareget values.
 \item \textbf{Gradient Calculation (Optional)}: For optimization algorithms that leverage gradient-based methods, the plugin can optionally compute the gradient of the loss function.
-This aids in guiding the optimization process towards the desired minima.
+This aids in guiding the optimization process towards the desired minimum.
 \end{itemize}
 
 \subsection{Minimizer Plugin}
@@ -861,8 +861,8 @@ This interface also follows the \gls{qhana} documentation \cite{FabianBuehler}.
 It returns the number of weights that are required for the optimization process.
 The number of weights is returned here since it depends on the data and possibly the hyperparameters.
 \item \textbf{CalculateLoss}: This endpoint calculates the loss.
-\item \textbf{CalculateGradient (Optional)}: This endpoint is used to calculate the gradient of the loss function. It is optional since not all optimization algorithms require a gradient.
-\item \textbf{CalculateLossAndGradient (Optional)}: This endpoint calculates the loss and the gradient of the loss function. Similar to the previous endpoint, it is optional since not all optimization algorithms require a gradient.
+\item \textbf{CalculateGradient (Optional)}: This endpoint is used to calculate the gradient of the loss function. It is optional since the gradient cannot be computed efficiently for all \glspl{of}.
+\item \textbf{CalculateLossAndGradient (Optional)}: This endpoint calculates the loss and the gradient of the loss function. Similar to the previous endpoint, it is optional.
 \end{itemize}
 
 \subsection{Minimizer Plugin Interfaces}
@@ -891,7 +891,7 @@ The two primary modes of interactions were short-running and long-running, each 
 
 \subsection{Short-Running Interaction}
 
-In short-running interactions, a plugin invokes another plugin's endpoint, typically via a `GET` or a `Post` request, and immediately receives a response.
+In short-running interactions, a plugin invokes another plugin's endpoint, typically via a `GET` or a `POST` request, and immediately receives a response.
 This mode of interaction is synchronous, wherein the invoking plugin waits for the response before proceeding.
 Instances of such interactions in the optimization context are:
 \begin{itemize}
@@ -1629,9 +1629,8 @@ From diversifying its offerings to delving deep into quantum algorithms and even
 
 \printbibliography
 
-All links were last followed on October 15, 2023.
-
 \chapter*{Appendix}
+\label{chap:appendix}
 \lstinputlisting[language=Python, caption={Source code for generating a sample test dataset for benchmarking with 1000 samples, 47 features, 10 noise and 1 target}., label=lst:generate_test_dataset]{code/ridge_loss_data.py}.
 
 \pagestyle{empty}
