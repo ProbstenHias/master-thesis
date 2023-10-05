@@ -238,7 +238,7 @@ Here, the strategies and approaches employed to develop and evaluate the modular
 Chapter \ref{chap:architecture} unveils the architectural blueprint of the modular framework.
 Moving from design to action, Chapter \ref{chap:implementation} delves into the details of the framework's implementation.
 In Chapter \ref{chap:results}, the design and implementation are put to the test. The architectural design's efficacy and real-world implementation are measured through rigorous evaluations, drawing insights from the results.
-Chapter \ref{chap:discussion} delves into a thorough analysis of the findings and checks if set problems were adequately solved.
+Chapter \ref{chap:discussion} delves into a thorough analysis of the findings and checks if set problems are adequately solved.
 To place the work in a broader context, Chapter \ref{chap:relatedWork} explores the landscape of related research.
 Finally, Chapter \ref{chap:conclusion} brings the journey to an end, summarizing the resulting framework and looking ahead to future possibilities and roads for further extension.
 
@@ -255,7 +255,7 @@ By delving into these foundational topics, readers will gain the necessary conte
 
 \gls{qhana} was conceived as a specialized application in the domain of \gls{dh}.
 Its primary design allows users to explore various machine-learning algorithms on designated datasets.
-While the primary vision of \gls{qhana} was to assess the potential advantages of quantum algorithms within the \gls{dh} community, the rise and cloud availability of quantum computers further underscore its relevance and timeliness.
+While the primary vision of \gls{qhana} is to assess the potential advantages of quantum algorithms within the \gls{dh} community, the rise and cloud availability of quantum computers further underscore its relevance and timeliness.
 
 \gls{qhana} is designed to be extensible, allowing the integration of new data sources and quantum algorithms as plugins.
 However, plugins are built for specific applications, limiting their reusability in other contexts.
@@ -308,7 +308,7 @@ By merging \gls{ui} and data processing functionalities into a single, reusable 
 \label{sec:quantumComputing}
 Quantum computing is a cutting-edge field that exploits the principles of quantum mechanics to process information.
 Unlike classical computers that use bits (0s and 1s) to store and process information, quantum computers use quantum bits, or \emph{qubits}.
-Through superposition and entanglement, Qubits can exist in multiple states at once and be correlated with each other in ways that classical bits cannot \cite{Nielsen2010}.
+Through superposition and entanglement, qubits can exist in multiple states at once and be correlated with each other in ways that classical bits cannot \cite{Nielsen2010}.
 
 Superposition allows a qubit to be in a state of a combination of 0 and 1, with a certain probability for each.
 This property enables quantum computers to perform many calculations simultaneously, vastly increasing their potential computational power.
@@ -513,7 +513,7 @@ The main challenge is to find a good decomposition so that, on the one hand, all
 on the other hand, splitting the process into too many plugins would create an overhead that would lead to inefficiency.
 
 \subsection{Defining Plugin Responsibilities}
-Once the plugins were identified, the next step was to define the responsibilities of each plugin precisely.
+Once the plugins are identified, the next step is to define the responsibilities of each plugin precisely.
 This ensured that every plugin had a well-defined purpose, preventing overlaps in functionality and ensuring clarity in their roles.
 To delineate these responsibilities, several crucial decisions had to be made:
 
@@ -529,17 +529,17 @@ To delineate these responsibilities, several crucial decisions had to be made:
 \end{itemize}
 
 \subsection{Universal Plugin Interface Design}
-Recognizing the vast possibilities and variations that interchangeable plugins might encompass, it was crucial to formulate a universally adhered-to interface.
-This interface acted as a \emph{contract}, ensuring that irrespective of the specific implementation details of a plugin, there existed a consistent mode of interaction.
+Recognizing the vast possibilities and variations that interchangeable plugins might encompass, it is crucial to formulate a universally adhered-to interface.
+This interface acted as a \emph{contract}, ensuring that irrespective of the specific implementation details of a plugin, there esists a consistent mode of interaction.
 Core attributes and functionalities, like querying the number of initial weights for the minimization process required, are defined as part of this universal interface.
 This approach fostered interchangeability and adaptability, as the defined interface could accommodate a multitude of interchangeable plugins, each with its unique functionalities.
 In terms of optimization, this could mean that in the case of an \gls{of} plugin responsible for calculating the loss function, interfaces must be generalized to allow for any thinkable type of loss function.
 
 
 \subsection{Plugin Interaction Design}
-The next step was to design the interaction between plugins.
+The next step is to design the interaction between plugins.
 This design process involved defining the various ways in which plugins could interact with each other.
-It was crucial to build a robust and flexible interaction design to accommodate many scenarios since the interaction between plugins in \gls{qhana} should be wider than the optimization process.
+It is crucial to build a robust and flexible interaction design to accommodate many scenarios since the interaction between plugins in \gls{qhana} should be wider than the optimization process.
 This interaction design should lay the foundation for all future plugin interactions within \gls{qhana}.
 
 Scenarios included, for instance, a plugin invoking the microfrontend of another plugin, or it could call a specific endpoint of another plugin.
@@ -547,19 +547,19 @@ Additionally, the interaction design also encompassed the flow of control betwee
 For instance, a plugin could invoke another plugin and wait for it to complete its tasks before resuming its own.
 A plugin could also invoke another plugin and then stop execution while providing the invoked plugin with a callback URL that the invoked plugin could call once it completes its tasks.
 Alternatively, a plugin could invoke another plugin and then continue with its tasks without waiting for the invoked plugin to complete its tasks.
-Intrinsic to this step was the design of a coordination mechanism that facilitated the interaction between plugins.
+Intrinsic to this step is the design of a coordination mechanism that facilitated the interaction between plugins.
 
 \subsection{UML Diagrams}
-To pictorially represent the responsibilities and interfaces of each plugin, component diagrams were formulated.
+To pictorially represent the responsibilities and interfaces of each plugin, component diagrams are formulated.
 A diagram encapsulates the primary tasks of a plugin and the interfaces it provides, offering a clear understanding of the system's structure.
 
-Sequence diagrams were devised to fathom the intricate interplay between plugins.
+Sequence diagrams are devised to fathom the intricate interplay between plugins.
 These diagrams capture the stepwise interaction between plugins.
 They detail the control and data flow, spotlighting the sequence of plugin invocations and collaborative processes.
 
 
 \subsection{Feedback and Refinement}
-Throughout the design process, continuous feedback loops were integrated. This involved:
+Throughout the design process, continuous feedback loops are integrated. This involved:
 \begin{itemize}
 \item Revisiting each stage, evaluating its alignment with overarching goals.
 \item Making necessary refinements to ensure the architecture is robust and flexible.
@@ -572,7 +572,7 @@ With the architectural design strategy in place, the next step is to define the 
 
 \subsection{Preliminary Analysis and Design}
 Before diving into the implementation, an in-depth study of the \gls{qhana} documentation \cite{FabianBuehler} and a related paper on \gls{qhana}'s architecture \cite{Buehler2022} was undertaken to gain a comprehensive understanding of the system.
-With component and sequence diagrams already in place, the next step was to define the implementation strategy.
+With component and sequence diagrams already in place, the next step is to define the implementation strategy.
 
 \subsection{Development Environment and Toolset}
 
@@ -583,7 +583,7 @@ With component and sequence diagrams already in place, the next step was to defi
 
     \item \textbf{Postman}: An API testing tool employed to validate and debug various endpoints, ensuring consistent and expected behavior of the plugin interactions.
 
-    \item \textbf{Python}: As \gls{qhana} is implemented in Python, it was the primary language for backend development, offering versatility and a vast library ecosystem.
+    \item \textbf{Python}: As \gls{qhana} is implemented in Python offering versatility and a vast library ecosystem.
 
     \item \textbf{HTML}: Used for creating the microfrontends forming the user interfaces of the plugins.
 
@@ -642,50 +642,50 @@ It is imperative to note that while the outlined principles are crucial for this
 
 
 \subsection{Data Handling and Transfer}
-Flask-Smorest was instrumental in ensuring structured and accurate data transfer between plugins.
+Flask-Smorest is instrumental in ensuring structured and accurate data transfer between plugins.
 It aided in validating the correctness of passed data, returning appropriate error codes, and managing errors efficiently.
-This ensured that data exchanges between plugins were smooth and error-free, especially in the context of \glspl{vqa}.
+This ensured that data exchanges between plugins are smooth and error-free, especially in the context of \glspl{vqa}.
 
 \subsection{Testing and Debugging}
 
 The quality and reliability of plugins and their interactions are paramount.
-For this reason, a multifaceted testing strategy was adopted:
+For this reason, a multifaceted testing strategy is adopted:
 
 \begin{enumerate}
     \item \textbf{Static Code Analysis}:
     \begin{itemize}
         \item \textbf{Purpose}: To ensure code quality and maintainability and to identify potential vulnerabilities or deviations from coding standards.
-        \item \textbf{Tools \& Implementation}: The tool \texttt{flake8} was utilized to conduct static code analysis on the Python codebase.
-        By running \texttt{flake8}, a report detailing any code inconsistencies, potential errors, or areas for improvement was generated, providing valuable feedback for refinement.
+        \item \textbf{Tools \& Implementation}: The tool \texttt{flake8} is utilized to conduct static code analysis on the Python codebase.
+        By running \texttt{flake8}, a report detailing any code inconsistencies, potential errors, or areas for improvement is generated, providing valuable feedback for refinement.
     \end{itemize}
 
     \item \textbf{Logging and Monitoring}:
     \begin{itemize}
         \item \textbf{Purpose}: To capture, store, and analyze real-time information about the system's operations, aiding in troubleshooting and understanding system behavior.
-        \item \textbf{Tools \& Implementation}: Python's in-built \texttt{logging} package was leveraged to track and record various events during the execution of plugins.
-        By strategically placing logging statements within the code, it was possible to gain insights into the flow of operations, detect anomalies, and pinpoint areas that might require attention.
+        \item \textbf{Tools \& Implementation}: Python's in-built \texttt{logging} package is leveraged to track and record various events during the execution of plugins.
+        By strategically placing logging statements within the code, it is possible to gain insights into the flow of operations, detect anomalies, and pinpoint areas that might require attention.
     \end{itemize}
 
     \item \textbf{Interactive Debugging}:
     \begin{itemize}
         \item \textbf{Purpose}: To step through the code in real-time, inspect variables, and analyze the program's flow to identify and rectify issues.
-        \item \textbf{Tools \& Implementation}: The integrated Python debugger in Visual Studio Code was employed.
+        \item \textbf{Tools \& Implementation}: The integrated Python debugger in Visual Studio Code is employed.
         This debugger allowed for setting breakpoints, stepping through code, inspecting variable states, and examining the call stack, providing a granular view of the system's operations and aiding in issue identification and resolution.
     \end{itemize}
 
     \item \textbf{Manual Testing}:
     \begin{itemize}
         \item \textbf{Purpose}: To capture nuances and potential issues that might be overlooked.
-        \item \textbf{Procedure}: A hands-on approach was adopted where the plugins were interactively used.
+        \item \textbf{Procedure}: A hands-on approach is adopted where the plugins are interactively used.
         This involved navigating through the \gls{ui}, experimenting with different inputs, and observing the system's reactions to ensure it behaved as expected and met user requirements.
     \end{itemize}
 \end{enumerate}
 
-By employing a combination of static code analysis, detailed logging, interactive debugging, and manual testing, it was ensured that the plugins were functionally correct and adhered to coding standards and best practices, guaranteeing a robust and user-friendly experience.
+By employing a combination of static code analysis, detailed logging, interactive debugging, and manual testing, it is ensured that the plugins are functionally correct and adhered to coding standards and best practices, guaranteeing a robust and user-friendly experience.
 
 
 \subsection{Performance Optimization}
-For optimal performance in the microservice-based plugin architecture, several strategies were employed:
+For optimal performance in the microservice-based plugin architecture, several strategies are employed:
 
 \begin{enumerate}
     \item Reducing the number of interactions between plugins.
@@ -693,7 +693,7 @@ For optimal performance in the microservice-based plugin architecture, several s
     \item For tasks that require extended processing, the Celery framework should be utilized, allowing these tasks to operate asynchronously and optimizing resource usage.
 \end{enumerate}
 
-These strategies were critical in ensuring swift and seamless interactions between plugins.
+These strategies are critical in ensuring swift and seamless interactions between plugins.
 
 
 \subsection{Documentation and Extensibility}
@@ -787,7 +787,7 @@ By employing such multifaceted and representative datasets, the methodology aims
 \section{Resultant Decomposition into Plugins and their Responsibilities}
 \label{sec:resdecomposition}
 
-Following the decomposition strategy, the plugin-based optimization framework was divided into three primary plugin types:
+Following the decomposition strategy, the plugin-based optimization framework is divided into three primary plugin types:
 \gls{of} plugin, the minimizer plugin, and the coordinator plugin.
 These plugins have specific roles and responsibilities, ensuring a modular and efficient optimization process.
 This split is visualized in the component diagram in figure \ref{fig:component_diagram}.
@@ -835,7 +835,7 @@ Additionally, it coordinates the interaction between the user and the selected p
 \section{Universal Plugin Interface Design}
 
 The process of optimization is inherently complex, with a multitude of variations and nuances.
-It was imperative to establish universal plugin interfaces for each type of plugin to ensure a streamlined interaction between different plugins.
+It is imperative to establish universal plugin interfaces for each type of plugin to ensure a streamlined interaction between different plugins.
 This interface acts as a standard that every plugin of a specific type has to adhere to.
 The interfaces for each plugin are detailed below and are visualized in the component diagram in figure \ref{fig:component_diagram}.
 
@@ -887,8 +887,8 @@ This structured approach facilitates seamless interactions and fosters interchan
 \section{Plugin Interaction Design}
 
 The design of plugin interactions is pivotal to ensuring efficient and seamless coordination between different system components.
-Given the extensive possibilities of interactions within the \gls{qhana} environment, the design phase was meticulous, considering various scenarios and ensuring adaptability.
-The two primary modes of interactions were short-running and long-running, each catering to specific requirements.
+Given the extensive possibilities of interactions within the \gls{qhana} environment, the design phase is meticulous, considering various scenarios and ensuring adaptability.
+The two primary modes of interactions are short-running and long-running, each catering to specific requirements.
 
 \paragraph{Short-Running Interaction:}
 
@@ -1023,7 +1023,7 @@ Further divisions are made to promote clarity and a structured layout.
   \item \textit{plugins/optimization/minimizer} – Where each minimizer plugin occupies its respective subfolder.
 \end{itemize}
 
-Given that \gls{qhana}'s native architecture does not support the direct loading of plugins from nested subdirectories, a recursive plugin loader was developed for this purpose.
+Given that \gls{qhana}'s native architecture does not support the direct loading of plugins from nested subdirectories, a recursive plugin loader is developed for this purpose.
 This loader traverses through the \textit{plugins} directory and its subdirectories.
 The presence of an \textit{\_\_init\_\_.py} file within a folder confirms the plugin's legitimacy.
 To exclude a plugin from the loading process, one places a \textit{.ignore} file in its respective folder.
@@ -1096,7 +1096,7 @@ Therefore, all \emph{UIHref} endpoints of invocable plugins must include the \em
 As highlighted in the previous chapter, the coordinator plugin invokes the microfrontends of both the \gls{of} and minimizer plugins.
 An adaptation of \gls{qhana}'s \emph{add\_step} function allows the invocation of a plugin's microfrontend by another plugin.
 The \emph{add\_step} function's original purpose is to allow a multi-step plugin to show another of its microfrontends to the user.
-The function was enhanced and renamed to \emph{invoke\_task}.
+The function is enhanced and renamed to \emph{invoke\_task}.
 With this modification, the coordinator plugin can invoke another plugin's microfrontend by supplying the appropriate \emph{UIHref} and \emph{Href}.
 Furthermore, the coordinator plugin can provide a callback URL to the invoked plugin.
 This callback URL is a query parameter within the \emph{Href} and \emph{UIHref} URLs.
@@ -1162,7 +1162,7 @@ Another implementation challenge revolves around ensuring that plugins can disco
 
 \paragraph{Custom Marshmallow Field for Data:}
 \label{sec:customMarshmallowFieldForData}
-To streamline the input and target data exchange between plugins, a custom marshmallow field, \emph{NumpyArray}, was introduced (see \ref{lst:numpy_array_schema}).
+To streamline the input and target data exchange between plugins, a custom marshmallow field, \emph{NumpyArray}, is introduced (see \ref{lst:numpy_array_schema}).
 Specifically crafted to handle NumPy arrays, this versatile field can accommodate arrays of any dimensionality with JSON-serializable data types.
 It aids in data transfer between endpoints and ensures efficient data storage in the database.
 
@@ -1173,7 +1173,7 @@ It aids in data transfer between endpoints and ensures efficient data storage in
 \paragraph{Metadata Endpoint and Interaction Endpoint Discovery:}
 \label{sec:metadataEndpoint}
 The metadata of plugins houses the definitions for interaction endpoints.
-Traditionally, the \emph{EntryPoint} field in the metadata was reserved for guiding the \gls{qhana} UI to a plugin's microfrontend.
+Traditionally, the \emph{EntryPoint} field in the metadata is reserved for guiding the \gls{qhana} UI to a plugin's microfrontend.
 However, this thesis expands the \emph{EntryPoint} field to encompass interaction endpoints.
 The \emph{interactionEndpoints} field is essentially a list, potentially containing multiple interaction endpoints.
 Each list entry is a dictionary containing a \textbf{type} and an \textbf{href} field.
@@ -1462,7 +1462,7 @@ All example plugins in the implementation segment conform to these standards, en
 So, users can combine any minimizer plugin with any \gls{of} without changing any code.
 It is important to note, though, that to leverage the gradient calculation provided by the \emph{neural-network} plugin, the \emph{scipy-minimizer-grad} plugin has to be used.
 
-The combination of all minimizer plugins with all \gls{of} plugins was extensively tested manually, and the results have been documented in Table \ref{table:interchangeability} to ensure that the plugins are fully interchangeable.
+The combination of all minimizer plugins with all \gls{of} plugins is extensively tested manually, and the results have been documented in Table \ref{table:interchangeability} to ensure that the plugins are fully interchangeable.
 
 
 \begin{table}[h!]
@@ -1519,7 +1519,7 @@ For devising a new \gls{of} plugin:
 \label{chap:discussion}
 
 This chapter delves into the critical discussions surrounding architectural choices, the model's practical execution, and the consequential outcomes.
-It starts by evaluating the plugin-based optimization framework's architectural decisions and how it was implemented.
+It starts by evaluating the plugin-based optimization framework's architectural decisions and how it is implemented.
 Subsequently, it analyzes the performance of the plugin-based optimization framework and compares it to the Jupyter Notebook implementation.
 Finally, this concept addresses how the results influence the developer experience when it comes to implementing new minimization and \gls{of} plugins.
 
@@ -1648,7 +1648,7 @@ The paper does not aim to split the machine learning service into different comp
 \label{chap:conclusion}
 
 This thesis embarked on the challenging journey of conceptualizing and realizing the plugin-based optimization framework within the \gls{qhana} environment.
-What emerged was an innovative approach to optimization and a pioneering framework that establishes protocols for plugin interactions within \gls{qhana}.
+What emerged is an innovative approach to optimization and a pioneering framework that establishes protocols for plugin interactions within \gls{qhana}.
 This framework's versatility hints at its potential applicability beyond just optimization tasks.
 
 The example implementations of both the minimizer and the \gls{of} plugins are a testament to the system's functionality and adaptability.
