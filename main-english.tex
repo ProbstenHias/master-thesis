@@ -323,9 +323,9 @@ This property is essential for many quantum algorithms, quantum error correction
 \glspl{vqa} combine the principles of quantum computing and optimization uniquely and powerfully.
 They are a class of hybrid quantum-classical algorithms that leverage the strengths of both quantum and classical computing to solve complex problems \cite{McClean2016}.
 
-The central concept of \glspl{vqa} is to use a sequence of quantum operations (a "quantum circuit") controlled by specific parameters.
+The central concept of \glspl{vqa} is to use a sequence of quantum operations (a \emph{quantum circuit}) controlled by specific parameters.
 These parameters are adjusted using classical optimization techniques to solve a specific problem.
-This problem, in many cases, involves finding the lowest energy state, or "ground state," of a quantum system.
+This problem, in many cases, involves finding the lowest energy state, or \emph{ground state}, of a quantum system.
 This problem maps to finding the minimum of a particular function \cite{Peruzzo2013}.
 
 By leveraging classical optimization algorithms, \glspl{vqa} become more resistant to quantum errors, as most of the computation is performed on a classical computer.
@@ -387,7 +387,7 @@ This search can be visualized as navigating a landscape of hills and valleys, wi
 The goal of the minimization function is to find the lowest point in this landscape, corresponding to the minimum value of the \gls{of} \cite{Goodfellow2017}.
 
 The core inputs to a minimization function are the initial parameters of the model or weights (denoted as \(\theta\) or \(w\)),
-the \gls{of} that needs to be minimized, and the gradients of the \gls{of} with respect to the parameters.
+the \gls{of} that needs to be minimized, and optionally the gradients of the \gls{of} with respect to the parameters.
 Additionally, certain minimization functions may include hyperparameters as input, which control the behavior and complexity of the optimization process \cite{Virtanen2020}.
 For instance, the learning rate is a typical hyperparameter that determines the step size in each iteration of the optimization process.
 
@@ -490,7 +490,7 @@ Moreover, since an invoking plugin is unaware of the parameters or requirements 
 Drawing inspiration from existing systems, the interaction between the minimization and \glspl{of} in implementations like SciPy's \emph{optimizer.minimize} \cite{Virtanen2020} function serves as a precedent.
 
 This thesis introduces the innovative concept of \emph{interaction endpoints} to elevate the degree of interactivity between plugins within \gls{qhana}.
-While QHana already employs a metadata field for plugins known as \emph{entry points} - endpoints invoked by the \gls{qhana} \gls{ui} to render the \gls{ui} of a plugin - interaction endpoints extend this paradigm by marking specific endpoints as callable by other plugins.
+While \gls{qhana} already employs a metadata field for plugins known as \emph{entry points} - endpoints invoked by the \gls{qhana} \gls{ui} to render the \gls{ui} of a plugin - interaction endpoints extend this paradigm by marking specific endpoints as callable by other plugins.
 
 A defining characteristic of an interaction endpoint is its \emph{type}.
 Interaction endpoints sharing the same type uphold uniformity in their signature and return type.
@@ -530,7 +530,7 @@ To delineate these responsibilities, several crucial decisions had to be made:
 
 \subsection{Universal Plugin Interface Design}
 Recognizing the vast possibilities and variations that interchangeable plugins might encompass, it was crucial to formulate a universally adhered-to interface.
-This interface acted as a "contract," ensuring that irrespective of the specific implementation details of a plugin, there existed a consistent mode of interaction.
+This interface acted as a \emph{contract}, ensuring that irrespective of the specific implementation details of a plugin, there existed a consistent mode of interaction.
 Core attributes and functionalities, like querying the number of initial weights for the minimization process required, are defined as part of this universal interface.
 This approach fostered interchangeability and adaptability, as the defined interface could accommodate a multitude of interchangeable plugins, each with its unique functionalities.
 In terms of optimization, this could mean that in the case of an \gls{of} plugin responsible for calculating the loss function, interfaces must be generalized to allow for any thinkable type of loss function.
@@ -593,7 +593,7 @@ With component and sequence diagrams already in place, the next step was to defi
 
     \item \textbf{Flask-Smorest}: An extension of Flask, offering tools for building \gls{rest}ful APIs with Flask and Marshmallow, ensuring structured and accurate data transfer between plugins.
 
-    \item \textbf{Celery}: Integrated to manage long-running tasks, particularly for objective function plugins, allowing for asynchronous task execution.
+    \item \textbf{Celery}: Integrated to manage long-running tasks, particularly for minimizer plugins, allowing for asynchronous task execution.
 
     \item \textbf{Requests}: A Python library fundamental for facilitating interactions between plugins via HTTP requests.
 \end{itemize}
@@ -808,7 +808,7 @@ This aids in guiding the optimization process towards the desired minimum.
 
 \subsection{Minimizer Plugin}
 
-The minimizer plugin is responsible for iteratively adjusting parameters to minimize the loss provided by the Objective Function plugin.
+The minimizer plugin is responsible for iteratively adjusting parameters to minimize the loss provided by the \gls{of} plugin.
 Its functions include:
 
 \begin{itemize}
@@ -848,7 +848,7 @@ The interfaces for each plugin are detailed below and are visualized in the comp
 
 \paragraph{Objective Function Plugin Interfaces:}
 
-The \gls{of} plugin interface is designed to accommodate a wide range of loss functions, including those that require gradient computation.
+The \gls{of} plugin interface is designed to accommodate a wide range of loss functions, including those that offer gradient computation.
 Its interfaces are:
 
 \begin{itemize}
@@ -928,7 +928,7 @@ Building upon the idea of plugins interacting with each other, as detailed in th
 How does one plugin discover the available endpoints of another?
 This thesis introduces a novel concept called \textit{interaction endpoints} to \gls{qhana} to address this very challenge.
 
-While \gls{qhana} already has a metadata field named "entry points," which are endpoints invoked by the \gls{qhana} UI to render a plugin's UI, interaction endpoints extend this idea further.
+While \gls{qhana} already has a metadata field named \emph{entry points}, which are endpoints invoked by the \gls{qhana} UI to render a plugin's UI, interaction endpoints extend this idea further.
 They specifically define endpoints in the metadata that other plugins can invoke, facilitating seamless integration and interaction.
 
 The core of interaction endpoints is their \emph{type}.
@@ -1321,7 +1321,7 @@ As a trade-off, there is no need to relay a task's database ID to the coordinato
 \end{minipage}
 
 
-\chapter{Evaluation and Analysis}
+\chapter{Measurable Results}
 \label{chap:results}
 
 This chapter elucidates the outcomes achieved with the current implementation, emphasizing system performance, plugin interchangeability, and developer usability.
@@ -1415,7 +1415,7 @@ Especially for the first plugin-based implementation approach, the database late
 To avoid database latency, a caching mechanism is implemented for the first plugin-based implementation approach.
 Since the input and target data and the hyperparameters do not change during the minimization process, they can be cached.
 That means the data is retrieved from the database during the first call of the \emph{calc\_loss} endpoint and cached for subsequent calls.
-For the implementation the \emph{flask-caching} library is used.
+For the implementation the \emph{flask-caching} library is used and the cached data is kept in memory.
 Figure \ref{fig:of_call_time_version1_cached} shows the average time it takes for a single call of the \emph{calc\_loss} endpoint for different dataset sizes when using caching.
 
 \begin{figure}
@@ -1435,14 +1435,14 @@ Figure \ref{fig:coparison_of_of_cached} compares the total times it takes to get
 \end{figure}
 
 Finally, Figure \ref{fig:time_for_minimization} shows the total time it takes to complete the minimization process for the different implementations.
-The measurements for the plugin-based implementations do not include the time it takes a user to input data but instead start when the coordinator plugin calls the minimization endpoint of the minimizer plugin.
+The measurements for the plugin-based implementations do not include the time it takes a user to input data but instead starts when the coordinator plugin calls the minimization endpoint of the minimizer plugin.
 
-% \begin{figure}
-%   \centering
-%   \includegraphics[width=\textwidth]{graphics/time_for_minimization.png}
-%   \caption{Comparison of the total time it takes to complete the minimization process across different implementations.}
-%   \label{fig:time_for_minimization}
-% \end{figure}
+\begin{figure}
+  \centering
+  \includegraphics[width=\textwidth]{graphics/time_for_minimization.png}
+  \caption{Comparison of the total time it takes to complete the minimization process across different implementations.}
+  \label{fig:time_for_minimization}
+\end{figure}
 
 \section{Interchangeability and Standardization}
 \label{sec:interchangeabilityOfPlugins}
@@ -1515,7 +1515,7 @@ For devising a new \gls{of} plugin:
 \end{enumerate}
 
 
-\chapter{Reflective Analysis}
+\chapter{Discussion}
 \label{chap:discussion}
 
 This chapter delves into the critical discussions surrounding architectural choices, the model's practical execution, and the consequential outcomes.
@@ -1663,7 +1663,7 @@ Expanding this repertoire will not only enrich the optimization solutions availa
 As yet to be fully implemented in this thesis, a new \gls{of} plugin that handles \glspl{vqa} would be a valuable and easily implementable addition.
 The energy state of a quantum system is then perceived as the loss value, while an existing minimizer plugin is used to minimize this loss.
 
-Building upon the inherent interchangeability and modularity of the current design, a novel concept draws attention: viewing the objective function or the minimizer as hyperparameters themselves.
+Building upon the inherent interchangeability and modularity of the current design, a novel concept draws attention: viewing the \gls{of} or the minimizer as hyperparameters themselves.
 In a traditional setting, hyperparameters are parameters set before the learning process begins.
 However, in our context, given the modularity, one could envision running parallel optimization processes with different \gls{of} plugins with the same minimizer.
 This would be similar to a hyperparameter search, where each \gls{of} is a candidate and aims to find the best fitting \gls{of} for a given dataset or problem.
