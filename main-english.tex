@@ -38,6 +38,7 @@
   startdate={April 19, 2023},
   enddate={October 19, 2023}
 ]{scientific-thesis-cover}
+\usepackage{ifoddpage}
 
 \input{acronyms}
 
@@ -878,7 +879,7 @@ The minimizer plugin, responsible for optimizing the loss function provided by t
 
 \paragraph{Coordinator Plugin Interfaces:}
 
-The Coordinator plugin, orchestrating the interaction between the OF and Minimizer plugins, is equipped with the standard \gls{qhana} interfaces \textbf{Metadata}, \textbf{UIRef}, and \textbf{HRef}.
+The coordinator plugin, orchestrating the interaction between the \gls{of} and minimizer plugins, is equipped with the standard \gls{qhana} interfaces \textbf{Metadata}, \textbf{UIRef}, and \textbf{HRef}.
 
 A systematic, consistent, and efficient optimization process is ensured by establishing these interfaces and ensuring that each plugin conforms to them.
 This structured approach facilitates seamless interactions and fosters interchangeability, modularity, and extensibility, making it easy to add new \gls{of} and minimizer plugins in the future.
@@ -937,7 +938,7 @@ The \gls{of} plugin provides interaction endpoints of types \emph{calc\_loss}, \
 The minimizer plugin offers the `minimization' type.
 These interaction endpoints correspond to the endpoints defined in the previous section.
 The introduction of interaction endpoints significantly enhances the modularity and interchangeability within \gls{qhana}, paving the way for a more dynamic and adaptable plugin ecosystem.
-More on how these interaction endpoints are implemented can be found in the implementation chapter \ref{chap: implementation}.
+More on how these interaction endpoints are implemented can be found in the implementation chapter \ref{chap:implementation}.
 
 \section{Final Interaction Flow}
 The architecture's final interaction flow can be broken down into three main parts, each ending in a new \gls{ui} displayed to the user.
@@ -958,26 +959,42 @@ The coordinator then triggers the minimization endpoint, initiating a long-runni
 Once this task is completed, a final callback is made to the coordinator with the results.
 This flow is shown in Figure \ref{fig:interaction_flow_part3}.
 
-\begin{figure}[ht]
+\begin{figure}[p]
   \centering
-  \includegraphics[width=\textwidth]{graphics/interaction_flow_1.svg}
+  \checkoddpage
+  \ifoddpage
+      \rotatebox{-90}{\includegraphics[width=0.9\textheight]{graphics/interaction_flow_1.svg}}
+  \else
+      \rotatebox{90}{\includegraphics[width=0.9\textheight]{graphics/interaction_flow_1.svg}}
+  \fi
   \caption{Final interaction flow of the first part of the optimization process.}
   \label{fig:interaction_flow_part1}
 \end{figure}
 
-\begin{figure}[ht]
+\begin{figure}[p]
   \centering
-  \includegraphics[width=\textwidth]{graphics/interaction_flow_2.svg}
+  \checkoddpage
+  \ifoddpage
+      \rotatebox{-90}{\includegraphics[width=0.9\textheight]{graphics/interaction_flow_2.svg}}
+  \else
+      \rotatebox{90}{\includegraphics[width=0.9\textheight]{graphics/interaction_flow_2.svg}}
+  \fi
   \caption{Final interaction flow of the second part of the optimization process.}
   \label{fig:interaction_flow_part2}
 \end{figure}
 
-\begin{figure}[ht]
+\begin{figure}[p]
   \centering
-  \includegraphics[width=\textwidth]{graphics/interaction_flow_3.svg}
+  \checkoddpage
+  \ifoddpage
+      \rotatebox{-90}{\includegraphics[width=0.9\textheight]{graphics/interaction_flow_3.svg}}
+  \else
+      \rotatebox{90}{\includegraphics[width=0.9\textheight]{graphics/interaction_flow_3.svg}}
+  \fi
   \caption{Final interaction flow of the third part of the optimization process.}
   \label{fig:interaction_flow_part3}
 \end{figure}
+
 
 
 
@@ -1054,7 +1071,9 @@ The primary step is to inherit from QHAna's \texttt{FrontendFormBaseSchema} clas
 For the \gls{of} plugin, the input fields are the hyperparameters the loss function needs.
 Listing \ref{lst:ridge_loss_schema} shows the \emph{ridge\-loss} plugin's hyperparameter, which is the regularization parameter \emph{alpha}.
 
-\lstinputlisting[language=Python, caption={Ridge Loss Plugin Hyperparameter Schema.}, label=lst:ridge_loss_schema]{code/hyperparameter_schema_ridge.py}
+\noindent\begin{minipage}{\linewidth}
+  \lstinputlisting[language=Python, caption={Ridge Loss Plugin Hyperparameter Schema.}, label=lst:ridge_loss_schema]{code/hyperparameter_schema_ridge.py}
+\end{minipage}
 
 The minimizer and \gls{of} plugin selection field is a critical input field for the coordinator plugin.
 The \texttt{PluginUrl} class,  a custom class that extends marshmallow's \texttt{fields.Url} class generates that field.
@@ -1062,7 +1081,9 @@ It ensures that only plugins of the correct type are selected by checking a plug
 Imperative for this to work is that all minimizer plugins have the \emph{minimization} and all \gls{of} plugins have the \emph{objective-function} label.
 Listing \ref{lst:coordinator_schema} shows the minimizer plugin selection field in the coordinator plugin's \gls{ui}.
 
-\lstinputlisting[language=Python, caption=Coordinator Plugin UI Schema., label=lst:coordinator_schema]{code/ui_schema_coordinator.py}
+\noindent\begin{minipage}{\linewidth}
+  \lstinputlisting[language=Python, caption=Coordinator Plugin UI Schema., label=lst:coordinator_schema]{code/ui_schema_coordinator.py}
+\end{minipage}
 
 As the \glspl{ui} of the \gls{of} and minimizer plugins are designed to be invoked by the coordinator plugin, the \emph{UIHref} which serves the \gls{ui} needs to accept a callback URL.
 Therefore, all \emph{UIHref} endpoints of invocable plugins must include the \emph{CallbackUrlSchema} marshmallow schema as a query parameter.
@@ -1110,9 +1131,13 @@ In contrast, the second scenario operates through the following mechanism:
 \end{itemize}
 Listing \ref{lst:signal_handler} presents the implementation of the signal handler, while Listing \ref{lst:singal_emitter} illustrates the juncture where the signal is emitted.
 
-\lstinputlisting[language=Python, caption=Signal Handler for Callbacks., label=lst:signal_handler]{code/signal_handler.py}
-\lstinputlisting[language=Python, caption=Signal Emitter for Callbacks., label=lst:singal_emitter]{code/signal_emitter.py}
+\noindent\begin{minipage}{\linewidth}
+  \lstinputlisting[language=Python, caption=Signal Handler for Callbacks., label=lst:signal_handler]{code/signal_handler.py}
+\end{minipage}
 
+\noindent\begin{minipage}{\linewidth}
+  \lstinputlisting[language=Python, caption=Signal Emitter for Callbacks., label=lst:singal_emitter]{code/signal_emitter.py}
+\end{minipage}
 
 \section{Implementation of Interaction Endpoints}
 \label{sec:implementationOfInteractionEndpoints}
@@ -1140,7 +1165,10 @@ Another implementation challenge revolves around ensuring that plugins can disco
 To streamline the input and target data exchange between plugins, a custom marshmallow field, \emph{NumpyArray}, was introduced (see \ref{lst:numpy_array_schema}).
 Specifically crafted to handle NumPy arrays, this versatile field can accommodate arrays of any dimensionality with JSON-serializable data types.
 It aids in data transfer between endpoints and ensures efficient data storage in the database.
-\lstinputlisting[language=Python, caption=Custom Marshmallow Field for NumPy Arrays., label=lst:numpy_array_schema]{code/numpy_array_schema.py}
+
+\noindent\begin{minipage}{\linewidth}
+  \lstinputlisting[language=Python, caption=Custom Marshmallow Field for NumPy Arrays., label=lst:numpy_array_schema]{code/numpy_array_schema.py}
+\end{minipage}
 
 \paragraph{Metadata Endpoint and Interaction Endpoint Discovery:}
 \label{sec:metadataEndpoint}
@@ -1154,7 +1182,9 @@ It is made user-friendly by providing the \emph{InteractionEndpointType} enum in
 The \textbf{href} field houses the endpoint's URL.
 Listing \ref{lst:metadata} illustrates this using the \emph{ridge-loss} plugin's metadata.
 
-\lstinputlisting[language=Python, caption=Metadata of the Ridge Loss Plugin., label=lst:metadata]{code/metadata.py}
+\noindent\begin{minipage}{\linewidth}
+  \lstinputlisting[language=Python, caption=Metadata of the Ridge Loss Plugin., label=lst:metadata]{code/metadata.py}
+\end{minipage}
 
 For multi-step plugins, the interaction endpoint's definition in metadata slightly deviates.
 As discussed in \ref{sec:contextBetweenPluginEndpoints}, multi-step plugins incorporate a runtime-specific database ID into the URL.
@@ -1162,8 +1192,10 @@ The \emph{href} field functions as a format string that allows the substitution 
 Listing \ref{lst:metadata_multistep} offers a glimpse into this, showcasing the \emph{ridge-loss} plugin implemented as a multi-step entity.
 The invoking plugin replaces the placeholder with the actual database ID when known.
 This distinction is foundational to the differences between the two approaches, explored further in the subsequent section.
-\lstinputlisting[language=Python, caption=Metadata of the Ridge Loss Plugin as a Multi-Step Plugin., label=lst:metadata_multistep]{code/metadata_multistep.py}
 
+\noindent\begin{minipage}{\linewidth}
+  \lstinputlisting[language=Python, caption=Metadata of the Ridge Loss Plugin as a Multi-Step Plugin., label=lst:metadata_multistep]{code/metadata_multistep.py}
+\end{minipage}
 
 \section{Exemplary Minimizers and Objective Functions}
 \label{sec:exampleMinimizersAndObjectiveFunctions}
@@ -1257,8 +1289,14 @@ Listing \ref{lst:calc_loss_schema} illustrates an exemplary schema for the \emph
 
 Consequently, for the minimizer plugin, there is no occasion where knowledge of the \gls{of} 's hyperparameters or its data is essential, leading to a lean input schema for the \emph{minimization} endpoint, as depicted in Listing \ref{lst:minimization_schema}.
 However, it mandates that the task's database ID be communicated to the coordinator plugin through the microfrontend callback process, essential for managing interaction endpoint URLs, as discussed in \ref{sec:metadataEndpoint}.
-\lstinputlisting[language=Python, caption=\emph{CalcLossOrGradInputSchema} Schema for multistep-plugin approach., label=lst:calc_loss_schema]{code/calc_loss_schema.py}
-\lstinputlisting[language=Python, caption=\emph{MinimizerInputSchema} Schema for multistep-plugin approach., label=lst:minimization_schema]{code/minimization_schema.py}
+
+\noindent\begin{minipage}{\linewidth}
+  \lstinputlisting[language=Python, caption=\emph{CalcLossOrGradInputSchema} Schema for multistep-plugin approach., label=lst:calc_loss_schema]{code/calc_loss_schema.py}
+\end{minipage}
+
+\noindent\begin{minipage}{\linewidth}
+  \lstinputlisting[language=Python, caption=\emph{MinimizerInputSchema} Schema for multistep-plugin approach., label=lst:minimization_schema]{code/minimization_schema.py}
+\end{minipage}
 
 \subsection{Integrated Plugin Approach}
 \label{sec:secondApproach}
@@ -1274,9 +1312,13 @@ Listing \ref{lst:calc_loss_schema_multistep} exhibits the input schema for the \
 Passing the hyperparameters of a \gls{of} plugin ensures that neither the coordinator nor the minimizer plugin requires in-depth knowledge of the hyperparameters irrespective of the \gls{of} 's internal mechanics.
 As a trade-off, there is no need to relay a task's database ID to the coordinator.
 
-\lstinputlisting[language=Python, caption=\emph{CalcLossOrGradInputSchema} Schema for non-multistep-plugin approach., label=lst:calc_loss_schema_multistep]{code/calc_loss_schema_2.py}
-\lstinputlisting[language=Python, caption=\emph{MinimizerInputSchema} Schema for non-multistep-plugin approach., label=lst:minimization_schema_multistep]{code/minimization_schema_2.py}
+\noindent\begin{minipage}{\linewidth}
+  \lstinputlisting[language=Python, caption=\emph{CalcLossOrGradInputSchema} Schema for non-multistep-plugin approach., label=lst:calc_loss_schema_multistep]{code/calc_loss_schema_2.py}
+\end{minipage}
 
+\noindent\begin{minipage}{\linewidth}
+  \lstinputlisting[language=Python, caption=\emph{MinimizerInputSchema} Schema for non-multistep-plugin approach., label=lst:minimization_schema_multistep]{code/minimization_schema_2.py}
+\end{minipage}
 
 
 \chapter{Evaluation and Analysis}
@@ -1374,23 +1416,23 @@ To avoid database latency, a caching mechanism is implemented for the first plug
 Since the input and target data and the hyperparameters do not change during the minimization process, they can be cached.
 That means the data is retrieved from the database during the first call of the \emph{calc\_loss} endpoint and cached for subsequent calls.
 For the implementation the \emph{flask-caching} library is used.
-Figure \ref{fig:of_call_time_version1_cached} compares the loss calculation time for the first plugin-based implementation approach with and without caching.
+Figure \ref{fig:of_call_time_version1_cached} shows the average time it takes for a single call of the \emph{calc\_loss} endpoint for different dataset sizes when using caching.
 
-% \begin{figure}
-%   \centering
-%   \includegraphics[width=\textwidth]{graphics/of_call_times_version1_cached.png}
-%   \caption{Time it takes for a single call to the \emph{calc\_loss} endpoint of the \emph{ridge-loss} plugin for different dataset sizes for the first plugin-based implementation approach with caching.}
-%   \label{fig:of_call_time_version1_cached}
-% \end{figure}
+\begin{figure}
+  \centering
+  \includegraphics[width=\textwidth]{graphics/of_call_times_version1_cached.png}
+  \caption{Time it takes for a single call to the \emph{calc\_loss} endpoint of the \emph{ridge-loss} plugin for different dataset sizes with caching.}
+  \label{fig:of_call_time_version1_cached}
+\end{figure}
 
 Figure \ref{fig:coparison_of_of_cached} compares the total times it takes to get the loss across different implementations, including a cached version of the first plugin-based implementation approach.
 
-% \begin{figure}
-%   \centering
-%   \includegraphics[width=\textwidth]{graphics/comparison_of_of_cached.png}
-%   \caption{Comparison of the total time it takes to get the loss value across different implementations, including a cached version of the first plugin-based implementation approach.}
-%   \label{fig:coparison_of_of_cached}
-% \end{figure}
+\begin{figure}
+  \centering
+  \includegraphics[width=\textwidth]{graphics/comparison_of_of_cached.png}
+  \caption{Comparison of the total time it takes to get the loss value across different implementations, including a cached version of the first plugin-based implementation approach.}
+  \label{fig:coparison_of_of_cached}
+\end{figure}
 
 Finally, Figure \ref{fig:time_for_minimization} shows the total time it takes to complete the minimization process for the different implementations.
 The measurements for the plugin-based implementations do not include the time it takes a user to input data but instead start when the coordinator plugin calls the minimization endpoint of the minimizer plugin.
