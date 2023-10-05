@@ -33,25 +33,25 @@
       ><path d="M-7 -7 L19 -7 L19 207 L-7 207 L-7 -7 Z"
       /></clipPath
       ><clipPath clipPathUnits="userSpaceOnUse" id="clipPath10"
-      ><path d="M-70 -28 L140 -28 L140 56 L-70 56 L-70 -28 Z"
+      ><path d="M-49 -14 L98 -14 L98 28 L-49 28 L-49 -14 Z"
       /></clipPath
       ><clipPath clipPathUnits="userSpaceOnUse" id="clipPath11"
-      ><path d="M-75 -42 L150 -42 L150 84 L-75 84 L-75 -42 Z"
-      /></clipPath
-      ><clipPath clipPathUnits="userSpaceOnUse" id="clipPath12"
       ><path d="M-70 -14 L140 -14 L140 28 L-70 28 L-70 -14 Z"
       /></clipPath
-      ><clipPath clipPathUnits="userSpaceOnUse" id="clipPath13"
+      ><clipPath clipPathUnits="userSpaceOnUse" id="clipPath12"
       ><path d="M-74 -28 L148 -28 L148 56 L-74 56 L-74 -28 Z"
       /></clipPath
+      ><clipPath clipPathUnits="userSpaceOnUse" id="clipPath13"
+      ><path d="M-75 -42 L150 -42 L150 84 L-75 84 L-75 -42 Z"
+      /></clipPath
       ><clipPath clipPathUnits="userSpaceOnUse" id="clipPath14"
-      ><path d="M-56 -14 L112 -14 L112 28 L-56 28 L-56 -14 Z"
+      ><path d="M-70 -28 L140 -28 L140 56 L-70 56 L-70 -28 Z"
       /></clipPath
       ><clipPath clipPathUnits="userSpaceOnUse" id="clipPath15"
       ><path d="M0 0 L275 0 L275 104 L0 104 L0 0 Z"
       /></clipPath
       ><clipPath clipPathUnits="userSpaceOnUse" id="clipPath16"
-      ><path d="M74 13 L74 27 L18 27 L18 13 ZM213 31 L213 45 L56 45 L56 31 ZM0 0 L0 104 L275 104 L275 73 L236 73 L236 59 L275 59 L275 0 Z"
+      ><path d="M71 13 L71 27 L22 27 L22 13 ZM213 31 L213 45 L56 45 L56 31 ZM0 0 L0 104 L275 104 L275 73 L236 73 L236 59 L275 59 L275 0 Z"
       /></clipPath
       ><clipPath clipPathUnits="userSpaceOnUse" id="clipPath17"
       ><path d="M0 0 L190 0 L190 104 L0 104 L0 0 Z"
@@ -225,43 +225,43 @@
     ><g stroke-linecap="butt" font-size="11px" transform="translate(880,393)" fill-opacity="1" fill="black" text-rendering="geometricPrecision" image-rendering="optimizeQuality" font-family="sans-serif" stroke-linejoin="round" stroke="black" stroke-opacity="1" stroke-miterlimit="0"
     ><rect fill="none" x="0" width="8" height="42" y="0" clip-path="url(#clipPath8)"
     /></g
-    ><g font-size="11px" transform="translate(849,2)" fill-opacity="1" fill="black" text-rendering="geometricPrecision" image-rendering="optimizeQuality" font-family="sans-serif" stroke="black" stroke-opacity="1"
-    ><text x="6" xml:space="preserve" y="11" clip-path="url(#clipPath10)" stroke="none"
-      >Min Plugin</text
-      ><text x="10" xml:space="preserve" y="25" clip-path="url(#clipPath10)" stroke="none"
-      >Metadata</text
-    ></g
-    ><g font-size="11px" transform="translate(717,2)" fill-opacity="1" fill="black" text-rendering="geometricPrecision" image-rendering="optimizeQuality" font-family="sans-serif" stroke="black" stroke-opacity="1"
-    ><text x="9" xml:space="preserve" y="11" clip-path="url(#clipPath10)" stroke="none"
-      >OF Plugin</text
-      ><text x="10" xml:space="preserve" y="25" clip-path="url(#clipPath10)" stroke="none"
-      >Metadata</text
-    ></g
-    ><g font-size="11px" transform="translate(585,2)" fill-opacity="1" fill="black" text-rendering="geometricPrecision" image-rendering="optimizeQuality" font-family="sans-serif" stroke="black" stroke-opacity="1"
-    ><text x="4" xml:space="preserve" y="11" clip-path="url(#clipPath11)" stroke="none"
-      >Coordinator</text
-      ><text x="20" xml:space="preserve" y="25" clip-path="url(#clipPath11)" stroke="none"
-      >Plugin</text
-      ><text x="8" xml:space="preserve" y="39" clip-path="url(#clipPath11)" stroke="none"
-      >Processing</text
-    ></g
-    ><g font-size="11px" transform="translate(301,85)" fill-opacity="1" fill="black" text-rendering="geometricPrecision" image-rendering="optimizeQuality" font-family="sans-serif" stroke="black" stroke-opacity="1"
-    ><text x="16" xml:space="preserve" y="11" clip-path="url(#clipPath12)" stroke="none"
-      >IFrame</text
-    ></g
-    ><g font-size="11px" transform="translate(453,2)" fill-opacity="1" fill="black" text-rendering="geometricPrecision" image-rendering="optimizeQuality" font-family="sans-serif" stroke="black" stroke-opacity="1"
-    ><text x="4" xml:space="preserve" y="11" clip-path="url(#clipPath13)" stroke="none"
-      >Coordinator</text
-      ><text x="13" xml:space="preserve" y="25" clip-path="url(#clipPath13)" stroke="none"
-      >Plugin UI</text
+    ><g font-size="11px" transform="translate(8,37)" fill-opacity="1" fill="black" text-rendering="geometricPrecision" image-rendering="optimizeQuality" font-family="sans-serif" stroke="black" stroke-opacity="1"
+    ><text x="10" xml:space="preserve" y="11" clip-path="url(#clipPath10)" stroke="none"
+      >Actor</text
     ></g
     ><g font-size="11px" transform="translate(176,2)" fill-opacity="1" fill="black" text-rendering="geometricPrecision" image-rendering="optimizeQuality" font-family="sans-serif" stroke="black" stroke-opacity="1"
-    ><text x="10" xml:space="preserve" y="11" clip-path="url(#clipPath12)" stroke="none"
+    ><text x="10" xml:space="preserve" y="11" clip-path="url(#clipPath11)" stroke="none"
       >QHana UI</text
     ></g
-    ><g font-size="11px" transform="translate(4,37)" fill-opacity="1" fill="black" text-rendering="geometricPrecision" image-rendering="optimizeQuality" font-family="sans-serif" stroke="black" stroke-opacity="1"
-    ><text x="10" xml:space="preserve" y="11" clip-path="url(#clipPath14)" stroke="none"
-      >Actor3</text
+    ><g font-size="11px" transform="translate(453,2)" fill-opacity="1" fill="black" text-rendering="geometricPrecision" image-rendering="optimizeQuality" font-family="sans-serif" stroke="black" stroke-opacity="1"
+    ><text x="4" xml:space="preserve" y="11" clip-path="url(#clipPath12)" stroke="none"
+      >Coordinator</text
+      ><text x="13" xml:space="preserve" y="25" clip-path="url(#clipPath12)" stroke="none"
+      >Plugin UI</text
+    ></g
+    ><g font-size="11px" transform="translate(301,85)" fill-opacity="1" fill="black" text-rendering="geometricPrecision" image-rendering="optimizeQuality" font-family="sans-serif" stroke="black" stroke-opacity="1"
+    ><text x="16" xml:space="preserve" y="11" clip-path="url(#clipPath11)" stroke="none"
+      >IFrame</text
+    ></g
+    ><g font-size="11px" transform="translate(585,2)" fill-opacity="1" fill="black" text-rendering="geometricPrecision" image-rendering="optimizeQuality" font-family="sans-serif" stroke="black" stroke-opacity="1"
+    ><text x="4" xml:space="preserve" y="11" clip-path="url(#clipPath13)" stroke="none"
+      >Coordinator</text
+      ><text x="20" xml:space="preserve" y="25" clip-path="url(#clipPath13)" stroke="none"
+      >Plugin</text
+      ><text x="8" xml:space="preserve" y="39" clip-path="url(#clipPath13)" stroke="none"
+      >Processing</text
+    ></g
+    ><g font-size="11px" transform="translate(717,2)" fill-opacity="1" fill="black" text-rendering="geometricPrecision" image-rendering="optimizeQuality" font-family="sans-serif" stroke="black" stroke-opacity="1"
+    ><text x="9" xml:space="preserve" y="11" clip-path="url(#clipPath14)" stroke="none"
+      >OF Plugin</text
+      ><text x="10" xml:space="preserve" y="25" clip-path="url(#clipPath14)" stroke="none"
+      >Metadata</text
+    ></g
+    ><g font-size="11px" transform="translate(849,2)" fill-opacity="1" fill="black" text-rendering="geometricPrecision" image-rendering="optimizeQuality" font-family="sans-serif" stroke="black" stroke-opacity="1"
+    ><text x="6" xml:space="preserve" y="11" clip-path="url(#clipPath14)" stroke="none"
+      >Min Plugin</text
+      ><text x="10" xml:space="preserve" y="25" clip-path="url(#clipPath14)" stroke="none"
+      >Metadata</text
     ></g
     ><g stroke-linecap="butt" font-size="11px" transform="translate(-14,24)" fill-opacity="1" fill="black" text-rendering="geometricPrecision" image-rendering="optimizeQuality" font-family="sans-serif" stroke-linejoin="round" stroke="black" stroke-opacity="1"
     ><line y2="50" fill="none" x1="50" clip-path="url(#clipPath16)" x2="221" y1="50"
@@ -374,8 +374,8 @@
       >1: select optimizer plugin</text
     ></g
     ><g font-size="8px" fill-opacity="1" fill="rgb(120,120,120)" text-rendering="geometricPrecision" image-rendering="optimizeQuality" stroke="rgb(120,120,120)" stroke-opacity="1"
-    ><text x="0" xml:space="preserve" y="10" stroke="none"
-      ></text
+    ><text x="0" xml:space="preserve" y="10" stroke="none" fill="none" opacity="0"
+      >Visual Paradigm Standard(matthiasweilinger(University of Stuttgart))</text
     ></g
   ></g
 ></svg
