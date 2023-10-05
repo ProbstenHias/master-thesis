@@ -1600,11 +1600,16 @@ When fortified with caching, the plugin-based approach emerges as a compelling a
 \section{Developer Experience}
 \label{sec:developerUsabilityAssessment}
 
-The plugin-based optimization framework epitomizes developer-centricity.
-Shielded from the intricacies of plugin interactions, developers can emphasize plugin functionalities.
+The plugin-based optimization framework manifests developer-centricity.
+Shielded from the difficulties of plugin interactions, developers can emphasize plugin functionalities.
 The regimented structure of the interaction endpoints liberates developers from concerns about other plugins.
-The standardized architecture means developers can focus on hyperparameter customization and core calculations.
-Contrasted with the Jupyter Notebook approach, this framework offers simplicity and, guided by comprehensive documentation, facilitates the smooth realization of plugins.
+This contrasts with the Jupyter Notebook implementation, where developers must know the entire optimization process when implementing a new minimizer or \gls{of}.
+As the results in \ref{sec:usabilityForDevelopers} show, implementing new minimizer and \gls{of} plugins is straightforward and can be done in a few steps.
+What simplifies the process even more is that all plugins of the same type have the same structure, meaning that the first step is only to copy an existing plugin.
+By copying an existing plugin, everything concerning the plugin's metadata, interaction endpoints, and callback protocols is already implemented.
+The standardized architecture means developers can focus on hyperparameter customization and core calculations during implementation.
+With several existing example plugins, developers can leverage these to understand how the core implementations are realized.
+The understanding is further enhanced by the detailed documentation of the plugin-based optimization framework that explains the architecture and implementation.
 
 
 \chapter{Related Work}
