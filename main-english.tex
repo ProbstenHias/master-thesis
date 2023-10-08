@@ -255,9 +255,9 @@ By delving into these foundational topics, readers will gain the necessary conte
 \section{QHana}
 \label{sec:qhana}
 
-\gls{qhana} was conceived as a specialized application in the domain of \gls{dh}.
+\gls{qhana} was conceived as a specialized application in the domain of \gls{dh} and has since evolved into a versatile platform for quantum computing applications.
 Its primary design allows users to explore various machine-learning algorithms on designated datasets.
-While the primary vision of \gls{qhana} is to assess the potential advantages of quantum algorithms within the \gls{dh} community, the rise and cloud availability of quantum computers further underscore its relevance and timeliness.
+While the primary vision of \gls{qhana} is to assess the potential advantages of quantum algorithms within the \gls{dh} community, the rise and cloud availability of quantum computers \cite{Castelvecchi2017} further underscore its relevance and timeliness.
 
 \gls{qhana} is designed to be extensible, allowing the integration of new data sources and quantum algorithms as plugins.
 However, plugins are built for specific applications, limiting their reusability in other contexts.
@@ -265,7 +265,7 @@ Moreover, an application's plugins must be developed in the same programming lan
 Even if a plugin can be reused in another application, its \gls{ui} has to adapt to the new application.
 Otherwise, users may need help understanding the plugin's functionality.
 To address this limitation, \gls{qhana} is built on a novel concept of \glspl{ramp}.
-This concept allows microservices with an integrated UI to be used as plugins by multiple applications, enhancing the reusability of the plugins across different applications \cite{Buehler2022}.
+This concept allows microservices with an integrated \gls{ui} to be used as plugins by multiple applications, enhancing the reusability of the plugins across different applications \cite{Buehler2022}.
 
 \subsection{QHAna's Architecture}
 \label{subsec:qhanaArchitecture}
@@ -273,20 +273,20 @@ This concept allows microservices with an integrated UI to be used as plugins by
 The \gls{ui} offers users platform to navigate and interact with the system's functionalities, including the integrated quantum algorithms.
 It acts as the primary touchpoint, bridging users with the system's underlying computational capabilities and data sources.
 
-Conversely, the backend stands as QHAna's computational core, orchestrating the execution of quantum algorithms, managing data sources, and ensuring fluid communication with the UI.
+Conversely, the backend stands as QHAna's computational core, orchestrating the execution of quantum algorithms, managing data sources, and ensuring fluid communication with the \gls{ui}.
 Its modular design facilitates the integration of new algorithms and data sources, adapting to the evolving needs of the \gls{dh} community.
 
 Integral to QHAna's extensible architecture are the \glspl{ramp}.
-These components not only enhance the system's capabilities but also ensure that their UI elements cohesively integrate with the primary application interface, fostering a unified user experience.
+These components not only enhance the system's capabilities but also ensure that their \gls{ui} elements cohesively integrate with the primary application interface, fostering a unified user experience.
 
 \subsection{RAMPs: Bridging UI and Data Processing}
 \label{subsec:ramps}
 
 At their core, \glspl{ramp} are designed to serve as plugins, but they go beyond traditional plugin functionalities by offering a more holistic approach to both user interaction and data processing.
 
-\textbf{User Interface (UI) Integration}:
-One of the standout features of RAMPs is their ability to seamlessly integrate UI components.
-Unlike traditional plugins that might require significant adjustments to fit into an application's existing UI, RAMPs come equipped with microfrontends.
+\textbf{User Interface Integration}:
+One of the standout features of RAMPs is their ability to seamlessly integrate \gls{ui} components.
+Unlike traditional plugins that might require significant adjustments to fit into an application's existing \gls{ui}, RAMPs come equipped with microfrontends.
 These microfrontends are designed to be context-aware, ensuring that they align with the primary application's interface.
 Furthermore, \glspl{ramp} introduce the possibility of multi-step \gls{ui} interactions, where users can be presented with sequential interfaces based on prior inputs or processing results, enhancing the depth and interactivity of the user experience.
 
@@ -927,7 +927,7 @@ Building upon the idea of plugins interacting with each other, as detailed in th
 How does one plugin discover the available endpoints of another?
 This thesis introduces a novel concept called \textit{interaction endpoints} to \gls{qhana} to address this very challenge.
 
-While \gls{qhana} already has a metadata field named \emph{entry points}, which are endpoints invoked by the \gls{qhana} UI to render a plugin's UI, interaction endpoints extend this idea further.
+While \gls{qhana} already has a metadata field named \emph{entry points}, which are endpoints invoked by the \gls{qhana} \gls{ui} to render a plugin's \gls{ui}, interaction endpoints extend this idea further.
 They specifically define endpoints in the metadata that other plugins can invoke, facilitating seamless integration and interaction.
 
 The core of interaction endpoints is their \emph{type}.
@@ -1172,7 +1172,7 @@ It aids in data transfer between endpoints and ensures efficient data storage in
 \paragraph{Metadata Endpoint and Interaction Endpoint Discovery:}
 \label{sec:metadataEndpoint}
 The metadata of plugins houses the definitions for interaction endpoints.
-Traditionally, the \emph{EntryPoint} field in the metadata is reserved for guiding the \gls{qhana} UI to a plugin's microfrontend.
+Traditionally, the \emph{EntryPoint} field in the metadata is reserved for guiding the \gls{qhana} \gls{ui} to a plugin's microfrontend.
 However, this thesis expands the \emph{EntryPoint} field to encompass interaction endpoints.
 The \emph{interactionEndpoints} field is essentially a list, potentially containing multiple interaction endpoints.
 Each list entry is a dictionary containing a \textbf{type} and an \textbf{href} field.
