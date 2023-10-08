@@ -79,21 +79,22 @@
 
 \section*{Abstract}
 Quantum computing, with its transformative processing capabilities, has ushered in a new computational era, presenting both unparalleled opportunities and intricate challenges.
-One significant beneficiary of this quantum revolution is the \gls{dh}, which, through digital tools, has added a quantitative dimension to its traditionally qualitative realm.
-\gls{qhana}, designed specifically for \gls{qdh}, emerges as a pivotal system in this context.
+One significant beneficiary of this quantum revolution is the \gls{dh}, which has added a quantitative dimension to its traditionally qualitative realm.
+\gls{qhana}, originally designed specifically for \gls{qdh}, emerges as a pivotal system in this context.
 This thesis focuses on enhancing \gls{qhana} by integrating variational algorithms, especially \glspl{vqa}, in a modular manner.
 The objective is to encapsulate components of variational algorithms as distinct, interchangeable plugins, ensuring adaptability and user-centricity.
 Addressing challenges like robust plugin communication and intuitive user experience, the research delves into the design, implementation, and evaluation of this modular framework.
-Beyond \gls{vqa}, the findings lay a foundation for modular system design in \gls{qdh}
+Beyond the immediate application to \glspl{vqa}, the insights and methodologies derived here lay foundational groundwork for future modular system designs in the quantum computing domain.
 
-\section*{Kurzfassung}
-Quantum computing, mit ihren transformativen Verarbeitungsfähigkeiten, hat eine neue Ära der Berechnung eingeläutet und bietet sowohl noch nie dagewesene Chancen als auch komplexe Herausforderungen.
-Ein bedeutender Profiteur dieser Quantenrevolution ist die \gls{dh}, die durch digitale Werkzeuge ihrer traditionell qualitativen Domäne eine quantitative Dimension hinzugefügt hat.
-\gls{qhana}, speziell für \gls{qdh} entwickelt, tritt in diesem Kontext als ein zentrales System hervor.
-Diese Arbeit konzentriert sich auf die Verbesserung von \gls{qhana} durch die Integration von variationalen Algorithmen, insbesondere \glspl{vqa}, auf modulare Weise.
-Das Ziel ist es, Komponenten von variationalen Algorithmen als eigenständige, austauschbare Plugins zu kapseln, um Anpassungsfähigkeit und Benutzerzentriertheit zu gewährleisten.
-Die Forschung geht auf Herausforderungen wie robuste Plugin-Kommunikation und intuitive Benutzererfahrung ein und vertieft das Design, die Implementierung und die Bewertung dieses modularen Frameworks.
-Jenseits von \gls{vqa} legen die Ergebnisse eine Grundlage für das modulare Systemdesign in \gls{qdh}.
+
+% \section*{Kurzfassung}
+% Quantum computing, mit ihren transformativen Verarbeitungsfähigkeiten, hat eine neue Ära der Berechnung eingeläutet und bietet sowohl noch nie dagewesene Chancen als auch komplexe Herausforderungen.
+% Ein bedeutender Profiteur dieser Quantenrevolution ist die \gls{dh}, die durch digitale Werkzeuge ihrer traditionell qualitativen Domäne eine quantitative Dimension hinzugefügt hat.
+% \gls{qhana}, speziell für \gls{qdh} entwickelt, tritt in diesem Kontext als ein zentrales System hervor.
+% Diese Arbeit konzentriert sich auf die Verbesserung von \gls{qhana} durch die Integration von variationalen Algorithmen, insbesondere \glspl{vqa}, auf modulare Weise.
+% Das Ziel ist es, Komponenten von variationalen Algorithmen als eigenständige, austauschbare Plugins zu kapseln, um Anpassungsfähigkeit und Benutzerzentriertheit zu gewährleisten.
+% Die Forschung geht auf Herausforderungen wie robuste Plugin-Kommunikation und intuitive Benutzererfahrung ein und vertieft das Design, die Implementierung und die Bewertung dieses modularen Frameworks.
+% Jenseits von \gls{vqa} legen die Ergebnisse eine Grundlage für das modulare Systemdesign in \gls{qdh}.
 
 \cleardoublepage
 
@@ -216,7 +217,8 @@ Traditionally, the humanities have been viewed through a lens of qualitative ana
 However, with the advent of digital tools and methodologies, a quantitative dimension has emerged, enabling researchers to analyze vast datasets, uncover patterns, and derive insights that were previously unavailable \cite{Barzen2019}.
 With its inherent strengths, Quantum computing offers the potential to elevate the \glspl{dh} to new heights, enabling analyses of unprecedented complexity and depth \cite{Barzen2022}.
 
-Enter \gls{qhana} \cite{Buehler2022}, a pioneering system meticulously crafted for \gls{qdh}.
+Enter \gls{qhana} \cite{Buehler2022}.
+Initially conceived and meticulously crafted for \gls{qdh}, its applicability has evolved over time, proving valuable not just for \glspl{dh} but for broader quantum computing applications.
 While its core architecture is robust and versatile, there lies an untapped potential: integrating variational algorithms, specifically \glspl{vqa} in a modular fashion.
 The vision is ambitious yet clear - components of variational algorithms encapsulated as distinct, interchangeable plugins within \gls{qhana}.
 Such a modular approach promises enhanced adaptability and a user-centric platform where researchers can precisely tailor their quantum optimization strategies.
@@ -725,14 +727,11 @@ In the service-based approach, the time taken for the minimization endpoint to r
 \item \textbf{Network Latency}: This quantifies the time required for a request to reach the server and for the corresponding response to be received.
 This metric is exclusive to the service-based approach.
 
-\item \textbf{Network Traffic}: This represents the volume of data transmitted between the endpoints.
-This metric is exclusive to the service-based approach.
-
 \item \textbf{Database Access Times}: It is essential to gauge the time required to retrieve data from the database since endpoints access context data during each invocation.
 \end{itemize}
 
 This evaluation hinges on quantitative metrics, with results graphically depicted for enhanced clarity.
-The \emph{time.perf\_count} function from Python is employed to capture measurements, while the Google Chrome developer tools are used to measure network traffic.
+The \emph{time.perf\_count} function from Python measures the time taken for a function to execute, providing a reliable and accurate measure of performance.
 
 \subsection{Interchangeability}
 The accurate measure of interchangeability is the ability to swap components without causing disruptions.
@@ -1444,6 +1443,7 @@ The measurements for the plugin-based implementations do not include the time it
   \label{fig:time_for_minimization}
 \end{figure}
 
+\newpage
 \section{Interchangeability and Standardization}
 \label{sec:interchangeabilityOfPlugins}
 
