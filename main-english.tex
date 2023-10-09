@@ -296,7 +296,7 @@ They encapsulate specific functionalities and offer them as self-contained servi
 This modular approach to data processing ensures that \glspl{ramp} can be easily integrated, replaced, or updated without disrupting the overall system's functionality.
 The multi-step nature of \glspl{ramp} also allows for iterative processing, where data can undergo multiple rounds of processing based on user inputs or intermediate results.
 
-In essence, RAMPs represent a paradigm shift in how plugins are perceived and integrated within applications
+In essence, RAMPs represent a paradigm shift in how plugins are perceived and integrated within applications.
 By merging \gls{ui} and data processing functionalities into a single, reusable unit and introducing multi-step interactions, they enhance the flexibility and adaptability of a system.
 
 \begin{figure}
@@ -464,12 +464,12 @@ The subsequent sections of this thesis will delve into the methodologies, implem
 \label{sec:conceptualFramework}
 
 This section outlines the theoretical and conceptual groundwork that anchors the methodology for this thesis.
-The framework is rooted in modularity, interactivity, and interchangeability principles in the context of plugin-based architectures for optimization algorithms in \gls{qhana}.
+The framework is rooted in modularity, interactivity and interchangeability principles in the context of plugin-based architectures for optimization algorithms in \gls{qhana}.
 
 \subsection{Plugin-Based Architecture in QHana}
 \gls{qhana}, with its design centered on the Digital Humanities, provides an extensible platform for experimenting with various algorithms.
 \gls{qhana}'s architecture predominantly revolves around the concept of RAMPs.
-The objective is to leverage \gls{qhana}'s inherent modularity by enabling components of optimization algorithms to function as distinct, interchangeable plugins.
+The objective is to leverage \gls{qhana}'s inherent modularity by enabling components of optimization algorithms to function as distinct and interchangeable plugins.
 This brings us to the significance of modularity in optimization.
 
 \subsection{Significance of Modularity in Optimization}
@@ -552,7 +552,7 @@ Alternatively, a plugin could invoke another plugin and then continue with its t
 Intrinsic to this step is the design of a coordination mechanism that facilitated the interaction between plugins.
 
 \subsection{UML Diagrams}
-To pictorially represent the responsibilities and interfaces of each plugin, component diagrams are formulated.
+To represent the responsibilities and interfaces of each plugin, component diagrams are created.
 A diagram encapsulates the primary tasks of a plugin and the interfaces it provides, offering a clear understanding of the system's structure.
 
 Sequence diagrams are devised to fathom the intricate interplay between plugins.
@@ -609,7 +609,7 @@ For the context of this thesis, the following principles are deemed most signifi
 \begin{itemize}
     \item \textbf{Plugin Definition:}
     A plugin is essentially a Python module or package.
-    It contains a class that inherits from \texttt{QHAnaPluginBase} and should be situated in a directory specified by the \texttt{PLUGIN\_FOLDERS} configuration variable.
+    It contains a class that inherits from \texttt{QHAnaPluginBase} and should be located in a directory specified by the \texttt{PLUGIN\_FOLDERS} configuration variable.
     The plugin runner imports all plugins from these directories, handling only the root module of the plugin.
     The plugin, in turn, is responsible for importing its implementation class and all associated Celery tasks.
 
@@ -619,7 +619,7 @@ For the context of this thesis, the following principles are deemed most signifi
 
     \item \textbf{UI Interaction:}
     Plugins define both \texttt{href} and \texttt{hrefUi} to point to their microfrontend.
-    The `hrefUi` serves the microfrontend where users input data, and `href` processes this input.
+    The `hrefUi` serves the microfrontend where users input data and `href` processes this input.
 
     \item \textbf{Data Handling in Multi-step Plugins:}
     For plugins requiring multiple user input steps, data is stored in a key-value store with dictionary-like functionality.
@@ -640,7 +640,7 @@ For the context of this thesis, the following principles are deemed most signifi
     \end{itemize}
 \end{itemize}
 
-It is imperative to note that while the outlined principles are crucial for this thesis, \gls{qhana}'s overarching documentation provides a more exhaustive list of best practices and guidelines for plugin creation \cite{FabianBuehler}.
+It is imperative to note that while the outlined principles are crucial to this thesis, \gls{qhana}'s overarching documentation provides a more exhaustive list of best practices and guidelines for plugin creation \cite{FabianBuehler}.
 
 
 \subsection{Data Handling and Transfer}
@@ -683,7 +683,7 @@ For this reason, a multifaceted testing strategy is adopted:
     \end{itemize}
 \end{enumerate}
 
-By employing a combination of static code analysis, detailed logging, interactive debugging, and manual testing, it is ensured that the plugins are functionally correct and adhered to coding standards and best practices, guaranteeing a robust and user-friendly experience.
+By employing a combination of static code analysis, detailed logging, interactive debugging and manual testing, it is ensured that the plugins are functionally correct and adhered to coding standards and best practices, guaranteeing a robust and user-friendly experience.
 
 
 \subsection{Performance Optimization}
@@ -783,7 +783,7 @@ By employing such multifaceted and representative datasets, the methodology aims
 \label{chap:architecture}
 
 
-\section{Resultant Decomposition into Plugins and their Responsibilities}
+\section{Resulting Decomposition into Plugins and their Responsibilities}
 \label{sec:resdecomposition}
 
 Following the decomposition strategy, the plugin-based optimization framework is divided into three primary plugin types:
@@ -800,7 +800,7 @@ Its primary roles include:
 \begin{itemize}
 \item \textbf{Metadata Provision}: The plugin offers metadata about itself.
 \item \textbf{Hyperparameters Acquisition}: It prompts the user to provide the hyperparameters necessary for the loss function calculation.
-\item \textbf{Loss Calculation}: Based on the provided input data, the plugin computes the loss, representing the discrepancy between predicted and tareget values.
+\item \textbf{Loss Calculation}: Based on the provided input data, the plugin computes the loss, representing the discrepancy between predicted and target values.
 \item \textbf{Gradient Calculation (Optional)}: For optimization algorithms that leverage gradient-based methods, the plugin can optionally compute the gradient of the loss function.
 This aids in guiding the optimization process towards the desired minimum.
 \end{itemize}
@@ -905,7 +905,7 @@ Instances of such interactions in the optimization context are:
 Long-running interactions come into play for processes that demand extensive computation time or involve multiple steps.
 In such a case, the calling plugin invokes the endpoint of the invocable plugin.
 The invoked endpoint then schedules a long-running task and returns immediately.
-The calling plugin can then continue with its execution without waiting for the long-running task to finish.
+The calling plugin can then continue with its execution in an asynchronous manner without waiting for the long-running task to finish.
 A new endpoint for the calling plugin is defined that can be called by the long-running task once it is finished.
 This endpoint is called a callback endpoint.
 Instances of such interactions are:
@@ -923,7 +923,7 @@ The design of these interactions ensures that plugins can interact seamlessly an
 \section{Introduction of Interaction Endpoints}
 \label{sec:introie}
 
-Building upon the idea of plugins interacting with each other, as detailed in the previous section, there arises a crucial question:
+Building upon the idea of plugins interacting with each other, as detailed in the previous section, a crucial question arises:
 How does one plugin discover the available endpoints of another?
 This thesis introduces a novel concept called \textit{interaction endpoints} to \gls{qhana} to address this very challenge.
 
@@ -1339,7 +1339,7 @@ Performance benchmarks are conducted on a MacBook Pro. The system's detailed spe
 \section{Benchmark Results}
 \label{subsec:benchmarkingResults}
 
-The most resource-intensive phase of the minimization process pertains to the loss function's computation, given its recurrent invocation.
+The most resource-intensive phase of the minimization process is related to the loss function's computation, given its recurrent invocation.
 The benchmarks employed the \emph{ridge-loss} plugin as the \gls{of}, configuring \emph{alpha} at 0.5.
 The \emph{scipy-minimizer} plugin functioned as the minimizer, with the method set as \emph{L-BFGS-B}.
 
@@ -1581,7 +1581,7 @@ As the benchmarking results show, by caching the data, the first approach is arg
 
 Standardization is paramount in the plugin-based optimization framework.
 The metadata, interaction endpoints, callback protocols, and plugin functionalities are meticulously defined to foster uniformity.
-This regimented structure fosters seamless plugin interchangeability.
+This organized structure creates seamless plugin interchangeability.
 The modular nature of this framework not only simplifies the optimization process but also encourages a modular development course, paving the path for universal plugin interactions within \gls{qhana}.
 
 \section{Performance Insights}
