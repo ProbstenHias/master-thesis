@@ -466,18 +466,18 @@ The subsequent sections of this thesis will delve into the methodologies, implem
 This section outlines the theoretical and conceptual groundwork that anchors the methodology for this thesis.
 The framework is rooted in modularity, interactivity and interchangeability principles in the context of plugin-based architectures for optimization algorithms in \gls{qhana}.
 
-\subsection{Plugin-Based Architecture in QHana}
+\paragraph{Plugin-Based Architecture in QHana:}
 \gls{qhana}, with its design centered on the Digital Humanities, provides an extensible platform for experimenting with various algorithms.
 \gls{qhana}'s architecture predominantly revolves around the concept of RAMPs.
 The objective is to leverage \gls{qhana}'s inherent modularity by enabling components of optimization algorithms to function as distinct and interchangeable plugins.
 This brings us to the significance of modularity in optimization.
 
-\subsection{Significance of Modularity in Optimization}
+\paragraph{Significance of Modularity in Optimization:}
 When \glspl{vqa} are designed with modular components, it allows for increased flexibility.
 Specifically, having distinct \glspl{of} and minimization functions means parts of the algorithm can be adjusted or replaced seamlessly.
 This reflects the goals of modularity and flexibility intrinsic to \gls{qhana}'s design.
 
-\subsection{Interactivity Between Plugins}
+\paragraph{Interactivity Between Plugins:}
 Interactivity in \gls{qhana} should encompass various facets:
 
 A plugin should be able to invoke the microfrontend of another plugin.
@@ -491,14 +491,14 @@ Moreover, since an invoking plugin is unaware of the parameters or requirements 
 
 Drawing inspiration from existing systems, the interaction between the minimization and \glspl{of} in implementations like SciPy's \emph{optimizer.minimize} \cite{Virtanen2020} function serves as a precedent.
 
-This thesis introduces the innovative concept of \emph{interaction endpoints} to elevate the degree of interactivity between plugins within \gls{qhana}.
+This thesis introduces the innovat ive concept of \emph{interaction endpoints} to elevate the degree of interactivity between plugins within \gls{qhana}.
 While \gls{qhana} already employs a metadata field for plugins known as \emph{entry points} - endpoints invoked by the \gls{qhana} \gls{ui} to render the \gls{ui} of a plugin - interaction endpoints extend this paradigm by marking specific endpoints as callable by other plugins.
 
 A defining characteristic of an interaction endpoint is its \emph{type}.
 Interaction endpoints sharing the same type uphold uniformity in their signature and return type.
 This typing ensures that they are invoked consistently by other plugins, irrespective of their specific implementation.
 
-\subsection{Integration and Alignment with QHana}
+\paragraph{Integration and Alignment with QHana:}
 The proposed approach complements \gls{qhana}'s existing principles, resonating with its emphasis on extensibility, adaptability, and user-centricity.
 By enhancing the interactivity and modularity of plugins within \gls{qhana}, we strive to elevate its capabilities, making it a more dynamic platform for optimization and \glspl{vqa}.
 
@@ -508,13 +508,13 @@ By enhancing the interactivity and modularity of plugins within \gls{qhana}, we 
 The architectural design process is a critical phase that dictates how the solution's components will function and interact with each other.
 The methodology undertaken for the architectural design of the plugin-based optimization framework consisted of a series of well-defined steps, ensuring clarity, modularity, and extensibility.
 
-\subsection{Decomposition into Plugins}
+\paragraph{Decomposition into Plugins:}
 The first step involved decomposing the optimization process into distinct plugins.
 Decomposition is achieved by reviewing relevant literature to understand standard practices and methodologies in optimization \cite{Virtanen2020, Nocedal2006, ShalevShwartz2014, Weinan2017}.
 The main challenge is to find a good decomposition so that, on the one hand, all functionalities that should be interchangeable are encompassed in an extra plugin,
 on the other hand, splitting the process into too many plugins would create an overhead that would lead to inefficiency.
 
-\subsection{Defining Plugin Responsibilities}
+\paragraph{Defining Plugin Responsibilities:}
 Once the plugins are identified, the next step is to define the responsibilities of each plugin precisely.
 This ensured that every plugin had a well-defined purpose, preventing overlaps in functionality and ensuring clarity in their roles.
 To delineate these responsibilities, several crucial decisions had to be made:
@@ -530,7 +530,7 @@ To delineate these responsibilities, several crucial decisions had to be made:
   \item And lastly, who oversees and coordinates the entire process?
 \end{itemize}
 
-\subsection{Universal Plugin Interface Design}
+\paragraph{Universal Plugin Interface Design:}
 Recognizing the vast possibilities and variations that interchangeable plugins might encompass, it is crucial to formulate a universally adhered-to interface.
 This interface acted as a \emph{contract}, ensuring that irrespective of the specific implementation details of a plugin, there esists a consistent mode of interaction.
 Core attributes and functionalities, like querying the number of initial weights for the minimization process required, are defined as part of this universal interface.
@@ -538,7 +538,7 @@ This approach fostered interchangeability and adaptability, as the defined inter
 In terms of optimization, this could mean that in the case of an \gls{of} plugin responsible for calculating the loss function, interfaces must be generalized to allow for any thinkable type of loss function.
 
 
-\subsection{Plugin Interaction Design}
+\paragraph{Plugin Interaction Design:}
 The next step is to design the interaction between plugins.
 This design process involved defining the various ways in which plugins could interact with each other.
 It is crucial to build a robust and flexible interaction design to accommodate many scenarios since the interaction between plugins in \gls{qhana} should be wider than the optimization process.
@@ -551,7 +551,7 @@ A plugin could also invoke another plugin and then stop execution while providin
 Alternatively, a plugin could invoke another plugin and then continue with its tasks without waiting for the invoked plugin to complete its tasks.
 Intrinsic to this step is the design of a coordination mechanism that facilitated the interaction between plugins.
 
-\subsection{UML Diagrams}
+\paragraph{UML Diagrams:}
 To represent the responsibilities and interfaces of each plugin, component diagrams are created.
 A diagram encapsulates the primary tasks of a plugin and the interfaces it provides, offering a clear understanding of the system's structure.
 
@@ -560,7 +560,7 @@ These diagrams capture the stepwise interaction between plugins.
 They detail the control and data flow, spotlighting the sequence of plugin invocations and collaborative processes.
 
 
-\subsection{Feedback and Refinement}
+\paragraph{Feedback and Refinement:}
 Throughout the design process, continuous feedback loops are integrated. This involved:
 \begin{itemize}
 \item Revisiting each stage, evaluating its alignment with overarching goals.
@@ -711,7 +711,7 @@ The evaluation will assess both versions to facilitate a comparison between the 
 Additionally, the evaluation will juxtapose these approaches with a non-plugin-based approach, presented as a jupyter notebook.
 To validate the effectiveness of the proposed solutions and to assess whether the goals set out in the problem statement have been achieved, the following evaluation methodologies are adopted:
 
-\subsection{Performance Benchmarking}
+\paragraph{Performance Benchmarking:}
 \label{subsec:performanceBenchmarking}
 Performance is paramount, especially in a plugin-based architecture.
 A direct comparison will be made between the two plugin-based approaches and the non-service-based approach.
@@ -733,16 +733,16 @@ This metric is exclusive to the service-based approach.
 This evaluation hinges on quantitative metrics, with results graphically depicted for enhanced clarity.
 The \emph{time.perf\_count} function from Python measures the time taken for a function to execute, providing a reliable and accurate measure of performance.
 
-\subsection{Interchangeability}
+\paragraph{Interchangeability:}
 The accurate measure of interchangeability is the ability to swap components without causing disruptions.
 Accordingly, every plugin of a particular type is tested against every other plugin of the same type to validate seamless interchangeability.
 
-\subsection{Standardization Adherence}
+\paragraph{Standardization Adherence:}
 Standardization is tested to ensure compatibility and uniformity across diverse plugins.
 An evaluation determines whether all implemented plugins conform to the prescribed standards.
 This guarantees that all optimization plugins can be implemented uniformly, facilitating consistent and compatible integrations in the future.
 
-\subsection{User Experience}
+\paragraph{User Experience:}
 While the primary audience for this thesis is developers for the \gls{qhana} platform, the user experience has to be maintained.
 An assessment determines the ease and efficiency with which a developer can introduce a new plugin in plugin-based optimization in \gls{qhana}.
 The complexity and steps of to integrate a new, interchangeable plugin for the optimization process are laid out.
@@ -792,7 +792,7 @@ These plugins have specific roles and responsibilities, ensuring a modular and e
 This split is visualized in the component diagram in figure \ref{fig:component_diagram}.
 It is important to note that this decomposition and the associated responsibilities remain consistent for both proposed plugin-based approaches.
 
-\subsection{Objective Function Plugin}
+\paragraph{Objective Function Plugin:}
 
 The \gls{of} plugin is central to the optimization framework, encapsulating the mathematical function that defines the problem at hand.
 Its primary roles include:
@@ -805,7 +805,7 @@ Its primary roles include:
 This aids in guiding the optimization process towards the desired minimum.
 \end{itemize}
 
-\subsection{Minimizer Plugin}
+\paragraph{Minimizer Plugin:}
 
 The minimizer plugin is responsible for iteratively adjusting parameters to minimize the loss provided by the \gls{of} plugin.
 Its functions include:
@@ -816,7 +816,7 @@ Its functions include:
 \item \textbf{Minimization Process}: Using the loss (and optionally the gradient) from the \gls{of} plugin, the minimizer plugin endeavors to find the parameter values that minimize this loss.
 \end{itemize}
 
-\subsection{Coordinator Plugin}
+\paragraph{Coordinator Plugin:}
 
 The Coordinator plugin acts as the orchestrator, ensuring seamless interaction between the \gls{of} and Minimization plugins and the user.
 Its primary responsibilities are:
