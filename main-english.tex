@@ -545,7 +545,7 @@ It is crucial to build a robust and flexible interaction design to accommodate m
 This interaction design should lay the foundation for all future plugin interactions within \gls{qhana}.
 
 Scenarios included, for instance, a plugin invoking the microfrontend of another plugin, or it could call a specific endpoint of another plugin.
-Additionally, the interaction design also encompassed the flow of control between plugins.
+Additionally, the interaction design also encompasses the flow of control between plugins.
 For instance, a plugin could invoke another plugin and wait for it to complete its tasks before resuming its own.
 A plugin could also invoke another plugin and then stop execution while providing the invoked plugin with a callback URL that the invoked plugin could call once it completes its tasks.
 Alternatively, a plugin could invoke another plugin and then continue with its tasks without waiting for the invoked plugin to complete its tasks.
@@ -743,7 +743,7 @@ An evaluation determines whether all implemented plugins conform to the prescrib
 This guarantees that all optimization plugins can be implemented uniformly, facilitating consistent and compatible integrations in the future.
 
 \subsection{User Experience}
-While the primary audience for this thesis is developers for the \gls{qhana} platform, the user experience is to be maintained.
+While the primary audience for this thesis is developers for the \gls{qhana} platform, the user experience has to be maintained.
 An assessment determines the ease and efficiency with which a developer can introduce a new plugin in plugin-based optimization in \gls{qhana}.
 The complexity and steps of to integrate a new, interchangeable plugin for the optimization process are laid out.
 
@@ -1199,7 +1199,7 @@ This distinction is foundational to the differences between the two approaches, 
 \section{Exemplary Minimizers and Objective Functions}
 \label{sec:exampleMinimizersAndObjectiveFunctions}
 
-The implementation encompassed two distinct minimizer plugins and three \gls{of} plugins to illustrate the capabilities of the plugin-based optimization framework.
+The implementation encompasses two distinct minimizer plugins and three \gls{of} plugins to illustrate the capabilities of the plugin-based optimization framework.
 Specifically, the minimizer plugins \emph{scipy-minimizer} and \emph{scipy-minimizer-grad} and the \gls{of} plugins \emph{ridge-loss}, \emph{hinge-loss}, and \emph{neural-network}.
 
 \paragraph{Minimizer Plugins:}
@@ -1323,7 +1323,7 @@ As a trade-off, there is no need to relay a task's database ID to the coordinato
 \chapter{Measurable Results}
 \label{chap:results}
 
-This chapter elucidates the outcomes achieved with the current implementation, emphasizing system performance, plugin interchangeability, and developer usability.
+This chapter explains the outcomes achieved with the current implementation, emphasizing system performance, plugin interchangeability, and developer usability.
 
 Performance benchmarks are conducted on a MacBook Pro. The system's detailed specifications include:
 
@@ -1459,7 +1459,7 @@ The governing standards, as enumerated in Chapters \ref{chap:architecture} and \
 
 Successful compliance ensures plugin interchangeability.
 All example plugins in the implementation segment conform to these standards, ensuring mutual compatibility.
-So, users can combine any minimizer plugin with any \gls{of} without changing any code.
+Users can combine any minimizer plugin with any \gls{of} without changing any code.
 It is important to note, though, that to leverage the gradient calculation provided by the \emph{neural-network} plugin, the \emph{scipy-minimizer-grad} plugin has to be used.
 
 The combination of all minimizer plugins with all \gls{of} plugins is extensively tested manually, and the results have been documented in Table \ref{table:interchangeability} to ensure that the plugins are fully interchangeable.

@@ -3,7 +3,7 @@ class HyperparamterInputSchema(FrontendFormBaseSchema):
         required=True,
         allow_none=False,
         metadata={
-            "label": "Aplha",
+            "label": "Alpha",
             "description": "Alpha variable for Ridge Loss function.",
             "input_type": "textarea",
         },
