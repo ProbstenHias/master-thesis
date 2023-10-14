@@ -79,12 +79,12 @@
 
 \section*{Abstract}
 Quantum computing, with its transformative processing capabilities, has ushered in a new computational era, presenting both unparalleled opportunities and intricate challenges.
-One significant beneficiary of this quantum revolution is the \gls{dh}, which has added a quantitative dimension to its traditionally qualitative realm.
-\gls{qhana}, originally designed specifically for \gls{qdh}, emerges as a pivotal system in this context.
-This thesis focuses on enhancing \gls{qhana} by integrating variational algorithms, especially \glspl{vqa}, in a modular manner.
-The objective is to encapsulate components of variational algorithms as distinct, interchangeable plugins, ensuring adaptability and user-centricity.
+One potential beneficiary of this quantum revolution is the Digital Humanities. With quantum computing, the field has the potential to dramatically enhance its quantitative analysis.
+QHAna, the Quantum Humanities Analysis tool, designed specifically for Quantum Digital Humanities, emerges as a pivotal system in this context.
+This thesis focuses on enhancing QHAna by integrating variational algorithms, especially Variational Quantum Algorithms, in a modular manner.
+The objective is to encapsulate components of variational algorithms as distinct, interchangeable plugins, ensuring adaptability and enabling end users to adapt the algorithms.
 Addressing challenges like robust plugin communication and intuitive user experience, the research delves into the design, implementation, and evaluation of this modular framework.
-Beyond the immediate application to \glspl{vqa}, the insights and methodologies derived here lay foundational groundwork for future modular system designs in the quantum computing domain.
+Beyond the immediate application to Variational Quantum Algorithms, the insights and methodologies derived here lay foundational groundwork for future modular system designs in the quantum computing domain.
 
 
 % \section*{Kurzfassung}
@@ -209,26 +209,27 @@ Beyond the immediate application to \glspl{vqa}, the insights and methodologies 
 \label{chap:introduction}
 
 The dawn of quantum computing has revolutionized the landscape of computational research.
-With its unparalleled processing capabilities and the potential to solve problems deemed undoable for classical computers, quantum computing heralds a new era of possibilities \cite{Shor}.
+With its unparalleled processing capabilities and the potential to solve problems deemed impractical for classical computers, quantum computing heralds a new era of possibilities \cite{Shor}.
 However, with these possibilities come challenges that demand innovative solutions, particularly in harnessing the power of quantum algorithms for diverse applications.
 
-One domain that stands to benefit immensely from the quantum revolution is the \gls{dh}.
+One domain that stands to benefit immensely from quantum computing is the \gls{dh}.
 Traditionally, the humanities have been viewed through a lens of qualitative analysis.
 However, with the advent of digital tools and methodologies, a quantitative dimension has emerged, enabling researchers to analyze vast datasets, uncover patterns, and derive insights that were previously unavailable \cite{Barzen2019}.
 With its inherent strengths, Quantum computing offers the potential to elevate the \glspl{dh} to new heights, enabling analyses of unprecedented complexity and depth \cite{Barzen2022}.
 
 Enter \gls{qhana} \cite{Buehler2022}.
 Initially conceived and meticulously crafted for \gls{qdh}, its applicability has evolved over time, proving valuable not just for \glspl{dh} but for broader quantum computing applications.
-While its core architecture is robust and versatile, there lies an untapped potential: integrating variational algorithms, specifically \glspl{vqa} in a modular fashion.
-The vision is ambitious yet clear - components of variational algorithms encapsulated as distinct, interchangeable plugins within \gls{qhana}.
-Such a modular approach promises enhanced adaptability and a user-centric platform where researchers can precisely tailor their quantum optimization strategies.
+The foundational architecture of the system is both robust and adaptable.
+A logical extension of this framework is the integration of variational algorithms, particularly \glspl{vqa}, in a modular fashion.
+The objective is to encapsulate components of variational algorithms as modular and interchangeable plugins within \gls{qhana}.
+Such a modular approach promises enhanced adaptability towards a user-centric platform where researchers can precisely tailor their quantum optimization strategies to their needs.
 
 However, the path to realizing this vision is full of challenges.
+As plugins are especially different microservices, \gls{qhana} is a distributed system, which brings its own set of challenges.
 Integrating optimization as multiple plugins demands a robust communication mechanism, ensuring seamless interaction and data sharing.
 Furthermore, the user experience must remain intuitive, allowing both quantum novices and experts to harness the full potential of the modular quantum optimization framework.
 
-The thesis embarks on a journey to navigate challenges and aims to design and implement a modular framework within \gls{qhana}. Delving into the intricacies of plugin-based architectures, the nuances of quantum optimization algorithms, and the challenges of ensuring seamless interaction between distinct components.
-
+This work embarks on a journey to navigate challenges and aims to design and implement a modular framework within \gls{qhana}, delving into the intricacies of the unique plugin-based architecture of \gls{qhana}, the nuances of quantum optimization algorithms, and the challenges of ensuring seamless interaction between distinct components.
 Moreover, the implications of this research extend beyond the limits of \gls{vqa} in \gls{qhana}.
 By pioneering a methodology for \gls{vqa} plugin interactions within \gls{qhana}, this work lays the foundation for a broader paradigm of modular system design in the \gls{qdh}.
 
@@ -238,7 +239,7 @@ Chapter \ref{chap:problem} sharpens the focus, presenting a clear and concise pr
 With a clear understanding of the problem at hand, Chapter \ref{chap:methodology} dives deep into the methodology.
 Here, the strategies and approaches employed to develop and evaluate the modular framework within \gls{qhana} are explored.
 Chapter \ref{chap:architecture} unveils the architectural blueprint of the modular framework.
-Moving from design to action, Chapter \ref{chap:implementation} delves into the details of the framework's implementation.
+Moving from design to implementation, Chapter \ref{chap:implementation} delves into the details of the framework's implementation.
 In Chapter \ref{chap:results}, the design and implementation are put to the test. The architectural design's efficacy and real-world implementation are measured through rigorous evaluations, drawing insights from the results.
 Chapter \ref{chap:discussion} delves into a thorough analysis of the findings and checks if set problems are adequately solved.
 To place the work in a broader context, Chapter \ref{chap:relatedWork} explores the landscape of related research.
@@ -260,12 +261,12 @@ Its primary design allows users to explore various machine-learning algorithms o
 While the primary vision of \gls{qhana} is to assess the potential advantages of quantum algorithms within the \gls{dh} community, the rise and cloud availability of quantum computers \cite{Castelvecchi2017} further underscore its relevance and timeliness.
 
 \gls{qhana} is designed to be extensible, allowing the integration of new data sources and quantum algorithms as plugins.
-However, plugins are built for specific applications, limiting their reusability in other contexts.
+Usually, plugins are built for specific applications, limiting their reusability in other contexts.
 Moreover, an application's plugins must be developed in the same programming language as the application.
 Even if a plugin can be reused in another application, its \gls{ui} has to adapt to the new application.
 Otherwise, users may need help understanding the plugin's functionality.
-To address this limitation, \gls{qhana} is built on a novel concept of \glspl{ramp}.
-This concept allows microservices with an integrated \gls{ui} to be used as plugins by multiple applications, enhancing the reusability of the plugins across different applications \cite{Buehler2022}.
+To address this limitation, \gls{qhana} is built on a novel concept of \glspl{ramp} \cite{Buehler2022}.
+This concept allows microservices with an integrated \gls{ui} to be used as plugins by multiple applications, enhancing the reusability of the plugins across different applications.
 
 \subsection{QHAna's Architecture}
 \label{subsec:qhanaArchitecture}
@@ -284,13 +285,11 @@ These components not only enhance the system's capabilities but also ensure that
 
 At their core, \glspl{ramp} are designed to serve as plugins, but they go beyond traditional plugin functionalities by offering a more holistic approach to both user interaction and data processing.
 
-\textbf{User Interface Integration}:
 One of the standout features of RAMPs is their ability to seamlessly integrate \gls{ui} components.
 Unlike traditional plugins that might require significant adjustments to fit into an application's existing \gls{ui}, RAMPs come equipped with microfrontends.
 These microfrontends are designed to be context-aware, ensuring that they align with the primary application's interface.
 Furthermore, \glspl{ramp} introduce the possibility of multi-step \gls{ui} interactions, where users can be presented with sequential interfaces based on prior inputs or processing results, enhancing the depth and interactivity of the user experience.
 
-\textbf{Data Processing Capabilities}:
 Beyond the \gls{ui}, \glspl{ramp} are adept at handling intricate data processing tasks.
 They encapsulate specific functionalities and offer them as self-contained services.
 This modular approach to data processing ensures that \glspl{ramp} can be easily integrated, replaced, or updated without disrupting the overall system's functionality.
@@ -435,13 +434,13 @@ Optimization algorithms, with their ability to find the best possible solution f
 \glspl{vqa} are a subset of these algorithms that leverage quantum computing principles, particularly in the realm of \glspl{of} and minimization techniques.
 However, the true potential of optimization is often hindered by rigid platforms where the components of these algorithms are tightly integrated, limiting adaptability and innovation.
 
-\gls{qhana}, with its unique environment tailored for experimenting with a myriad of machine learning and quantum algorithms, presents an opportunity to redefine this paradigm.
+\gls{qhana}, with its unique environment tailored for experimenting with plenty of machine learning and quantum algorithms, presents an opportunity to redefine this paradigm.
 However, its current architecture does not fully exploit the modular benefits that can be achieved by decoupling the components of optimization algorithms.
 Furthermore, while developing this modular framework, allowing plugins to interact with each other is essential.
 This interaction-centric concept, once established, can be universally applied across \gls{qhana}, not just for optimization but for any scenario where plugin interaction is required.
 
 \textbf{Problem Statement:}
-How can we design and implement a modular framework within \gls{qhana} that allows components of optimization algorithms, specifically \glspl{of} and minimization functions, to be encapsulated as distinct, interchangeable plugins?
+How can we design and implement a modular framework within \gls{qhana} that allows components of optimization algorithms, specifically \glspl{of} and minimization functions, to be implemented as distinct, interchangeable plugins?
 Furthermore, how can these plugins be structured to communicate and collaborate seamlessly, especially in the context of \glspl{vqa}?
 
 This problem encompasses several challenges:
@@ -449,11 +448,13 @@ This problem encompasses several challenges:
 \begin{itemize}
     \item \textbf{Communication:} Establishing a robust communication mechanism that enables interaction, data sharing, and collaboration among these plugins.
     \item \textbf{Interchangeability:} Designing a system where different \gls{of} and minimization plugins can be effortlessly swapped, ensuring adaptability in optimization and \glspl{vqa}.
-    \item \textbf{Standardization:} Implementing a consistent interface for these plugins, ensuring uniformity and compatibility across various \gls{of} and minimization plugins.
-    \item \textbf{User Experience:} Providing an intuitive environment where users can easily select, interchange, and experiment with different optimization components tailored to their needs and provide developers with an extensible framework to build new minimization and \gls{of} plugins.
-\end{itemize}
+    Implementing a consistent interface for these plugins, ensuring uniformity and compatibility across various \gls{of} and minimization plugins.
+    The interchangeability should be designed in a way that allows for future use cases outside the optimization context.
+    \item \textbf{User Experience:} Providing an intuitive \gls{ui} for users to easily choose, and experiment with different optimization components tailored to their needs.
+    \item \textbf{Developer Experience:} Providing developers with an extensible framework to build new minimization and \gls{of} plugins.
+  \end{itemize}
 
-Addressing this problem is essential to enhance the capabilities of \gls{qhana}, transforming it into a dynamic, adaptable, and user-centric platform for optimization and VQAs.
+Addressing this problem is essential to enhance the capabilities of \gls{qhana}, transforming it into a dynamic, adaptable, and user-centric platform for experimenting with optimization and \glspl{vqa}.
 The subsequent sections of this thesis will delve into the methodologies, implementations, and evaluations related to this problem.
 
 
@@ -511,7 +512,7 @@ The methodology undertaken for the architectural design of the plugin-based opti
 \paragraph{Decomposition into Plugins:}
 The first step involved decomposing the optimization process into distinct plugins.
 Decomposition is achieved by reviewing relevant literature to understand standard practices and methodologies in optimization \cite{Virtanen2020, Nocedal2006, ShalevShwartz2014, Weinan2017}.
-The main challenge is to find a good decomposition so that, on the one hand, all functionalities that should be interchangeable are encompassed in an extra plugin,
+The main challenge is to find a decomposition so that, on the one hand, all functionalities that should be interchangeable are encompassed in an extra plugin,
 on the other hand, splitting the process into too many plugins would create an overhead that would lead to inefficiency.
 
 \paragraph{Defining Plugin Responsibilities:}
@@ -579,15 +580,13 @@ With component and sequence diagrams already in place, the next step is to defin
 \subsection{Development Environment and Toolset}
 
 \begin{itemize}
-    \item \textbf{Visual Studio Code}: A versatile integrated development environment employed for its adaptability and support for Python development, facilitating comprehensive coding, debugging, and testing for the project.
+    \item \textbf{Visual Studio Code}: A versatile integrated development environment employed for its adaptability and support for Python development using extensions, facilitating comprehensive tools for coding, debugging, and testing.
 
-    \item \textbf{Docker}: Utilized to run all components of \gls{qhana}, ensuring consistent behavior across different computing environments.
+    \item \textbf{Docker}: Utilized to run all components of \gls{qhana}, ensuring consistent behavior across different computing environments and simplifying the deployment process.
 
     \item \textbf{Postman}: An API testing tool employed to validate and debug various endpoints, ensuring consistent and expected behavior of the plugin interactions.
 
     \item \textbf{Python}: As \gls{qhana} is implemented in Python offering versatility and a vast library ecosystem.
-
-    \item \textbf{HTML}: Used for creating the microfrontends forming the user interfaces of the plugins.
 
     \item \textbf{Flask}: A lightweight Python web framework employed to develop the web services and \gls{rest}ful APIs for the plugins.
 
@@ -595,9 +594,9 @@ With component and sequence diagrams already in place, the next step is to defin
 
     \item \textbf{Flask-Smorest}: An extension of Flask, offering tools for building \gls{rest}ful APIs with Flask and Marshmallow, ensuring structured and accurate data transfer between plugins.
 
-    \item \textbf{Celery}: Integrated to manage long-running tasks, particularly for minimizer plugins, allowing for asynchronous task execution.
+    \item \textbf{Celery}: A task queue to manage long-running tasks, particularly for minimizer plugins, allowing for asynchronous task execution.
 
-    \item \textbf{Requests}: A Python library fundamental for facilitating interactions between plugins via HTTP requests.
+    \item \textbf{Requests}: A Python library for interacting with HTTP endpoints. It is leveraged to invoke endpoints of plugins.
 \end{itemize}
 
 \subsection{Key Principles of QHana Plugins}
@@ -657,7 +656,7 @@ For this reason, a multifaceted testing strategy is adopted:
     \item \textbf{Static Code Analysis}:
     \begin{itemize}
         \item \textbf{Purpose}: To ensure code quality and maintainability and to identify potential vulnerabilities or deviations from coding standards.
-        \item \textbf{Tools \& Implementation}: The tool \texttt{flake8} is utilized to conduct static code analysis on the Python codebase.
+        \item \textbf{Tools \& Implementation}: The tool \texttt{flake8} in combination with type hints is utilized to conduct static code analysis on the Python codebase.
         By running \texttt{flake8}, a report detailing any code inconsistencies, potential errors, or areas for improvement is generated, providing valuable feedback for refinement.
     \end{itemize}
 
@@ -699,7 +698,7 @@ These strategies are critical in ensuring swift and seamless interactions betwee
 
 
 \subsection{Documentation and Extensibility}
-Comprehensive documentation detailing how to add new \gls{of} and minimization plugins is created to foster growth and encourage future development.
+Comprehensive documentation detailing how to add new \gls{of} and minimization plugins is created to enable the development of new plugins integrating into this system.
 This documentation serves as a guideline for developers aiming to extend the capabilities of \gls{qhana} with plugin interaction.
 
 
@@ -753,31 +752,31 @@ Through meticulously evaluating these parameters, this thesis thoroughly apprais
 To robustly evaluate the solutions proposed in this work, testing them on diverse datasets, reflecting both size and complexity is essential.
 The objective is to mimic real-world scenarios where optimization problems can range from simple tasks with a few data points to complex challenges with many features and data points.
 The code used to generate the test data can be found in the appendix \ref{chap:appendix}.
+The following criteria are employed to generate the test data:
 
-\subsection{Dataset Characteristics:}
+Datasets of different \emph{sizes} have been generated, spanning from a modest 10 data points to a substantial 100,000 data points.
+This variation ensures that the optimization performance is assessed across different scales, from quick-to-process small datasets to computationally demanding large datasets.
 
-\begin{enumerate}
-    \item \textbf{Variability in Size}: Datasets of different sizes have been generated, spanning from a modest 10 data points to a substantial 100,000 data points.
-    This variation ensures that the optimization performance is assessed across different scales, from quick-to-process small datasets to computationally demanding large datasets.
+The \emph{number of features} in each dataset, is dynamically determined based on the dataset's size, calculated explicitly as \(\lfloor \sqrt{\text{size}} \times 1.5 \rfloor\).
+This approach ensures that with the growth of the dataset, its complexity also increases, mirroring real-world scenarios where larger datasets often present more features or dimensions.
 
-    \item \textbf{Features Determined by Size}: The number of features, \( x \), in each dataset, is dynamically determined based on the dataset's size, calculated explicitly as \( \text{int}(\sqrt{\text{size}} \times 1.5) \).
-    This approach ensures that with the growth of the dataset, its complexity also increases, mirroring real-world scenarios where larger datasets often present more features or dimensions.
+The data is synthetically generated using the \texttt{make\_regression} function from the Scikit-learn library, known for its utility in machine learning.
+An added \emph{noise} parameter introduces an element of randomness, making the optimization task more intricate and resembling real-world challenges.
 
-    \item \textbf{Synthetic Data with Noise}: The data is synthetically generated using the \texttt{make\_regression} function from the Scikit-learn library, known for its utility in machine learning.
-    An added noise parameter introduces an element of randomness, making the optimization task more intricate and resembling real-world challenges.
+To maintain the consistency and reliability of the generated datasets across multiple runs or evaluations, a fixed random seed (\texttt{numpy.random.seed(42)}) has been set.
+This ensures that the data, though synthetic and noisy, remains consistent across evaluations, enabling accurate comparisons, assessments, and \emph{reproducibility}.
 
-    \item \textbf{Ensuring Reproducibility}: To maintain the consistency and reliability of the generated datasets across multiple runs or evaluations, a fixed random seed (`np.random.seed(42)`) has been set.
-    This ensures that the data, though synthetic and noisy, remains consistent across evaluations, enabling accurate comparisons, assessments, and reproducibility.
-
-    \item \textbf{Adherence to QHana Standards}:
-   \begin{itemize}
+To adhere to \gls{qhana}'s data standards, the generated datasets fullfill the following criteria:
+\begin{itemize}
         \item \textbf{Unique Entity IDs}: Each data point in the dataset is allocated a unique ID in the format \emph{entityX}, where X represents the entity number.
 This aligns with \gls{qhana}'s data standard that mandates every data point to have an identifiable ID.
         \item \textbf{Data Format and Storage}: All datasets are stored in the CSV (Comma Separated Values) format, adhering to \gls{qhana}'s accepted data formats.
     \end{itemize}
-\end{enumerate}
 
-By employing such multifaceted and representative datasets, the methodology aims to objectively evaluate the optimization solutions, assessing their performance, interchangeability, and user experience across various scenarios.
+By employing such datasets, the methodology aims to objectively evaluate the optimization solutions, assessing their performance, interchangeability, and user experience across various scenarios.
+
+% TODO add example datasets here
+
 
 \chapter{Resulting System Architecture}
 \label{chap:architecture}
@@ -966,7 +965,7 @@ This flow is shown in Figure \ref{fig:interaction_flow_part3}.
   \else
       \rotatebox{90}{\includegraphics[width=0.9\textheight]{graphics/interaction_flow_1.svg}}
   \fi
-  \caption{Final interaction flow of the first part of the optimization process.}
+  \caption{Final interaction flow of the optimization process (part 1/3).}
   \label{fig:interaction_flow_part1}
 \end{figure}
 
@@ -978,7 +977,7 @@ This flow is shown in Figure \ref{fig:interaction_flow_part3}.
   \else
       \rotatebox{90}{\includegraphics[width=0.9\textheight]{graphics/interaction_flow_2.svg}}
   \fi
-  \caption{Final interaction flow of the second part of the optimization process.}
+  \caption{Final interaction flow of the optimization process (part 2/3).}
   \label{fig:interaction_flow_part2}
 \end{figure}
 
@@ -990,7 +989,7 @@ This flow is shown in Figure \ref{fig:interaction_flow_part3}.
   \else
       \rotatebox{90}{\includegraphics[width=0.9\textheight]{graphics/interaction_flow_3.svg}}
   \fi
-  \caption{Final interaction flow of the third part of the optimization process.}
+  \caption{Final interaction flow of the optimization process (part 3/3).}
   \label{fig:interaction_flow_part3}
 \end{figure}
 
@@ -1227,7 +1226,7 @@ The user is highly encouraged to refer to the code repository for a more in-dept
 
 
 \begin{lstlisting}[caption={Ridge Loss Calculation}, label=alg:ridge_loss]
-  def ridge_loss(X, w, y, alpha):
+  def ridge_loss(X: numpy.ndarray, w: numpy.ndarray, y: numpy.ndarray, alpha: florat) -> float:
       # Calculate the predicted values using the weight vector
       y_pred = X.dot(w)
 
@@ -1244,7 +1243,7 @@ The user is highly encouraged to refer to the code repository for a more in-dept
 \end{lstlisting}
 
 \begin{lstlisting}[caption={Hinge Loss Calculation}, label=alg:hinge_loss]
-  def hinge_loss(X, w, y, C):
+  def hinge_loss(X: numpy.ndarray, w: numpy.ndarray, y: numpy.ndarray, C: float) -> float:
       # Get the number of samples from the input matrix
       n_samples, _ = X.shape
 
@@ -1320,7 +1319,7 @@ As a trade-off, there is no need to relay a task's database ID to the coordinato
 \end{minipage}
 
 
-\chapter{Measurable Results}
+\chapter{Results Validatoin}
 \label{chap:results}
 
 This chapter explains the outcomes achieved with the current implementation, emphasizing system performance, plugin interchangeability, and developer usability.
@@ -1341,7 +1340,7 @@ Performance benchmarks are conducted on a MacBook Pro. The system's detailed spe
 
 The most resource-intensive phase of the minimization process is related to the loss function's computation, given its recurrent invocation.
 The benchmarks employed the \emph{ridge-loss} plugin as the \gls{of}, configuring \emph{alpha} at 0.5.
-The \emph{scipy-minimizer} plugin functioned as the minimizer, with the method set as \emph{L-BFGS-B}.
+The \emph{scipy-minimizer} plugin is used as the minimizer, with the method set to \emph{L-BFGS-B}.
 
 Table \ref{table:of_calls} displays the frequency of loss evaluations during the minimization process for varying datasets, underscoring the significance of efficient loss function computation.
 
@@ -1373,7 +1372,7 @@ The total time it takes from the point at which the minimizer plugin calls the c
 \begin{figure}
   \centering
   \includegraphics[width=\textwidth]{graphics/of_call_times_version1.png}
-  \caption{Time it takes for a single call to the \emph{calc\_loss} endpoint of the \emph{ridge-loss} plugin for different dataset sizes for the first plugin-based implementation approach.}
+  \caption[Call time for \emph{calc\_loss} endpoint decoupled approach]{Time it takes for a single call to the \emph{calc\_loss} endpoint of the \emph{ridge-loss} plugin for different dataset sizes for the decoupled plugin-based implementation approach.}
   \label{fig:of_call_time_version1}
 \end{figure}
 
@@ -1383,7 +1382,7 @@ The diagram does not show the \emph{Database Time} since this version does not m
 \begin{figure}
   \centering
   \includegraphics[width=\textwidth]{graphics/of_call_times_version2.png}
-  \caption{Time it takes for a single call to the \emph{calc\_loss} endpoint of the \emph{ridge-loss} plugin for different dataset sizes for the second plugin-based implementation approach.}
+  \caption[Call time for \emph{calc\_loss} endpoint integrated approach]{Time it takes for a single call to the \emph{calc\_loss} endpoint of the \emph{ridge-loss} plugin for different dataset sizes for the integrated plugin-based implementation approach.}
   \label{fig:of_call_time_version2}
 \end{figure}
 
@@ -1392,7 +1391,7 @@ Figure \ref{fig:coparison_of_of} compares the total times it takes to get the lo
 \begin{figure}
   \centering
   \includegraphics[width=\textwidth]{graphics/comparison_of_of.png}
-  \caption{Comparison of the total time it takes to get the loss value across different implementations, including the Jupyter Notebook implementation.}
+  \caption[Total times to get loss value compared]{Comparison of the total time it takes to get the loss value across different implementations, including the Jupyter Notebook implementation.}
   \label{fig:coparison_of_of}
 \end{figure}
 
@@ -1401,7 +1400,7 @@ Figure \ref{fig:time_for_of_calc} measures the same metrics as Figure \ref{fig:c
 \begin{figure}
   \centering
   \includegraphics[width=\textwidth]{graphics/time_for_of_calc.png}
-  \caption{Comparison of the time the actual loss calculation takes across different implementations, including the Jupyter Notebook implementation.}
+  \caption[Times to calculate the loss fucntion compared]{Comparison of the time the actual loss calculation takes across different implementations, including the Jupyter Notebook implementation.}
   \label{fig:time_for_of_calc}
 \end{figure}
 
@@ -1420,7 +1419,7 @@ Figure \ref{fig:of_call_time_version1_cached} shows the average time it takes fo
 \begin{figure}
   \centering
   \includegraphics[width=\textwidth]{graphics/of_call_times_version1_cached.png}
-  \caption{Time it takes for a single call to the \emph{calc\_loss} endpoint of the \emph{ridge-loss} plugin for different dataset sizes with caching.}
+  \caption[Call time for \emph{calc\_loss} endpoint decoupled approach with caching]{Time it takes for a single call to the \emph{calc\_loss} endpoint of the \emph{ridge-loss} plugin for different dataset sizes with caching.}
   \label{fig:of_call_time_version1_cached}
 \end{figure}
 
@@ -1429,7 +1428,7 @@ Figure \ref{fig:coparison_of_of_cached} compares the total times it takes to get
 \begin{figure}
   \centering
   \includegraphics[width=\textwidth]{graphics/comparison_of_of_cached.png}
-  \caption{Comparison of the total time it takes to get the loss value across different implementations, including a cached version of the first plugin-based implementation approach.}
+  \caption[Total times to get loss value compared including cached appraoch]{Comparison of the total time it takes to get the loss value across different implementations, including a cached version of the first plugin-based implementation approach.}
   \label{fig:coparison_of_of_cached}
 \end{figure}
 
@@ -1439,7 +1438,7 @@ The measurements for the plugin-based implementations do not include the time it
 \begin{figure}
   \centering
   \includegraphics[width=\textwidth]{graphics/time_for_minimization.png}
-  \caption{Comparison of the total time it takes to complete the minimization process across different implementations.}
+  \caption[Times to minimize a loss function compared]{Comparison of the total time it takes to complete the minimization process across different implementations.}
   \label{fig:time_for_minimization}
 \end{figure}
 
@@ -1450,12 +1449,12 @@ The measurements for the plugin-based implementations do not include the time it
 This segment evaluates the plugins' adherence to predefined standards and their interchangeability.
 The governing standards, as enumerated in Chapters \ref{chap:architecture} and \ref{chap:implementation}, encompass:
 
-\begin{description}
-  \item[Metadata] All invocable plugins should furnish interaction endpoints in their metadata.
-  \item[Interaction Endpoints] Such plugins must also offer interaction endpoints compliant with respective argument and response schemas.
-  \item[Callback Protocols] Both invoking and invoked plugins should uphold the callback mechanisms delineated in Section \ref{sec:implementationOfCallbacksToTheCoordinatorPlugin}.
-  \item[Functionality] Each plugin should retain its intended functionality as specified in Section \ref{sec:decomposition}.
-\end{description}
+\begin{itemize}
+  \item All invocable plugins should list interaction endpoints in their metadata.
+  \item Such plugins must also offer interaction endpoints compliant with respective argument and response schemas.
+  \item Both invoking and invoked plugins should uphold the callback mechanisms delineated in Section \ref{sec:implementationOfCallbacksToTheCoordinatorPlugin}.
+  \item Each plugin should retain its intended functionality as specified in Section \ref{sec:decomposition}.
+\end{itemize}
 
 Successful compliance ensures plugin interchangeability.
 All example plugins in the implementation segment conform to these standards, ensuring mutual compatibility.
@@ -1595,7 +1594,7 @@ Caching within the first plugin-based model increases performance significantly,
 However, network latencies persist and cannot be minimized further as data sent and received is already minimal.
 Additionally, some database overhead is still present, as the data has to be retrieved from the database once and stored in the cache.
 As dataset sizes increase, these latencies diminish in relative significance.
-When fortified with caching, the plugin-based approach emerges as a compelling alternative to the Jupyter Notebook implementation.
+When fortified with caching, the decoupled plugin-based approach emerges as a compelling alternative to the Jupyter Notebook implementation.
 
 \section{Developer Experience}
 \label{sec:developerUsabilityAssessment}
@@ -1617,8 +1616,8 @@ The understanding is further enhanced by the detailed documentation of the plugi
 
 Beisel et al. \cite{Beisel2023} detail the implementation of \glspl{vqa} within a workflow-based system.
 They delve into the intricacies of incorporating the quantum aspect of the algorithm into such a system while emphasizing the interaction between its various components less.
-In their approach, the conventional computing segment of the algorithm is split into two services: the \textbf{Objective Evaluation Service} and the \textbf{Optimization Service}.
-Similar to this thesis, the \textbf{Optimization Service} utilizes SciPy for optimization tasks.
+In their approach, the conventional computing segment of the algorithm is split into two services: the \emph{Objective Evaluation Service} and the \emph{Optimization Service}.
+Similar to this thesis, the \emph{Optimization Service} utilizes SciPy for optimization tasks.
 
 In a subsequent paper \cite{Beisel2023a}, Beisel et al. elaborate on the architecture of the workflow-based system, shedding light on the interplay between its components.
 They explain that the system's components are realized as microservices, each offering a \gls{rest}ful API for interaction.
@@ -1626,20 +1625,20 @@ Central to this architecture is a \textbf{Gateway}, which handles the internal c
 
 Mayer et al. \cite{Mayer_2003} advocate simplifying the intricacies of expansive software systems through a \emph{plugin-based architecture}.
 They argue that the system gains flexibility and becomes more maintainable by minimizing the core system and encapsulating most functionalities as plugins.
-They introduce the concept of \textbf{Plugin-in Component Architecture} (PICA), where each plugin must provide a list of interfaces that the core can call and a description of how to use the interfaces.
+They introduce the concept of \emph{Plugin-in Component Architecture} (PICA), where each plugin must provide a list of interfaces that the core can call and a description of how to use the interfaces.
 
 Wolfinger et al. \cite{Wolfinger2006} present a plugin architecture tailored for the .NET platform, drawing parallels with the Eclipse platform.
-The authors emphasize the structured interaction between plugins through the concepts of \textbf{slots} and \textbf{extensions}.
+The authors emphasize the structured interaction between plugins through the concepts of \emph{slots} and \emph{extensions}.
 A plugin host defines slots, indicating how they can be extended, while plugin contributors provide extensions to fill these slots.
 This structured interaction ensures seamless integration of plugins.
 The architecture also leverages .NET features to embed relevant plugin information directly within the application's source code, arguing for improved readability and maintainability.
 
 Birsan et al. \cite{Birsan2005} delve into the {plugin architectures of the Eclipse platform.
-Birsan underscores the importance of well-defined \textbf{extension points}, allowing plugins to interact seamlessly.
+Birsan underscores the importance of well-defined \emph{extension points}, allowing plugins to interact seamlessly.
 The work highlights the intricate interplay between plugins, emphasizing the need for structured interfaces for effective interaction.
 
 Thullier et al. \cite{Thullier2021} introduce a \emph{machine learning workbench}, emphasizing a modular approach to machine learning processes for smart homes.
-The workbench divides the machine learning workflow into distinct services: the \textbf{Windowing Module}, the \textbf{Feature Extraction Module}, and the \textbf{Machine Learning Module}.
+The workbench divides the machine learning workflow into distinct services: the \emph{Windowing Module}, the \emph{Feature Extraction Module}, and the \emph{Machine Learning Module}.
 This modular design ensures efficient parallel processing and scalability.
 The paper does not aim to split the machine learning service into different components.
 
