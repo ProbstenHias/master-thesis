@@ -1,5 +1,3 @@
-from enum import Enum
-
 class InteractionEndpointType(Enum):
     minimization = "minimization"
     calc_loss = "calc_loss"

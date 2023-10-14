@@ -1,8 +1,3 @@
-from flask.helpers import url_for
-from plugins.optimizer.shared.enums import InteractionEndpointType
-from qhana_plugin_runner.api.plugin_schemas import InteractionEndpoint
-from . import RIDGELOSS_BLP
-
 interaction_endpoints = (
     [
         InteractionEndpoint(

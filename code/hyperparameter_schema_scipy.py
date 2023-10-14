@@ -1,8 +1,3 @@
-from dataclasses import dataclass
-from enum import Enum
-from qhana_plugin_runner.api.extra_fields import EnumField
-from qhana_plugin_runner.api.util import FrontendFormBaseSchema
-
 class MinimizerEnum(Enum):
     nelder_mead = "Nelder-Mead"
     powell = "Powell"

@@ -1,8 +1,4 @@
-from blinker import Namespace
-from qhana_plugin_runner.db.models.tasks import ProcessingTask
-from .celery import CELERY
-
-TASK_SIGNALS = Namespace()
+TASK_SIGNALS = blinker.Namespace()
 
 TASK_STATUS_CHANGED = TASK_SIGNALS.signal("task-status-changed")
 
