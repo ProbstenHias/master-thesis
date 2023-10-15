@@ -301,7 +301,7 @@ Data from external sources is processed by \glspl{ramp} and stored in the databa
 They offer a comprehensive approach to user interaction and data processing, distinguishing themselves from conventional plugins.
 One of the primary advantages of \glspl{ramp} is their ability to integrate seamlessly with \glspl{ui}.
 Unlike traditional plugins, which might require modifications to fit an application's \gls{ui}, \glspl{ramp} come with context-sensitive microfrontends.
-This ensures that the plugin's \gls{UI} aligns effortlessly with the primary application's interface, enhancing user experience.
+This ensures that the plugin's \gls{ui} aligns effortlessly with the primary application's interface, enhancing user experience.
 Furthermore, \glspl{ramp} introduce the possibility of multi-step \gls{ui} interactions, where users can be presented with sequential interfaces based on prior inputs or processing results, enhancing the depth and interactivity of the user experience.
 
 In summary, \glspl{ramp} blend the best of microservices and plugins.
@@ -800,9 +800,9 @@ Its primary roles include:
 \begin{itemize}
 \item \textbf{Metadata Provision}: The plugin offers metadata about itself.
 \item \textbf{Hyperparameters Acquisition}: It prompts the user to provide the hyperparameters necessary for the loss function calculation.
-\item \textbf{Loss Calculation}: Based on the provided input data, the plugin computes the loss, representing the discrepancy between predicted and target values.
+\item \textbf{Loss Calculation}: The plugin computes the loss based on the provided input data, representing the discrepancy between predicted and target values.
 \item \textbf{Gradient Calculation (Optional)}: For optimization algorithms that leverage gradient-based methods, the plugin can optionally compute the gradient of the loss function.
-This aids in guiding the optimization process towards the desired minimum.
+This aids in guiding the optimization process toward the desired minimum.
 \end{itemize}
 
 \paragraph{Minimizer Plugin:}
@@ -818,7 +818,7 @@ Its functions include:
 
 \paragraph{Coordinator Plugin:}
 
-The Coordinator plugin acts as the orchestrator, ensuring seamless interaction between the \gls{of} and Minimization plugins and the user.
+The Coordinator plugin acts as the orchestrator, ensuring seamless interaction between the \gls{of} and minimizer plugins and the user.
 Its primary responsibilities are:
 
 \begin{itemize}
@@ -858,7 +858,7 @@ This interface also follows the \gls{qhana} documentation \cite{FabianBuehler}.
 It is usually triggered by the user clicking the \emph{submit} button on the microfrontend.
 This interface also follows the \gls{qhana} documentation \cite{FabianBuehler}.
 \item \textbf{PassData}: This endpoint is used to pass the input and target data to the \gls{of} plugin.
-It returns the number of weights that are required for the optimization process.
+It returns the number of weights required for the optimization process.
 The number of weights is returned here since it depends on the data and possibly the hyperparameters.
 \item \textbf{CalculateLoss}: This endpoint calculates the loss.
 \item \textbf{CalculateGradient (Optional)}: This endpoint is used to calculate the gradient of the loss function. It is optional since the gradient cannot be computed efficiently for all \glspl{of}.
@@ -887,7 +887,7 @@ This structured approach facilitates seamless interactions and fosters interchan
 
 The design of plugin interactions is pivotal to ensuring efficient and seamless coordination between different system components.
 Given the extensive possibilities of interactions within the \gls{qhana} environment, the design phase is meticulous, considering various scenarios and ensuring adaptability.
-The two primary modes of interactions are short-running and long-running, each catering to specific requirements.
+The two primary modes of interaction are short-running and long-running, each catering to specific requirements.
 
 \paragraph{Short-Running Interaction:}
 
@@ -902,10 +902,10 @@ Instances of such interactions in the optimization context are:
 
 \paragraph{Long-Running Interaction:}
 
-Long-running interactions come into play for processes that demand extensive computation time or involve multiple steps.
+Long-running interactions come into play for processes requiring extensive computation time or involving multiple steps.
 In such a case, the calling plugin invokes the endpoint of the invocable plugin.
 The invoked endpoint then schedules a long-running task and returns immediately.
-The calling plugin can then continue with its execution in an asynchronous manner without waiting for the long-running task to finish.
+The calling plugin can then continue with its execution asynchronously without waiting for the long-running task to finish.
 A new endpoint for the calling plugin is defined that can be called by the long-running task once it is finished.
 This endpoint is called a callback endpoint.
 Instances of such interactions are:
@@ -955,8 +955,8 @@ This is depicted in Figure \ref{fig:interaction_flow_part2}.
 The last segment starts with the minimizer plugin's microfrontend retrieval and ends when the optimization process concludes.
 After users input the minimization hyperparameters, the minimizer processes the data and sends a callback to the coordinator.
 The coordinator then triggers the minimization endpoint, initiating a long-running minimization task that continuously calls the \gls{of} calculation endpoint.
-Once this task is completed, a final callback is made to the coordinator with the results.
-This flow is shown in Figure \ref{fig:interaction_flow_part3}.
+Once this task is completed, the minimizer makes a final call to the coordinator with the minimization results.
+Figure \ref{fig:interaction_flow_part3} shows this flow.
 
 \begin{figure}[p]
   \centering
@@ -1223,11 +1223,11 @@ In a similar vein, the \emph{hinge-loss} plugin embodies the hinge loss function
 The \emph{neural-network} plugin employs a neural network featuring a single hidden layer.
 Its hyperparameters include the count of neurons present in this hidden layer.
 Notably, this plugin facilitates the gradient calculation for the loss function, making it compatible with the \emph{scipy-minimizer-grad} plugin.
-The user is highly encouraged to refer to the code repository for a more in-depth understanding of how a more sophisticated method is implemented for loss calculation.
+The user is encouraged to refer to the code repository for a more in-depth understanding of how a more sophisticated method is implemented for loss calculation.
 
 
 \begin{lstlisting}[caption={Ridge Loss Calculation}, label=alg:ridge_loss]
-  def ridge_loss(X: numpy.ndarray, w: numpy.ndarray, y: numpy.ndarray, alpha: florat) -> float:
+  def ridge_loss(X: numpy.ndarray, w: numpy.ndarray, y: numpy.ndarray, alpha: float) -> float:
       # Calculate the predicted values using the weight vector
       y_pred = X.dot(w)
 
@@ -1339,7 +1339,7 @@ Performance benchmarks are conducted on a MacBook Pro. The system's detailed spe
 \section{Benchmark Results}
 \label{subsec:benchmarkingResults}
 
-The most resource-intensive phase of the minimization process is related to the loss function's computation, given its recurrent invocation.
+Given its recurrent invocation, the most resource-intensive phase of the minimization process is related to the loss function's computation.
 The benchmarks employed the \emph{ridge-loss} plugin as the \gls{of}, configuring \emph{alpha} at 0.5.
 The \emph{scipy-minimizer} plugin is used as the minimizer, with the method set to \emph{L-BFGS-B}.
 
@@ -1369,8 +1369,8 @@ The \emph{Calculation Time} captures only the actual time it takes to calculate 
 The \emph{Database Time} measures the time it takes to retrieve the data from the database.
 The \emph{Network Time} measures the time it takes to send the data to the \gls{of} plugin and receive the result.
 The total time it takes from the point at which the minimizer plugin calls the calculation endpoint until it receives the result is the sum of the \emph{Calculation Time}, \emph{Database Time}, and \emph{Network Time}.
-The \emph{Database Time} is the most significant contributor to the total time as the data is retrieved from the database for every call and with an increasing dataset size, the time it takes to retrieve the data increases as well.
-The \emph{Network Time} is comparably smaller but still significant, it increases only slightly with an increasing dataset size, since the actual data that is sent over the network does not change significantly.
+The \emph{Database Time} is the most significant contributor to the total time as the data is retrieved from the database for every call, and with increasing dataset size, the time it takes to retrieve the data increases as well.
+The \emph{Network Time} is comparably more minor but still significant. It increases only slightly with an increasing dataset size since the actual data that is sent over the network does not change significantly.
 
 \begin{figure}
   \centering
@@ -1381,8 +1381,8 @@ The \emph{Network Time} is comparably smaller but still significant, it increase
 
 Figure \ref{fig:of_call_time_version2} captures the same measurements as \ref{fig:of_call_time_version1} but for the integrated plugin-based implementation approach as described in \ref{sec:secondApproach}.
 The diagram does not show the \emph{Database Time} since this version does not make calls to the database.
-The \emph{Network Time} significantly increases for this approach as the huge amounts of data that was previously retrieved from the database is now sent over the network.
-Additionally, the \emph{Network Time} increases with an increasing dataset size, since the amount of data that is sent over the network increases as well.
+The \emph{Network Time} significantly increases for this approach as the vast amounts of data that were previously retrieved from the database are now sent over the network.
+Additionally, the \emph{Network Time} increases with increasing dataset size since the amount of data sent over the network also increases.
 
 \begin{figure}
   \centering
@@ -1402,25 +1402,25 @@ The Jupyter Notebook implementation is the fastest as it does not have to deal w
 \end{figure}
 
 Figure \ref{fig:time_for_of_calc} measures the same metrics as Figure \ref{fig:coparison_of_of}, but this time it ignores the \emph{Database Time} and the \emph{Network Time} only measuring the actual \emph{Calculation Time}.
-The result shows that for all implementation the actual time it takes to calculate the loss function is not significantly impacted by a plugin-based implementation approach.
+The result shows that for all implementations, a plugin-based implementation approach does not significantly impact the actual time it takes to calculate the loss function.
 
 \begin{figure}
   \centering
   \includegraphics[width=\textwidth]{graphics/time_for_of_calc.png}
-  \caption[Times to calculate the loss fucntion compared]{Comparison of the time the actual loss calculation takes across different implementations, including the Jupyter Notebook implementation.}
+  \caption[Times to calculate the loss function compared]{Comparison of the time the actual loss calculation takes across different implementations, including the Jupyter Notebook implementation.}
   \label{fig:time_for_of_calc}
 \end{figure}
 
-One can see that the across the board the Jupyter Notebook implementation is the fastest as it does not have to deal with network or database latency.
-Especially for the decoupled plugin-based implementation, the database latency is a bottleneck that significantly decreses the performance, but that can be mitigated by caching the data as described in the next section.
+One can see that the Jupyter Notebook implementation is the fastest across the board as it does not have to deal with network or database latency.
+Especially for the decoupled plugin-based implementation, the database latency is a bottleneck that significantly decreases the performance, but that can be mitigated by caching the data, as described in the next section.
 
 \section{Caching of Data}
 \label{subsec:cachingOfData}
 
-To avoid database latency, a caching mechanism is implemented for the decoupled plugin-based implementation approach.
+A caching mechanism is implemented for the decoupled plugin-based approach to avoid database latency.
 Since the input and target data and the hyperparameters do not change during the minimization process, they can be cached.
 That means the data is retrieved from the database during the first call of the \emph{calc\_loss} endpoint and cached for subsequent calls.
-For the implementation the \emph{flask-caching} library is used and the cached data is kept in memory.
+The \emph{flask-caching} library is used for the implementation, and the cached data is kept in memory.
 Figure \ref{fig:of_call_time_version1_cached} shows the average time it takes for a single call of the \emph{calc\_loss} endpoint for different dataset sizes when using caching.
 
 \begin{figure}
@@ -1440,7 +1440,7 @@ Figure \ref{fig:coparison_of_of_cached} compares the total times it takes to get
 \end{figure}
 
 Finally, Figure \ref{fig:time_for_minimization} shows the total time it takes to complete the minimization process for the different implementations.
-The measurements for the plugin-based implementations do not include the time it takes a user to input data but instead starts when the coordinator plugin calls the minimization endpoint of the minimizer plugin.
+The measurements for the plugin-based implementations do not include the time it takes a user to input data but instead start when the coordinator plugin calls the minimization endpoint of the minimizer plugin.
 
 \begin{figure}
   \centering
@@ -1656,7 +1656,7 @@ A similar optimization loop, wherein a \gls{of} is evaluated iteratively to mini
 These frameworks operate by processing input data, computing the discrepancy or loss between predictions and actual values, and subsequently refining the model's parameters based on this computed loss.
 The iterative process continues until a specified stopping criterion, such as a predetermined number of epochs or a desired accuracy threshold, is met.
 While there are architectural and functional distinctions between TensorFlow and PyTorch, at a high level, their optimization loops embody this core principle.
-However, these frameworks do not offer a distributed optimization loop, which is a key feature of the plugin-based optimization framework.
+However, these frameworks do not offer a distributed optimization loop, which is a crucial feature of the plugin-based optimization framework.
 
 In a comprehensive survey by Verbreaken et al. \cite{Verbraeken2020}, the authors delve deep into the paradigms and challenges of \emph{Distributed Machine Learning}.
 The authors categorize \emph{Distributed Machine Learning} techniques based on their key characteristics, such as data distribution, model updates, and communication strategies.
@@ -1685,7 +1685,7 @@ The energy state of a quantum system is then perceived as the loss value, while 
 
 Building upon the inherent interchangeability and modularity of the current design, a novel concept draws attention: viewing the \gls{of} or the minimizer as hyperparameters themselves.
 In a traditional setting, hyperparameters are parameters set before the learning process begins.
-However, in our context, given the modularity, one could envision running parallel optimization processes with different \gls{of} plugins with the same minimizer.
+However, given the modularity, one could envision running parallel optimization processes with different \gls{of} plugins but the same minimizer.
 This would be similar to a hyperparameter search, where each \gls{of} is a candidate and aims to find the best fitting \gls{of} for a given dataset or problem.
 Similarly, different minimizers can be benchmarked against a fixed \gls{of}.
 
