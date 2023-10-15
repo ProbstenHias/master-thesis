@@ -283,7 +283,7 @@ Key components of \gls{qhana}'s architecture are:
 \begin{description}
   \item[QHAna UI] Developed using Angular and TypeScript, the \gls{ui} serves as the primary interface for users, facilitating interaction with the system's functionalities.
   \item[QHAna Backend] The backend provides essential services, including a \gls{rest} API for the \gls{ui}, data management, and functions as a \emph{\glspl{ramp} Registry} to discover and load \glspl{ramp}.
-  \item[RAMPs] These plugins encapsulate specific classical and quantum algorithms. Their development is streamlined by the Plugin Runner, a python framework designed to handle generic \gls{ramp} tasks.
+  \item[RAMPs] These plugins encapsulate specific classical and quantum algorithms. Their development is streamlined by the Plugin Runner, a Python framework designed to handle generic \gls{ramp} tasks.
   \item[Database] This component is responsible for the persistent storage of data related to the experiments conducted within \gls{qhana}.
 \end{description}
 
@@ -292,16 +292,16 @@ When a \gls{ramp} is selected, its microfrontend is embedded within the \gls{ui}
 The \emph{\gls{qhana} Backend}, central to the system, manages data storage, acts as a \gls{ramp} registry, and provides necessary services to the \gls{ui}.
 \glspl{ramp}, designed for modularity, can be developed independently and integrated into \gls{qhana}.
 The \emph{Plugin Runner} demands the adherence of \glspl{ramp} to system standards.
-Data from external data sources is processed by \glspl{ramp} and stored in the database.
+Data from external sources is processed by \glspl{ramp} and stored in the database.
 
 \subsection{RAMPs: Bridging UI and Data Processing}
 \label{subsec:ramps}
 
 \glspl{ramp} are designed to bridge the gap between traditional plugins and microservices.
-They offer a comprehensive approach to both user interaction and data processing, distinguishing themselves from conventional plugins.
-One of the primary advantages of \glspl{ramp} is their ability to seamlessly integrate with \glspl{ui}.
+They offer a comprehensive approach to user interaction and data processing, distinguishing themselves from conventional plugins.
+One of the primary advantages of \glspl{ramp} is their ability to integrate seamlessly with \glspl{ui}.
 Unlike traditional plugins, which might require modifications to fit an application's \gls{ui}, \glspl{ramp} come with context-sensitive microfrontends.
-This ensures that they align effortlessly with the primary application's interface, enhancing user experience.
+This ensures that the plugin's \gls{UI} aligns effortlessly with the primary application's interface, enhancing user experience.
 Furthermore, \glspl{ramp} introduce the possibility of multi-step \gls{ui} interactions, where users can be presented with sequential interfaces based on prior inputs or processing results, enhancing the depth and interactivity of the user experience.
 
 In summary, \glspl{ramp} blend the best of microservices and plugins.
@@ -391,7 +391,7 @@ This search can be visualized as navigating a landscape of hills and valleys, wi
 The goal of the minimization function is to find the lowest point in this landscape, corresponding to the minimum value of the \gls{of} \cite{Goodfellow2017}.
 
 The core inputs to a minimization function are the initial parameters of the model or weights (denoted as \(\theta\) or \(w\)),
-the \gls{of} that needs to be minimized, and optionally the gradients of the \gls{of} with respect to the parameters.
+the \gls{of} that needs to be minimized, and optionally, the gradients of the \gls{of} with respect to the parameters.
 Additionally, certain minimization functions may include hyperparameters as input, which control the behavior and complexity of the optimization process \cite{Virtanen2020}.
 For instance, the learning rate is a typical hyperparameter that determines the step size in each iteration of the optimization process.
 
