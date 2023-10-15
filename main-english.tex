@@ -73,7 +73,6 @@
 \renewcommand*{\chapterpagestyle}{preamble}
 
 
-
 %Kurzfassung / abstract
 %auch im Stil vom Inhaltsverzeichnis
 
@@ -270,33 +269,6 @@ This concept allows microservices with an integrated \gls{ui} to be used as plug
 
 \subsection{QHAna's Architecture}
 \label{subsec:qhanaArchitecture}
-\gls{qhana}'s architecture, as depicted in Figure \ref{fig:qhanaarch}, is characterized by its \gls{ui} and backend components.
-The \gls{ui} offers users platform to navigate and interact with the system's functionalities, including the integrated quantum algorithms.
-It acts as the primary touchpoint, bridging users with the system's underlying computational capabilities and data sources.
-
-Conversely, the backend stands as QHAna's computational core, orchestrating the execution of quantum algorithms, managing data sources, and ensuring fluid communication with the \gls{ui}.
-Its modular design facilitates the integration of new algorithms and data sources, adapting to the evolving needs of the \gls{dh} community.
-
-Integral to QHAna's extensible architecture are the \glspl{ramp}.
-These components not only enhance the system's capabilities but also ensure that their \gls{ui} elements cohesively integrate with the primary application interface, fostering a unified user experience.
-
-\subsection{RAMPs: Bridging UI and Data Processing}
-\label{subsec:ramps}
-
-At their core, \glspl{ramp} are designed to serve as plugins, but they go beyond traditional plugin functionalities by offering a more holistic approach to both user interaction and data processing.
-
-One of the standout features of \glspl{ramp} is their ability to seamlessly integrate \gls{ui} components.
-Unlike traditional plugins that might require significant adjustments to fit into an application's existing \gls{ui}, \glspl{ramp} come equipped with microfrontends.
-These microfrontends are designed to be context-aware, ensuring that they align with the primary application's interface.
-Furthermore, \glspl{ramp} introduce the possibility of multi-step \gls{ui} interactions, where users can be presented with sequential interfaces based on prior inputs or processing results, enhancing the depth and interactivity of the user experience.
-
-Beyond the \gls{ui}, \glspl{ramp} are adept at handling intricate data processing tasks.
-They encapsulate specific functionalities and offer them as self-contained services.
-This modular approach to data processing ensures that \glspl{ramp} can be easily integrated, replaced, or updated without disrupting the overall system's functionality.
-The multi-step nature of \glspl{ramp} also allows for iterative processing, where data can undergo multiple rounds of processing based on user inputs or intermediate results.
-
-In essence, \glspl{ramp} represent a paradigm shift in how plugins are perceived and integrated within applications.
-By merging \gls{ui} and data processing functionalities into a single, reusable unit and introducing multi-step interactions, they enhance the flexibility and adaptability of a system.
 
 \begin{figure}
   \centering
@@ -304,6 +276,38 @@ By merging \gls{ui} and data processing functionalities into a single, reusable 
   \caption{\gls{qhana}'s Architecture as depicted in \cite{Buehler2022}}
   \label{fig:qhanaarch}
 \end{figure}
+
+QHAna's architecture, as depicted in Figure \ref{fig:qhanaarch}, is primarily microservice-oriented, emphasizing modularity and extensibility.
+This is evident from its use of \glspl{ramp} and the concept of \emph{microfrontends}.
+Such an architectural choice is geared towards ensuring scalability and adaptability in the rapidly evolving field of quantum computing.
+Key components of \gls{qhana}'s architecture are:
+\begin{description}
+  \item[QHAna UI] Developed using Angular and TypeScript, the \gls{ui} serves as the primary interface for users, facilitating interaction with the system's functionalities.
+  \item[QHAna Backend] The backend provides essential services, including a \gls{rest} API for the \gls{ui}, data management, and functions as a \emph{\glspl{ramp} Registry} to discover and load \glspl{ramp}.
+  \item[RAMPs] These plugins encapsulate specific classical and quantum algorithms. Their development is streamlined by the Plugin Runner, a python framework designed to handle generic \gls{ramp} tasks.
+  \item[Database] This component is responsible for the persistent storage of data related to the experiments conducted within \gls{qhana}.
+\end{description}
+
+The \emph{\gls{qhana} \gls{ui}} offers users a selection of \glspl{ramp}.
+When a \gls{ramp} is selected, its microfrontend is embedded within the \gls{ui} through an iframe.
+The \emph{\gls{qhana} Backend}, central to the system, manages data storage, acts as a \gls{ramp} registry, and provides necessary services to the \gls{ui}.
+\glspl{ramp}, designed for modularity, can be developed independently and integrated into \gls{qhana}.
+The \emph{Plugin Runner} demands the adherence of \glspl{ramp} to system standards.
+Data from external data sources is processed by \glspl{ramp} and stored in the database.
+
+\subsection{RAMPs: Bridging UI and Data Processing}
+\label{subsec:ramps}
+
+\glspl{ramp} are designed to bridge the gap between traditional plugins and microservices.
+They offer a comprehensive approach to both user interaction and data processing, distinguishing themselves from conventional plugins.
+One of the primary advantages of \glspl{ramp} is their ability to seamlessly integrate with \glspl{ui}.
+Unlike traditional plugins, which might require modifications to fit an application's \gls{ui}, \glspl{ramp} come with context-sensitive microfrontends.
+This ensures that they align effortlessly with the primary application's interface, enhancing user experience.
+Furthermore, \glspl{ramp} introduce the possibility of multi-step \gls{ui} interactions, where users can be presented with sequential interfaces based on prior inputs or processing results, enhancing the depth and interactivity of the user experience.
+
+In summary, \glspl{ramp} blend the best of microservices and plugins.
+They combine the reusability and accessibility of microservices with the \gls{ui} adaptability of plugins, making them a valuable asset in diverse application settings.
+
 
 \section{Quantum Computing}
 \label{sec:quantumComputing}
@@ -426,7 +430,7 @@ The choice of minimization function can significantly influence the efficiency a
 While some minimization functions may perform well on certain problems, they may yield different results on others.
 Therefore, it is crucial to understand the underlying mechanisms of these functions and their suitability to the specific problem at hand.
 
-\
+
 \chapter{Problem Statement and Objectives}
 \label{chap:problem}
 
@@ -455,17 +459,7 @@ This problem encompasses several challenges:
   \end{itemize}
 
 Addressing this problem is essential to enhance the capabilities of \gls{qhana}, transforming it into a dynamic, adaptable, and user-centric platform for experimenting with optimization and \glspl{vqa}.
-The subsequent sections of this thesis will delve into the methods, implementations, and evaluations related to this problem.
-
-
-
-\chapter{Methodology}
-\label{chap:methodology}
-\section{Conceptual Framework}
-\label{sec:conceptualFramework}
-
-This section outlines the method developed in this work for creating modular \glspl{vqa} consisting of multiple plugins.
-
+When solving this problem, technical requirements and constraints must be considered.
 \gls{qhana}, with its design centered on the Digital Humanities, provides an extensible platform for experimenting with various algorithms.
 \gls{qhana}'s architecture predominantly revolves around the concept of \glspl{ramp} \cite{Buehler2022}.
 The objective is to leverage \gls{qhana}'s inherent modularity by enabling components of optimization algorithms to function as distinct and interchangeable plugins.
@@ -474,9 +468,12 @@ When \glspl{vqa} are designed with modular components, it allows for increased f
 Specifically, having distinct \glspl{of} and minimization functions means parts of the algorithm can be adjusted or replaced seamlessly.
 This reflects the goals of modularity and flexibility intrinsic to \gls{qhana}'s design.
 
-Interactivity in \gls{qhana} should encompass various facets:
-A plugin should be able to invoke the microfrontend of another plugin.
+Interactivity in \gls{qhana} should encompass various facets.
+To enable interchangeability and loose coupling between plugins, no plugin should be aware of specific user input requirements of another plugin.
+This means that the invoking plugin should not have input fields that are specific to the invoked plugin.
+Therefore, a plugin should be able to invoke the microfrontend of another plugin where the user can provide the required input.
 Control should revert to the invoking plugin once the invoked plugin completes its tasks.
+As interactions between plugins can have varying degrees of complexity, the interaction mechanism should be flexible enough to accommodate different scenarios.
 Both short-running tasks and long-running tasks should be facilitated.
 For the latter, a callback mechanism is proposed, wherein the invoking plugin can be notified upon completing a long-running task by the invoked plugin.
 
@@ -497,17 +494,29 @@ Inspiration for this typing mechanism is drawn from the OpenAPI specification \c
 The proposed approach complements \gls{qhana}'s existing principles, resonating with its emphasis on extensibility, adaptability, and user-centric design.
 By enhancing the interactivity and modularity of plugins within \gls{qhana}, we strive to elevate its capabilities, making it a more dynamic platform for optimization and \glspl{vqa}.
 
+The subsequent sections of this thesis will delve into the methods, implementations, and evaluations related to this problem.
+
+
+\chapter{Methods}
+\label{chap:methodology}
+This section outlines the method developed in this work for enabling modular \glspl{vqa} consisting of multiple plugins.
+The chapter begins by defining the architectural design strategy, explaining the process of decomposing the optimization process into distinct plugins that interact with each other.
+Next, the implementation strategy is defined, outlining the tools and technologies employed in the implementation process.
+Finally, the evaluation strategy is delineated, explaining the approach to evaluate the efficacy of the proposed design and implementation.
+
 \section{Architectural Design Strategy}
 \label{sec:architecturalDesignStrategy}
 
 The architectural design process is a critical phase that dictates how the solution's components will function and interact with each other.
-The final architectural design will be chosen by iteratively refining the existing architecture over multiple steps considering different aspects like clarity, modularity, and extensibility
+The final architectural design will be chosen by iteratively refining the existing architecture over multiple steps considering different aspects like clarity, modularity, and extensibility.
+Before diving into the details of the design process, it was essential to understand the existing architecture of \gls{qhana}.
 
 \paragraph{Decomposition into Plugins:}
 The first step involves decomposing the optimization process into distinct plugins.
 Decomposition is achieved by reviewing relevant literature to understand standard practices and methods in optimization \cite{Virtanen2020, Nocedal2006, ShalevShwartz2014, Weinan2017}.
 The main challenge is to find a decomposition so that, on the one hand, any functionality that should be interchangeable are encapsulated in an extra plugin,
 on the other hand, splitting the process into too many plugins would be inefficient due to the overhead of the required communication between plugins.
+The main question to answer is how to encapsulate the \gls{of} and the minimization function and the coordination between them in different plugins.
 In order to represent the decomposition, a UML component diagram is created.
 
 \paragraph{Defining Plugin Responsibilities:}
@@ -516,13 +525,11 @@ This ensures that every plugin has a well-defined purpose, preventing overlaps i
 To delineate these responsibilities, several crucial decisions had to be made:
 
 \begin{itemize}
-  \item Which plugin is tasked with calculating the loss function and which one with the minimization process?
   \item Which one prompts the user for the \gls{of} hyperparameters?
   \item Which one gathers the minimization function hyperparameters from the user?
   \item Which one inquires about the user's preference for the \gls{of} and minimization algorithm?
   \item Which one solicits the input data from the user?
   \item Which one requests the target variable?
-  \item And lastly, Which one oversees and coordinates the entire process?
 \end{itemize}
 
 \paragraph{Universal Plugin Interface Design:}
@@ -559,11 +566,14 @@ With the architectural design strategy in place, the next step is to define the 
 \section{Implementation Strategy}
 \label{sec:implementationStrategy}
 
-\subsection{Preliminary Analysis and Design}
 Before diving into the implementation, an in-depth study of the \gls{qhana} documentation \cite{FabianBuehler} and a related paper on \gls{qhana}'s architecture \cite{Buehler2022} was undertaken to gain a comprehensive understanding of the system.
 With component and sequence diagrams already in place, the next step is to define the implementation strategy.
 
 \subsection{Development Environment and Toolset}
+
+The choice of development tools and environment plays a pivotal role in the successful execution and maintenance of a project.
+The right toolset not only facilitates smooth development but also enhances the efficiency, productivity, and scalability of the system.
+The following list delineates the tools and technologies employed in the implementation process, each chosen for its specific capabilities tailored to the requirements of the project:
 
 \begin{itemize}
     \item \textbf{Visual Studio Code}: A versatile integrated development environment employed for its adaptability and support for Python development using extensions, facilitating comprehensive tools for coding, debugging, and testing.
@@ -588,33 +598,35 @@ With component and sequence diagrams already in place, the next step is to defin
 \subsection{Key Principles of QHana Plugins}
 
 In the \gls{qhana} ecosystem, plugins play a pivotal role in extending functionality.
-The creation and integration of these plugins are governed by a set of principles that ensure their seamless operation and interaction.
-For the context of this thesis, the following principles are deemed most significant:
+The creation and integration of these plugins are governed by a set of principles that ensure their seamless operation and interaction \cite{FabianBuehler}.
+All plugins must adhere to these principles to ensure compatibility and consistency across the system.
+For the context of understanding the decisions made in this work, at least the following principles are should be kept in mind:
 
 \begin{itemize}
     \item \textbf{Plugin Definition:}
     A plugin is essentially a Python module or package.
-    It contains a class that inherits from \texttt{QHAnaPluginBase} and should be located in a directory specified by the \texttt{PLUGIN\_FOLDERS} configuration variable.
-    The plugin runner imports all plugins from these directories, handling only the root module of the plugin.
-    The plugin, in turn, is responsible for importing its implementation class and all associated Celery tasks.
+    Conventionally it contains a class that inherits from \texttt{QHAnaPluginBase} and is located in a directory specified by the \texttt{PLUGIN\_FOLDERS} configuration variable.
+    The plugin is responsible for importing its implementation class and all associated Celery tasks.
 
     \item \textbf{Plugin Metadata and Endpoints:}
-    A plugin should contain metadata and links to all its endpoints. It is typically reachable via the "./" path.
+    A plugin should contain metadata and links to all its endpoints. It is reachable via the "./" path.
     The metadata includes crucial information like entry points.
 
     \item \textbf{UI Interaction:}
-    Plugins define both \texttt{href} and \texttt{hrefUi} to point to their microfrontend.
-    The `hrefUi` serves the microfrontend where users input data and `href` processes this input.
+    Plugins define both \texttt{href} and \texttt{hrefUi} for each plugin with an \gls{ui}.
+    The `hrefUi` serves the microfrontend where users input data and `href` is the underlyin endpoint providing the actual functionality.
 
     \item \textbf{Data Handling in Multi-step Plugins:}
-    For plugins requiring multiple user input steps, data is stored in a key-value store with dictionary-like functionality.
-    Data specific to a plugin task is associated with a unique database ID, and subsequent endpoint URLs of a plugin with this ID follow the pattern \texttt{http(s)://…/<UUID>/endpointName}.
+    For plugins requiring multiple user input and processing steps, data is stored in a key-value store.
+    A plugin task is associated with a unique database ID, and subsequent endpoint URLs of a plugin typically include the ID in the URL path \texttt{http(s)://.../<ID>/<endpointName>}.
+    That way the plugin can retrieve the data from the database using the ID.
 
     \item \textbf{Handling Long Running Tasks:}
-    Long-running tasks utilize Celery. Task names, incorporating the plugin name, must be unique.
+    For a plugin to be able to handle long-running tasks, \gls{qhana} offers the Celery framework.
+    Celery is a task queue that allows for asynchronous task execution.
 
     \item \textbf{File Loading from URLs:}
-    Plugins are designed to load files from URLs.
+    Plugins have to be able to load files from URLs.
 
     \item \textbf{Data Format Specification:}
     Data formats, especially those shared across plugins, should be defined per the guidelines of \gls{qhana}.
@@ -722,9 +734,9 @@ The accurate measure of interchangeability is the ability to swap components wit
 Accordingly, all allowed combinations of plugins were tested to validate seamless interchangeability.
 
 \paragraph{Standardization Adherence:}
-Standardization is tested to ensure compatibility and uniformity across diverse plugins.
+Standardization is checked to ensure compatibility and uniformity across diverse plugins.
 An evaluation determines whether all implemented plugins conform to the prescribed standards.
-This guarantees that all optimization plugins can be implemented uniformly, facilitating consistent and compatible integrations in the future.
+This guarantees that all possible optimization plugins can be implemented uniformly, facilitating consistent and compatible integrations in the future.
 
 \paragraph{Developer Experience:}
 The developer experience has to be maintained.

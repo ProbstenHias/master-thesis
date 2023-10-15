@@ -1,6 +1,7 @@
 interaction_endpoints = (
     [
         InteractionEndpoint(
+            # define the type of interaction endpoint
             type=InteractionEndpointType.of_pass_data.value,
             href=url_for(
                 f"{RIDGELOSS_BLP.name}.{PassDataEndpoint.__name__}",
