@@ -396,9 +396,6 @@ the \gls{of} that needs to be minimized, and optionally the gradients of the \gl
 Additionally, certain minimization functions may include hyperparameters as input, which control the behavior and complexity of the optimization process \cite{Virtanen2020}.
 For instance, the learning rate is a typical hyperparameter that determines the step size in each iteration of the optimization process.
 
-Numerous minimization functions are used in computational problems, each with its own strengths and weaknesses.
-These functions range from simple methods, such as gradient descent, to more complex ones, such as Newton's method, stochastic gradient descent (SGD), RMSprop, or Adam.
-
 One of the most fundamental and widely used minimization functions is the Gradient Descent.
 To find a local minimum of a function using gradient descent, one takes steps proportional to the negative of the function's gradient (or approximate gradient) at the current point.
 
@@ -769,13 +766,13 @@ Each data point in the dataset is allocated a unique ID in the format \emph{enti
 This aligns with \gls{qhana}'s data standard that mandates every data point to have an identifiable ID.
 All datasets are stored in the CSV (Comma Separated Values) format, adhering to \gls{qhana}'s accepted data formats.
 
-Listing \ref{lst:data_csv} shows an excerpt of a generated CSV data set with 10 data points 4 features and a noise of 10.
-For better readability, the number of decimal places has been reduced to 4.
-The first column contains the entity IDs, the last column the target variable, and the columns in between the features.
+% Listing \ref{lst:data_csv} shows an excerpt of a generated CSV data set with 10 data points 4 features and a noise of 10.
+% For better readability, the number of decimal places has been reduced to 4.
+% The first column contains the entity IDs, the last column the target variable, and the columns in between the features.
 
-\begin{center}
-\lstinputlisting[language={},caption={Excerpt of a test data file with 10 data points},label={lst:data_csv}]{data/data.csv}
-\end{center}
+% \begin{center}
+% \lstinputlisting[language={},caption={Excerpt of a test data file with 10 data points},label={lst:data_csv}]{data/data.csv}
+% \end{center}
 
 
 
@@ -1324,7 +1321,7 @@ As a trade-off, there is no need to relay a task's database ID to the coordinato
 \end{minipage}
 
 
-\chapter{Results Validatoin}
+\chapter{Result Validation}
 \label{chap:results}
 
 This chapter explains the outcomes achieved with the current implementation, emphasizing system performance, plugin interchangeability, and developer usability.
