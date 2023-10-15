@@ -496,7 +496,7 @@ The subsequent sections of this thesis will delve into the methods, implementati
 \chapter{Methods}
 \label{chap:methodology}
 This section outlines the method developed in this work for enabling modular \glspl{vqa} consisting of multiple plugins.
-The chapter begins by defining the architectural design strategy, explaining the process of decomposing the optimization process into distinct plugins that interact with each other.
+The chapter begins by defining the architectural design strategy and explaining the process of decomposing the optimization process into distinct plugins that interact.
 Next, the implementation strategy is defined, outlining the tools and technologies employed in the implementation process.
 Finally, the evaluation strategy is delineated, explaining the approach to evaluate the efficacy of the proposed design and implementation.
 
@@ -504,15 +504,15 @@ Finally, the evaluation strategy is delineated, explaining the approach to evalu
 \label{sec:architecturalDesignStrategy}
 
 The architectural design process is a critical phase that dictates how the solution's components will function and interact with each other.
-The final architectural design will be chosen by iteratively refining the existing architecture over multiple steps considering different aspects like clarity, modularity, and extensibility.
+The final architectural design will be chosen by iteratively refining the existing architecture over multiple steps, considering different aspects like clarity, modularity, and extensibility.
 Before diving into the details of the design process, it was essential to understand the existing architecture of \gls{qhana}.
 
 \paragraph{Decomposition into Plugins:}
 The first step involves decomposing the optimization process into distinct plugins.
 Decomposition is achieved by reviewing relevant literature to understand standard practices and methods in optimization \cite{Virtanen2020, Nocedal2006, ShalevShwartz2014, Weinan2017}.
-The main challenge is to find a decomposition so that, on the one hand, any functionality that should be interchangeable are encapsulated in an extra plugin,
+The main challenge is to find a decomposition so that, on the one hand, any functionality that should be interchangeable is encapsulated in an extra plugin,
 on the other hand, splitting the process into too many plugins would be inefficient due to the overhead of the required communication between plugins.
-The main question to answer is how to encapsulate the \gls{of} and the minimization function and the coordination between them in different plugins.
+The main question is how to encapsulate the \gls{of} and the minimization function and their coordination.
 In order to represent the decomposition, a UML component diagram is created.
 
 \paragraph{Defining Plugin Responsibilities:}
@@ -530,7 +530,7 @@ To delineate these responsibilities, several crucial decisions had to be made:
 
 \paragraph{Universal Plugin Interface Design:}
 Recognizing the vast possibilities and variations that interchangeable plugins might encompass, it is crucial to formulate a universally adhered-to interface.
-This interface acts as a \emph{contract}, ensuring that irrespective of the specific implementation details of a plugin, there exists a consistent mode of interaction.
+This interface acts as a \emph{contract}, ensuring that a consistent mode of interaction exists irrespective of the specific implementation details of a plugin.
 The notion of interface contracts in microservice architectures is not new and is inspired by the OpenAPI specification \cite{Miller}.
 Core attributes and functionalities, like querying the number of initial weights for the minimization process required, are defined as part of this universal interface.
 This approach fosters interchangeability and adaptability, as the defined interface could accommodate a multitude of interchangeable plugins, each with its unique implementations.
@@ -540,7 +540,7 @@ In order to represent the interfaces of each plugin and how they are connected, 
 \paragraph{Plugin Interaction Design:}
 The next step is to design the interaction between plugins.
 This design process involved defining the various ways in which plugins could interact with each other.
-It is crucial to build a robust and flexible interaction design to accommodate many scenarios since the interaction between plugins in \gls{qhana} should be applicable not only to optimization.
+It is crucial to build a robust and flexible interaction design to accommodate many scenarios since the interaction between plugins in \gls{qhana} should apply not only to optimization.
 This interaction design should lay the foundation for all future multi-plugin interactions within \gls{qhana}.
 
 Scenarios include, for instance, a plugin invoking the microfrontend of another plugin, or it could call a specific endpoint of another plugin.
@@ -548,7 +548,7 @@ Additionally, the interaction design also encompasses the flow of control betwee
 A plugin should be able to invoke another plugin and then stop execution for as long as the invoked plugin is running.
 Alternatively, a plugin should be able to invoke another plugin and then continue with its tasks without waiting for the invoked plugin to complete its tasks.
 Intrinsic to this step is the design of a coordination mechanism that facilitates the interaction between plugins.
-To represent the interactions between plugins, a UML sequence diagram is created that shows the complete process of a generalized optimization run.
+A UML sequence diagram shows the complete process of a generalized optimization run to represent the interactions between plugins.
 
 \paragraph{Feedback and Refinement:}
 Throughout the design process, continuous feedback loops are integrated. This involved:
@@ -568,7 +568,7 @@ With component and sequence diagrams already in place, the next step is to defin
 \subsection{Development Environment and Toolset}
 
 The choice of development tools and environment plays a pivotal role in the successful execution and maintenance of a project.
-The right toolset not only facilitates smooth development but also enhances the efficiency, productivity, and scalability of the system.
+The right toolset not only facilitates smooth development but also enhances the system's efficiency, productivity, and scalability.
 The following list delineates the tools and technologies employed in the implementation process, each chosen for its specific capabilities tailored to the requirements of the project:
 
 \begin{itemize}
@@ -578,7 +578,7 @@ The following list delineates the tools and technologies employed in the impleme
 
     \item \textbf{Postman}: An API testing tool employed to validate and debug various endpoints, ensuring consistent and expected behavior of the plugin interactions.
 
-    \item \textbf{Python}: As \gls{qhana} is implemented in Python offering versatility and a vast library ecosystem.
+    \item \textbf{Python}: As \gls{qhana} is implemented in Python, which offers versatility and a vast library ecosystem.
 
     \item \textbf{Flask}: A lightweight Python web framework employed to develop the web services and \gls{rest}ful APIs for the plugins.
 
@@ -596,13 +596,13 @@ The following list delineates the tools and technologies employed in the impleme
 In the \gls{qhana} ecosystem, plugins play a pivotal role in extending functionality.
 The creation and integration of these plugins are governed by a set of principles that ensure their seamless operation and interaction \cite{FabianBuehler}.
 All plugins must adhere to these principles to ensure compatibility and consistency across the system.
-For the context of understanding the decisions made in this work, at least the following principles are should be kept in mind:
+For the context of understanding the decisions made in this work, at least the following principles should be kept in mind:
 
 \begin{itemize}
     \item \textbf{Plugin Definition:}
     A plugin is essentially a Python module or package.
-    Conventionally it contains a class that inherits from \texttt{QHAnaPluginBase} and is located in a directory specified by the \texttt{PLUGIN\_FOLDERS} configuration variable.
-    The plugin is responsible for importing its implementation class and all associated Celery tasks.
+    Conventionally, it contains a class that inherits from \texttt{QHAnaPluginBase} and is located in a directory specified by the \texttt{PLUGIN\_FOLDERS} configuration variable.
+    The plugin imports its implementation class and all associated Celery tasks.
 
     \item \textbf{Plugin Metadata and Endpoints:}
     A plugin should contain metadata and links to all its endpoints. It is reachable via the "./" path.
@@ -610,12 +610,12 @@ For the context of understanding the decisions made in this work, at least the f
 
     \item \textbf{UI Interaction:}
     Plugins define both \texttt{href} and \texttt{hrefUi} for each plugin with an \gls{ui}.
-    The `hrefUi` serves the microfrontend where users input data and `href` is the underlyin endpoint providing the actual functionality.
+    The `hrefUi` serves the microfrontend where users input data, and `href` is the underlying endpoint providing the actual functionality.
 
     \item \textbf{Data Handling in Multi-step Plugins:}
-    For plugins requiring multiple user input and processing steps, data is stored in a key-value store.
+    Data is stored in a key-value store for plugins requiring multiple user input and processing steps.
     A plugin task is associated with a unique database ID, and subsequent endpoint URLs of a plugin typically include the ID in the URL path \texttt{http(s)://.../<ID>/<endpointName>}.
-    That way the plugin can retrieve the data from the database using the ID.
+    That way, the plugin can retrieve the data from the database using the ID.
 
     \item \textbf{Handling Long Running Tasks:}
     For a plugin to be able to handle long-running tasks, \gls{qhana} offers the Celery framework.
@@ -639,7 +639,7 @@ It is imperative to note that while the outlined principles are crucial to this 
 \subsection{Data Handling and Transfer}
 Flask-Smorest is instrumental in ensuring structured and accurate data transfer between plugins.
 It provides functions for validating the correctness of passed data, returning appropriate error codes, and managing errors efficiently based on schemas.
-This ensures that data exchanged between plugins are smooth and error-free.
+This ensures that data exchanged between plugins is smooth and error-free.
 
 \subsection{Testing and Debugging}
 
@@ -650,7 +650,7 @@ For this reason, a multifaceted testing strategy is adopted:
     \item \textbf{Static Code Analysis}:
     \begin{itemize}
         \item \textbf{Purpose}: To ensure code quality and maintainability and to identify potential vulnerabilities or deviations from coding standards.
-        \item \textbf{Tools \& Implementation}: The tool \texttt{flake8} in combination with type hints is utilized to conduct static code analysis on the Python codebase.
+        \item \textbf{Tools \& Implementation}: The tool \texttt{flake8}, in combination with type hints, is utilized to conduct static code analysis on the Python codebase.
         By running \texttt{flake8}, a report detailing any code inconsistencies, potential errors, or areas for improvement is generated, providing valuable feedback for refinement.
     \end{itemize}
 
@@ -676,7 +676,7 @@ For this reason, a multifaceted testing strategy is adopted:
     \end{itemize}
 \end{enumerate}
 
-By employing a combination of static code analysis, detailed logging, interactive debugging and manual testing, it is ensured that the plugins are functionally correct and adhered to coding standards and best practices, guaranteeing a robust and user-friendly experience.
+By employing a combination of static code analysis, detailed logging, interactive debugging, and manual testing, it is ensured that the plugins are functionally correct and adhere to coding standards and best practices, guaranteeing a robust and user-friendly experience.
 
 
 \subsection{Performance Optimization}
@@ -692,7 +692,7 @@ These strategies are critical in ensuring swift and seamless interactions betwee
 
 
 \subsection{Documentation and Extensibility}
-Comprehensive documentation detailing how to add new \gls{of} and minimization plugins is created to enable the development of new plugins integrating into this system.
+Comprehensive documentation detailing how to add new \gls{of} and minimization plugins is created to enable the development of new plugins.
 This documentation serves as a guideline for developers aiming to extend the capabilities of \gls{qhana} with plugin interaction.
 
 
@@ -708,15 +708,15 @@ A direct comparison will be made between the two plugin-based approaches and the
 Critical metrics for this comparison include:
 
 \begin{itemize}
-\item \textbf{Objective Function Calculation Time}: This measures the time taken to retrieve the loss, directly impacting the overall optimization time.
-For the plugin-based approach this is the time as observed by the client calling the calculation endpoint, meaning it includes the network latency.
-As all components of the system, network in this case means the localhost network.
+\item \textbf{Objective Function Calculation Time}: This measures the time to retrieve the loss, directly impacting the overall optimization time.
+For the plugin-based approach, this is the time, as observed by the client calling the calculation endpoint, meaning it includes the network latency.
+As all system components run on the same machine, network, in this case, means the \emph{localhost}.
 
 \item \textbf{Minimization Time}: This refers to the time needed to minimize the \gls{of}.
 In the service-based approach, the time taken for the minimization endpoint to return a result is also accounted for.
 
 \item \textbf{Network Latency}: This exclusively quantifies the time required for a request to reach the server and for the corresponding response to be received.
-Any computation time that occurs on the server is not included in this metric.
+This metric does not include any computation time that occurs on the server.
 This metric is exclusive to the service-based approach.
 
 \item \textbf{Database Access Times}: It is essential to gauge the time required to retrieve data from the database since endpoints access context data during each invocation.
@@ -736,22 +736,22 @@ This guarantees that all possible optimization plugins can be implemented unifor
 
 \paragraph{Developer Experience:}
 The developer experience has to be maintained.
-To measure the experience the steps required to implement a new plugin are counted and each step is evaluated for its complexity.
-The evaluation acknowledges any documentation that guide developers through the process.
+To measure the experience, the steps required to implement a new plugin are counted, and each step is evaluated for its complexity.
+The evaluation acknowledges any documentation that guides developers through the process.
 An assessment determines the ease and efficiency with which a developer can introduce a new plugin in plugin-based optimization in \gls{qhana}.
 The goal is to ensure that the plugin-based approach is as easy to implement as the non-service-based approach.
 
 Through meticulously evaluating these parameters, this thesis thoroughly appraises the solutions concerning the challenges outlined in the problem statement.
 
 \section{Test Data Generation for Evaluation}
-To robustly evaluate the solutions proposed in this work, testing them on diverse datasets, with different size and complexity is essential.
+To robustly evaluate the solutions proposed in this work, testing them on diverse datasets with different sizes and complexity is essential.
 The objective is to mimic real-world scenarios where optimization problems can range from simple tasks with a few data points to complex challenges with many features and data points.
 The code used to generate the test data can be found in the \hyperref[chap:appendix]{Appendix}.
 The following criteria are employed to generate the test data:
 
 Datasets of different \emph{sizes} have been generated, spanning from a modest 200 data points to a substantial 1400 data points.
 This variation ensures that the optimization performance is assessed across different scales, from quick-to-process small datasets to computationally demanding large datasets.
-The \emph{number of features} in each dataset, is dynamically determined based on the dataset's size, calculated explicitly as \(\lfloor \sqrt{\text{size}} \times 1.5 \rfloor\).
+The \emph{number of features} in each dataset is dynamically determined based on the dataset's size, calculated explicitly as \(\lfloor \sqrt{\text{size}} \times 1.5 \rfloor\).
 This approach ensures that with the growth of the dataset, its complexity also increases, mirroring real-world scenarios where larger datasets often present more features or dimensions.
 
 The data is synthetically generated using the \texttt{make\_regression} function from the Scikit-learn library, known for its utility in machine learning.
@@ -760,7 +760,7 @@ An added \emph{noise} parameter introduces an element of randomness, making the 
 To maintain the consistency and reliability of the generated datasets across multiple runs or evaluations, a fixed random seed (\texttt{numpy.random.seed(42)}) has been set.
 This ensures that the data, though synthetic and noisy, remains consistent across evaluations, enabling accurate comparisons, assessments, and \emph{reproducibility}.
 
-To adhere to \gls{qhana}'s data standards two additional criteria are employed:
+To adhere to \gls{qhana}'s data standards, two criteria are employed:
 Each data point in the dataset is allocated a unique ID in the format \emph{entityX}, where X represents the entity number.
 This aligns with \gls{qhana}'s data standard that mandates every data point to have an identifiable ID.
 All datasets are stored in the CSV (Comma Separated Values) format, adhering to \gls{qhana}'s accepted data formats.
