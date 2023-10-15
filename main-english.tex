@@ -492,6 +492,7 @@ While \gls{qhana} already employs a metadata field for plugins known as \emph{en
 A defining characteristic of an interaction endpoint is its \emph{type}.
 Interaction endpoints sharing the same type uphold uniformity in their signature and return type.
 This typing ensures that they are invoked consistently by other plugins, irrespective of their specific implementation.
+Inspiration for this typing mechanism is drawn from the OpenAPI specification \cite{Miller}, which defines a standard, language-agnostic interface for \gls{rest} APIs.
 
 The proposed approach complements \gls{qhana}'s existing principles, resonating with its emphasis on extensibility, adaptability, and user-centric design.
 By enhancing the interactivity and modularity of plugins within \gls{qhana}, we strive to elevate its capabilities, making it a more dynamic platform for optimization and \glspl{vqa}.
@@ -527,7 +528,7 @@ To delineate these responsibilities, several crucial decisions had to be made:
 \paragraph{Universal Plugin Interface Design:}
 Recognizing the vast possibilities and variations that interchangeable plugins might encompass, it is crucial to formulate a universally adhered-to interface.
 This interface acts as a \emph{contract}, ensuring that irrespective of the specific implementation details of a plugin, there exists a consistent mode of interaction.
-The notion of interface contracts in microservice architectures is not new and is inspired by the OpenAPI specification .
+The notion of interface contracts in microservice architectures is not new and is inspired by the OpenAPI specification \cite{Miller}.
 Core attributes and functionalities, like querying the number of initial weights for the minimization process required, are defined as part of this universal interface.
 This approach fosters interchangeability and adaptability, as the defined interface could accommodate a multitude of interchangeable plugins, each with its unique implementations.
 In terms of optimization, this could mean that in the case of an \gls{of} plugin responsible for calculating the loss function, interfaces must be generalized to allow for any thinkable type of loss function.
@@ -718,17 +719,19 @@ The \emph{time.perf\_count} function from Python measures the time taken for a f
 
 \paragraph{Interchangeability:}
 The accurate measure of interchangeability is the ability to swap components without causing disruptions.
-Accordingly, every plugin of a particular type is tested against every other plugin of the same type to validate seamless interchangeability.
+Accordingly, all allowed combinations of plugins were tested to validate seamless interchangeability.
 
 \paragraph{Standardization Adherence:}
 Standardization is tested to ensure compatibility and uniformity across diverse plugins.
 An evaluation determines whether all implemented plugins conform to the prescribed standards.
 This guarantees that all optimization plugins can be implemented uniformly, facilitating consistent and compatible integrations in the future.
 
-\paragraph{User Experience:}
-While the primary audience for this thesis is developers for the \gls{qhana} platform, the user experience has to be maintained.
+\paragraph{Developer Experience:}
+The developer experience has to be maintained.
+To measure the experience the steps required to implement a new plugin are counted and each step is evaluated for its complexity.
+The evaluation acknowledges any documentation that guide developers through the process.
 An assessment determines the ease and efficiency with which a developer can introduce a new plugin in plugin-based optimization in \gls{qhana}.
-The complexity and steps of to integrate a new, interchangeable plugin for the optimization process are laid out.
+The goal is to ensure that the plugin-based approach is as easy to implement as the non-service-based approach.
 
 Through meticulously evaluating these parameters, this thesis thoroughly appraises the solutions concerning the challenges outlined in the problem statement.
 
