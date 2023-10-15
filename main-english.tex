@@ -1635,7 +1635,7 @@ Similar to this thesis, the \emph{Optimization Service} utilizes SciPy for optim
 
 In a subsequent paper \cite{Beisel2023a}, Beisel et al. elaborate on the architecture of the workflow-based system, shedding light on the interplay between its components.
 They explain that the system's components are realized as microservices, each offering a \gls{rest}ful API for interaction.
-Central to this architecture is a \textbf{Gateway}, which handles the internal communication with the various microservices and presents a unified \gls{rest}ful interface to the outside.
+Central to this architecture is a \emph{Gateway}, which handles the internal communication with the various microservices and presents a unified \gls{rest}ful interface to the outside.
 
 Mayer et al. \cite{Mayer_2003} advocate simplifying the intricacies of expansive software systems through a \emph{plugin-based architecture}.
 They argue that the system gains flexibility and becomes more maintainable by minimizing the core system and encapsulating most functionalities as plugins.
@@ -1656,6 +1656,17 @@ The workbench divides the machine learning workflow into distinct services: the 
 This modular design ensures efficient parallel processing and scalability.
 The paper does not aim to split the machine learning service into different components.
 
+A similar optimization loop, wherein a \gls{of} is evaluated iteratively to minimize the loss value, is adopted by popular machine learning frameworks like TensorFlow \cite{Abadi2016} and PyTorch \cite{Paszke2019}.
+These frameworks operate by processing input data, computing the discrepancy or loss between predictions and actual values, and subsequently refining the model's parameters based on this computed loss.
+The iterative process continues until a specified stopping criterion, such as a predetermined number of epochs or a desired accuracy threshold, is met.
+While there are architectural and functional distinctions between TensorFlow and PyTorch, at a high level, their optimization loops embody this core principle.
+However, these frameworks do not offer a distributed optimization loop, which is a key feature of the plugin-based optimization framework.
+
+In a comprehensive survey by Verbreaken et al. \cite{Verbraeken2020}, the authors delve deep into the paradigms and challenges of \emph{Distributed Machine Learning}.
+The authors categorize \emph{Distributed Machine Learning} techniques based on their key characteristics, such as data distribution, model updates, and communication strategies.
+The study sheds light on various challenges, including communication overhead.
+They further highlight the significance of an efficient communication strategy, emphasizing the need for a robust communication protocol.
+As discussed in the results section, the decoupled plugin-based implementation already minimizes communication overhead by caching data and reducing the amount of data that is sent over the network.
 
 \chapter{Conclusion and Outlook}
 \label{chap:conclusion}
