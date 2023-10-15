@@ -450,7 +450,7 @@ This problem encompasses several challenges:
     \item \textbf{Interchangeability:} Designing a system where different \gls{of} and minimization plugins can be effortlessly swapped, ensuring adaptability in optimization and \glspl{vqa}.
     Implementing a consistent interface for these plugins, ensuring uniformity and compatibility across various \gls{of} and minimization plugins.
     The interchangeability should be designed in a way that allows for future use cases outside the optimization context.
-    \item \textbf{User Experience:} Providing an intuitive \gls{ui} for users to easily choose, and experiment with different optimization components tailored to their needs.
+    \item \textbf{User Experience:} Providing an intuitive \gls{ui} for users to easily choose and experiment with different optimization components tailored to their needs.
     \item \textbf{Developer Experience:} Providing developers with an extensible framework to build new minimization and \gls{of} plugins.
   \end{itemize}
 
@@ -469,7 +469,7 @@ To enable interchangeability and loose coupling between plugins, no plugin shoul
 This means that the invoking plugin should not have input fields that are specific to the invoked plugin.
 Therefore, a plugin should be able to invoke the microfrontend of another plugin where the user can provide the required input.
 Control should revert to the invoking plugin once the invoked plugin completes its tasks.
-As interactions between plugins can have varying degrees of complexity, the interaction mechanism should be flexible enough to accommodate different scenarios.
+Interactions between plugins can have varying degrees of complexity, so the interaction mechanism should be flexible enough to accommodate different scenarios.
 Both short-running tasks and long-running tasks should be facilitated.
 For the latter, a callback mechanism is proposed, wherein the invoking plugin can be notified upon completing a long-running task by the invoked plugin.
 
