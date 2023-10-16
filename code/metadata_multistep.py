@@ -4,19 +4,12 @@ interaction_endpoints = (
             # define the type of interaction endpoint
             type=InteractionEndpointType.of_pass_data.value,
             # define the endpoint URL
-            href=url_for(
-                f"{RIDGELOSS_BLP.name}.{PluginsView.__name__}",
-                _external=True,
-            )
-            + "<int:task_id>/pass-data/",
+            # use the url_for_ie function to generate the URL with a task_id placeholder
+            href=url_for_ie(f"{RIDGELOSS_BLP.name}.{PassDataEndpoint.__name__}"),
         ),
         InteractionEndpoint(
             type=InteractionEndpointType.calc_loss.value,
-            href=url_for(
-                f"{RIDGELOSS_BLP.name}.{PluginsView.__name__}",
-                _external=True,
-            )
-            + "<int:task_id>/calc-callback-endpoint/",
+            href=url_for_ie(f"{RIDGELOSS_BLP.name}.{CalcLossEndpoint.__name__}"),
         ),
     ],
 )
