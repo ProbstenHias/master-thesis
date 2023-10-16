@@ -80,7 +80,7 @@
 With its transformative processing capabilities, Quantum computing has ushered in a new computational era, presenting unparalleled opportunities and intricate challenges.
 One potential beneficiary of this quantum revolution is the Digital Humanities. With quantum computing, the field has the potential to enhance its quantitative analysis dramatically.
 QHAna, the Quantum Humanities Analysis tool explicitly designed for Quantum Digital Humanities, emerges as a pivotal system.
-This thesis focuses on enhancing QHAna by integrating variational algorithms, and paving the way for Variational Quantum Algorithms, in a modular manner.
+This thesis focuses on enhancing QHAna by integrating variational algorithms and paving the way for Variational Quantum Algorithms in a modular manner.
 The objective is to encapsulate components of variational algorithms as distinct, interchangeable plugins, ensuring adaptability and enabling end users to adapt the algorithms.
 Addressing challenges like robust plugin communication and intuitive user experience, the research delves into this modular framework's design, implementation, and evaluation.
 Beyond the immediate application to Variational Quantum Algorithms, the insights and methodologies derived here lay the foundational groundwork for future modular system designs in the quantum computing domain.
@@ -419,8 +419,8 @@ We move towards the minimum of the function by taking a step in this direction.
 
 The steps' size is determined by the learning rate \(\alpha\), which is a hyperparameter that must be set before the learning process begins.
 The learning rate controls how fast or slow we move toward the optimal weights.
-We may skip the optimal solution if the learning rate is too large.
-We may need too many iterations to converge to the best values if it is too small.
+One may skip the optimal solution if the learning rate is too large.
+One may need too many iterations to converge to the best values if it is too small.
 
 The choice of minimization function can significantly influence the efficiency and success of the optimization process.
 While some minimization functions may perform well on certain problems, they may yield different results on others.
@@ -1533,54 +1533,37 @@ Subsequently, it analyzes the performance of the plugin-based optimization frame
 Finally, this concept addresses how the results influence the developer experience when it comes to implementing new minimization and \gls{of} plugins.
 
 \section{Architecture and Implementation}
-\paragraph{Decomposition:}
-\label{sec:decomposition}
 
 Decomposing the minimization process into separate minimizer and \gls{of} plugins aligns perfectly with the plugin-based optimization framework's ethos.
 This delineation ensures clarity and specificity and establishes a transparent interface between the two plugins.
 The success of libraries like SciPy and how it handles the minimization process \cite{Virtanen2020} reinforces the effectiveness of this decomposition.
 Entrusting the coordinator plugin with the responsibility of overseeing the optimization eliminates the need for the minimizer and \gls{of} plugins to manage interactions, enabling developers to concentrate solely on enhancing plugin functionalities.
 
-\paragraph{Endpoint Interactions:}
-\label{sec:enpointinteractions}
-
 Interaction endpoints serve as the core of the plugin-based optimization framework, offering a unified mode of interaction across plugins.
 This standardization supports developers by delineating available endpoints and their operational functionalities.
-By presenting these endpoints even before passing through the \gls{ui} process, developers can bypass the \gls{ui} and directly trigger the requisite endpoint.
+By presenting these endpoints even before passing through the \gls{ui} process, developers can now bypass the \gls{ui} and directly trigger the requisite endpoint in a standardized and, thus, reliable way.
 Such a setup is invaluable for those seeking automation.
 By precisely defining input-output expectations, this approach also ensures seamless plugin interchangeability.
-
-\paragraph{Callback Protocols:}
-\label{sec:callackMechanism}
 
 The callback mechanism is an essential facet of the plugin-based optimization framework.
 Its design ensures a distinct separation of responsibilities.
 The coordinator plugin, devoid of internal insights into the minimizer or \gls{of} plugin, solely relies on available endpoints.
-This mechanism prevents the need for database polling, offering real-time updates upon minimization completion.
+This mechanism prevents the need for database or API polling, offering updates upon minimization completion.
 The distinctive implementation of the callback mechanism for the minimization endpoint further underlines the modularity, as it fully decouples the procedure from the minimizer plugin.
-The event-driven model drives adaptability for all kinds of asynchronous processes in \gls{qhana}
-
-\paragraph{Data Passing Endpoint:}
-\label{sec:passDataEndpoint}
+The event-driven model \cite{Hohpe2011} drives adaptability for all kinds of asynchronous processes in \gls{qhana}
 
 The rationale behind the \emph{pass\_data} endpoint merits discussion.
 While it introduces an additional layer, the trade-offs justify its existence.
 Directly passing vast datasets as query parameters to the \gls{ui} endpoint is not feasible.
-Transferring data as files to the \gls{ui} endpoint burdens the \gls{of} plugin with data extraction – a responsibility it should not shoulder.
+Transferring data as files to the \gls{ui} endpoint burdens the \gls{of} plugin with the data extraction process, which should not be its responsibility.
 Receiving data as a NumPy array allows the \gls{of} plugin to focus on its primary role: loss value computation.
 
-\paragraph{Comparision of Plugin-Based Implementation Strategies:}
-\label{par:differencesBetweenTheTwoPluginBasedImplementationApproaches}
-
 The two plugin-based implementation strategies show the trade-off between the complexity of handling interaction endpoints and the amount of data that has to be passed between plugins.
-
-The first approach, where the \gls{of} plugin is implemented as a multi-step plugin, is more complex since the coordinator plugin has to format the interaction endpoint URL to reflect the database ID.
+The decoupled approach, where the \gls{of} plugin is implemented as a multi-step plugin, is more complex since the coordinator plugin has to format the interaction endpoint URL to reflect the database ID.
 Nevertheless, it also has the advantage that the minimizer plugin does not have to pass the hyperparameters and data to the \gls{of} plugin since the \gls{of} plugin retrieves them from the database.
 In general, that means by passing along a single parameter, the database ID, any volume of data can be loaded and used for context.
-
-The second approach, where the \gls{of} plugin is not implemented as a multi-step plugin, is less complex since the coordinator plugin does not have to handle formatting the interaction endpoint URL.
+The integrated approach, where the \gls{of} plugin is not implemented as a multi-step plugin, is less complex since the coordinator plugin does not have to handle formatting the interaction endpoint URL.
 However, it also has the disadvantage that the minimizer plugin has to pass the hyperparameters and data to the \gls{of} plugin since the \gls{of} plugin cannot retrieve them from the database.
-
 Both approaches have advantages and disadvantages and should show that the plugin-based optimization framework is flexible enough to support both approaches.
 As the benchmarking results show, by caching the data, the first approach is arguably the better one of the two.
 
@@ -1673,15 +1656,14 @@ What emerged is an innovative approach to optimization and a pioneering framewor
 This framework's versatility hints at its potential applicability beyond just optimization tasks.
 
 The example implementations of both the minimizer and the \gls{of} plugins are a testament to the system's functionality and adaptability.
-Performance benchmarks highlight the framework's robustness and efficiency, especially with caching.
+Performance benchmarks highlight the framework's robustness and efficiency, especially with caching, trying to minimize network and database latencies that come with a distributed system.
 A particularly commendable aspect is the strict adherence to standardization, which ensures modularity and paves the way for seamless plugin interchangeability.
-This design philosophy also emphasizes the developer-centric approach, simplifying plugin development while ensuring versatility.
+This design philosophy also creates a developer-friendly system, simplifying plugin development while ensuring versatility.
 
-Looking ahead, the horizons for this work are vast.
 The current ecosystem provides a substantial opportunity to diversify by introducing a broader array of minimizer and \gls{of} plugins.
 Expanding this repertoire will not only enrich the optimization solutions available but also enhance the robustness and adaptability of the system.
 
-As yet to be fully implemented in this thesis, a new \gls{of} plugin that handles \glspl{vqa} would be a valuable and easily implementable addition.
+As the thesis lays out the complete foundation to implement \glspl{vqa}, a new \gls{of} plugin that handles the quantum part would be a valuable and easily implementable addition.
 The energy state of a quantum system is then perceived as the loss value, while an existing minimizer plugin is used to minimize this loss.
 
 Building upon the inherent interchangeability and modularity of the current design, a novel concept draws attention: viewing the \gls{of} or the minimizer as hyperparameters themselves.
@@ -1691,7 +1673,7 @@ This would be similar to a hyperparameter search, where each \gls{of} is a candi
 Similarly, different minimizers can be benchmarked against a fixed \gls{of}.
 
 In conclusion, with its modularity, standardization, and user-friendliness, the plugin-based optimization framework offers many opportunities.
-From diversifying its offerings to delving deep into quantum algorithms and even reimagining the very nature of optimization components, the journey ahead is teeming with potential.
+From diversifying its offerings to delving deep into quantum algorithms, the journey ahead is teeming with potential.
 
 \printbibliography
 
