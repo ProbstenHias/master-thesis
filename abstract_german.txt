@@ -1,0 +1,7 @@
+Mit ihren transformativen Verarbeitungsmöglichkeiten hat die Quanteninformatik eine neue Ära der Datenverarbeitung eingeläutet, die unvergleichliche Möglichkeiten und komplexe Herausforderungen mit sich bringt.
+Ein potenzieller Gewinner dieser Quantenrevolution sind die digitalen Geisteswissenschaften. Mit dem Quantencomputing hat dieser Bereich das Potenzial, seine quantitative Analyse drastisch zu verbessern.
+QHAna, das "Quantum Humanities Analysis Tool", das explizit für die Quantum Digital Humanities entwickelt wurde, erweist sich dabei als ein zentrales System.
+Diese Arbeit konzentriert sich darauf, QHAna durch die Integration von Variationsalgorithmen zu verbessern und den Weg für Variations-Quantenalgorithmen in modularer Weise zu ebnen.
+Ziel ist es, Komponenten von Variationsalgorithmen als eigenständige, austauschbare Plugins zu kapseln, um Anpassungsfähigkeit zu gewährleisten und den Endnutzern die Möglichkeit zu geben, die Algorithmen nach ihren wünschen zu konfigurieren.
+Die Arbeit befasst sich mit Herausforderungen wie robuster Plugin-Kommunikation und intuitiver Benutzererfahrung und untersucht die Architektur, Implementierung und Evaluierung dieses modularen Rahmens.
+Über die unmittelbare Anwendung auf Variations-Quantenalgorithmen hinaus bilden die hier gewonnenen Erkenntnisse und Methoden eine Grundlage für zukünftige modulare Systemdesigns im Bereich des Quanteninformatik.

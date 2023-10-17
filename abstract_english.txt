@@ -1,0 +1,7 @@
+With its transformative processing capabilities, Quantum computing has ushered in a new computational era, presenting unparalleled opportunities and intricate challenges.
+One potential beneficiary of this quantum revolution is the Digital Humanities. With quantum computing, the field has the potential to enhance its quantitative analysis dramatically.
+QHAna, the Quantum Humanities Analysis tool explicitly designed for Quantum Digital Humanities, emerges as a pivotal system.
+This thesis focuses on enhancing QHAna by integrating variational algorithms and paving the way for Variational Quantum Algorithms in a modular manner.
+The objective is to encapsulate components of variational algorithms as distinct, interchangeable plugins, ensuring adaptability and enabling end users to adapt the algorithms.
+Addressing challenges like robust plugin communication and intuitive user experience, the research delves into this modular framework's design, implementation, and evaluation.
+Beyond the immediate application to Variational Quantum Algorithms, the insights and methodologies derived here lay the foundational groundwork for future modular system designs in the quantum computing domain.
