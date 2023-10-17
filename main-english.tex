@@ -223,7 +223,7 @@ The objective is to encapsulate components of variational algorithms as modular 
 Such a modular approach promises enhanced adaptability towards a user-centric platform where researchers can precisely tailor their quantum optimization strategies to their needs.
 
 However, the path to realizing this vision is full of challenges.
-As plugins are essentially microservices, \gls{qhana} is a distributed system, which brings its own set of challenges.
+As plugins are essentially microservices, \gls{qhana} is a distributed system that brings its own challenges.
 Integrating optimization as multiple plugins demands a robust communication mechanism, ensuring seamless interaction and data sharing.
 Furthermore, the user experience must remain intuitive, allowing both quantum novices and experts to harness the full potential of the modular quantum optimization framework.
 
@@ -232,10 +232,10 @@ Moreover, the implications of this research extend beyond the limits of \gls{vqa
 By pioneering a methodology for \gls{vqa} plugin interactions within \gls{qhana}, this work lays the foundation for a broader paradigm of modular system design in the \gls{qdh}.
 
 The thesis undertakes a comprehensive journey through modular \glspl{vqa} within \gls{qhana}.
-In Chapter \ref{chap:background}, the groundwork is laid by delving into the foundational principles and concepts that underpin the entire thesis.
+Chapter \ref{chap:background} lays the groundwork by delving into the foundational principles and concepts that underpin the entire thesis.
 Chapter \ref{chap:problem} sharpens the focus, presenting a clear and concise problem statement and outlining the objectives aimed to be achieved.
 With a clear understanding of the problem at hand, Chapter \ref{chap:methodology} dives deep into the methodology.
-Here, the strategies and approaches employed to develop and evaluate the modular framework within \gls{qhana} are explored.
+The chapter explores the strategies and approaches employed to develop and evaluate the modular framework within \gls{qhana}.
 Chapter \ref{chap:architecture} unveils the architectural blueprint of the modular framework.
 Moving from design to implementation, Chapter \ref{chap:implementation} delves into the details of the framework's implementation.
 In Chapter \ref{chap:results}, the design and implementation are put to the test. The architectural design's efficacy and real-world implementation are measured through rigorous evaluations, drawing insights from the results.
@@ -260,8 +260,8 @@ While the primary vision of \gls{qhana} is to assess the potential advantages of
 
 \gls{qhana} is designed to be extensible, allowing the integration of new data sources and quantum algorithms as plugins.
 Usually, plugins are built for specific applications, limiting their reusability in other contexts.
-Moreover, an application's plugins must be developed in the same programming language as the application.
-Even if a plugin can be reused in another application, its \gls{ui} has to adapt to the new application.
+Moreover, an application's plugins must be developed in the same programming phrasing as the application.
+Even if another application can reuse a plugin, a developer has to adapt the plugin's \gls{ui} to the new application.
 Otherwise, users may need help understanding the plugin's functionality.
 To address this limitation, \gls{qhana} is built on a novel concept of \glspl{ramp} \cite{Buehler2022}.
 This concept allows microservices with an integrated \gls{ui} to be used as plugins by multiple applications, enhancing the reusability of the plugins across different applications.
@@ -276,8 +276,7 @@ This concept allows microservices with an integrated \gls{ui} to be used as plug
   \label{fig:qhanaarch}
 \end{figure}
 
-QHAna's architecture, as depicted in Figure \ref{fig:qhanaarch}, is primarily microservice-oriented, emphasizing modularity and extensibility.
-This is evident from its use of \glspl{ramp} and the concept of \emph{microfrontends}.
+QHAna's architecture, as depicted in Figure \ref{fig:qhanaarch}, is primarily microservice-oriented, emphasizing modularity and extensibility, which is evident from its use of \glspl{ramp} and the concept of \emph{microfrontends}.
 Such an architectural choice is geared towards ensuring scalability and adaptability in the rapidly evolving field of quantum computing.
 Key components of \gls{qhana}'s architecture are:
 \begin{description}
@@ -312,7 +311,7 @@ They combine the reusability and accessibility of microservices with the \gls{ui
 \label{sec:quantumComputing}
 Quantum computing is a cutting-edge field that exploits the principles of quantum mechanics to process information.
 Unlike classical computers that use bits (0s and 1s) to store and process information, quantum computers use quantum bits, or \emph{qubits}.
-Through superposition and entanglement, qubits can exist in multiple states at once and be correlated with each other in ways that classical bits cannot \cite{Nielsen2010}.
+Through superposition and entanglement, qubits can exist in multiple states simultaneously and correlate in ways that classical bits cannot \cite{Nielsen2010}.
 
 Superposition allows a qubit to be in a state of a combination of 0 and 1, with a certain probability for each.
 This property enables quantum computers to perform many calculations simultaneously, vastly increasing their potential computational power.
@@ -332,7 +331,7 @@ These parameters are adjusted using classical optimization techniques to solve a
 This problem, in many cases, involves finding the lowest energy state, or \emph{ground state}, of a quantum system.
 This problem maps to finding the minimum of a particular function \cite{Peruzzo2013}.
 
-By leveraging classical optimization algorithms, \glspl{vqa} become more resistant to quantum errors, as most of the computation is performed on a classical computer.
+By leveraging classical optimization algorithms, \glspl{vqa} become more resistant to quantum errors, as classical computers perform most of the computation.
 This combination of quantum and classical resources makes \glspl{vqa} a promising algorithm for near-term quantum devices \cite{Moll2017}.
 
 
@@ -355,7 +354,7 @@ In the context of optimization problems, the role of an \gls{of} is to capture b
 It provides a measure of the 'goodness' or 'fitness' of our current solution or parameters, and the aim is to adjust these parameters to improve this measure.
 
 One example of an \gls{of} is the Lasso (Least Absolute Shrinkage and Selection Operator) Loss function.
-The Lasso loss function is represented as:
+The Lasso loss function has the form:
 \[
 L(Y, X, W, \lambda) = ||Y - XW||^2_2 + \lambda ||W||_1
 \]
@@ -391,14 +390,14 @@ This search can be visualized as navigating a landscape of hills and valleys, wi
 The goal of the minimization function is to find the lowest point in this landscape, corresponding to the minimum value of the \gls{of} \cite{Goodfellow2017}.
 
 The core inputs to a minimization function are the initial parameters of the model or weights (denoted as \(\theta\) or \(w\)),
-the \gls{of} that needs to be minimized, and optionally, the gradients of the \gls{of} with respect to the parameters.
+the \gls{of} that needs to be minimized, and optionally, the gradient of the \gls{of}.
 Additionally, certain minimization functions may include hyperparameters as input, which control the behavior and complexity of the optimization process \cite{Virtanen2020}.
 For instance, the learning rate is a typical hyperparameter that determines the step size in each iteration of the optimization process.
 
 One of the most fundamental and widely used minimization functions is the Gradient Descent.
 To find a local minimum of a function using gradient descent, one takes steps proportional to the negative of the function's gradient (or approximate gradient) at the current point.
 
-The update rule of gradient descent is given as follows:
+The update rule of gradient descent has the form:
 
 \[
 \theta_{t+1} = \theta_t - \alpha \nabla F(\theta_t)
@@ -416,11 +415,6 @@ In this formula:
 Here, the \gls{of} \(F\) is assumed to be a differentiable function.
 The gradient \(\nabla F(\theta_t)\) provides the direction of the steepest ascent at the point \(\theta_t\), and \(-\nabla F(\theta_t)\) provides the direction of the steepest descent.
 We move towards the minimum of the function by taking a step in this direction.
-
-The steps' size is determined by the learning rate \(\alpha\), which is a hyperparameter that must be set before the learning process begins.
-The learning rate controls how fast or slow we move toward the optimal weights.
-One may skip the optimal solution if the learning rate is too large.
-One may need too many iterations to converge to the best values if it is too small.
 
 The choice of minimization function can significantly influence the efficiency and success of the optimization process.
 While some minimization functions may perform well on certain problems, they may yield different results on others.
@@ -449,7 +443,7 @@ This problem encompasses several challenges:
     \item \textbf{Communication:} Establishing a robust communication mechanism that enables interaction, data sharing, and collaboration among these plugins.
     \item \textbf{Interchangeability:} Designing a system where different \gls{of} and minimization plugins can be effortlessly swapped, ensuring adaptability in optimization and \glspl{vqa}.
     Implementing a consistent interface for these plugins, ensuring uniformity and compatibility across various \gls{of} and minimization plugins.
-    The interchangeability should be designed in a way that allows for future use cases outside the optimization context.
+    The design should ensure that interchangeability accommodates future use cases beyond the optimization context.
     \item \textbf{User Experience:} Providing an intuitive \gls{ui} for users to easily choose and experiment with different optimization components tailored to their needs.
     \item \textbf{Developer Experience:} Providing developers with an extensible framework to build new minimization and \gls{of} plugins.
   \end{itemize}
@@ -465,13 +459,13 @@ Specifically, having distinct \glspl{of} and minimization functions means parts 
 This reflects the goals of modularity and flexibility intrinsic to \gls{qhana}'s design.
 
 Interactivity in \gls{qhana} should encompass various facets.
-To enable interchangeability and loose coupling between plugins, no plugin should be aware of specific user input requirements of another plugin.
-This means that the invoking plugin should not have input fields that are specific to the invoked plugin.
+No plugin should be aware of specific user input requirements of another plugin to enable interchangeability and loose coupling between plugins.
+This means that an invoking plugin should not have input fields that are specific to the invoked plugin.
 Therefore, a plugin should be able to invoke the microfrontend of another plugin where the user can provide the required input.
 Control should revert to the invoking plugin once the invoked plugin completes its tasks.
 Interactions between plugins can have varying degrees of complexity, so the interaction mechanism should be flexible enough to accommodate different scenarios.
 Both short-running tasks and long-running tasks should be facilitated.
-For the latter, a callback mechanism is proposed, wherein the invoking plugin can be notified upon completing a long-running task by the invoked plugin.
+For the latter, a callback mechanism is proposed, wherein the invoking plugin is notified upon completion of a long-running task by the invoked plugin.
 
 The need for such interactivity stems from the inherent nature of optimization.
 The \glspl{of} and minimization must closely interact to produce meaningful optimization results.
@@ -479,7 +473,7 @@ Moreover, since an invoking plugin is unaware of the parameters or requirements 
 
 Drawing inspiration from existing systems, the interaction between the minimization and \glspl{of} in implementations like SciPy's \emph{optimizer.minimize} \cite{Virtanen2020} function serves as a precedent.
 
-This thesis introduces the concept of \emph{interaction endpoints} to \gls{qhana} to elevate the degree of interactivity between plugins.
+This thesis introduces the concept of \emph{interaction endpoints} to \gls{qhana} to elevate the interactivity between plugins.
 While \gls{qhana} already employs a metadata field for plugins known as \emph{entry points} -- endpoints invoked by the \gls{qhana} \gls{ui} to render the \gls{ui} of a plugin -- interaction endpoints extend this paradigm by marking specific endpoints as callable by other plugins.
 
 A defining characteristic of an interaction endpoint is its \emph{type}.
@@ -518,7 +512,7 @@ In order to represent the decomposition, a UML component diagram is created.
 \paragraph{Defining Plugin Responsibilities:}
 Once the plugins are identified, the next step is to define the responsibilities of each plugin precisely.
 This ensures that every plugin has a well-defined purpose, preventing overlaps in functionality and ensuring clarity in their roles.
-To delineate these responsibilities, several crucial decisions had to be made:
+Several crucial decisions delineate these responsibilities:
 
 \begin{itemize}
   \item Which one prompts the user for the \gls{of} hyperparameters?
@@ -535,7 +529,7 @@ The notion of interface contracts in microservice architectures is not new and i
 Core attributes and functionalities, like querying the number of initial weights for the minimization process required, are defined as part of this universal interface.
 This approach fosters interchangeability and adaptability, as the defined interface could accommodate a multitude of interchangeable plugins, each with its unique implementations.
 In terms of optimization, this could mean that in the case of an \gls{of} plugin responsible for calculating the loss function, interfaces must be generalized to allow for any thinkable type of loss function.
-In order to represent the interfaces of each plugin and how they are connected, a UML component diagram is created.
+A UML component diagram visualizes the interfaces of each plugin and how they are connected.
 
 \paragraph{Plugin Interaction Design:}
 The next step is to design the interaction between plugins.
@@ -551,7 +545,7 @@ Intrinsic to this step is the design of a coordination mechanism that facilitate
 A UML sequence diagram shows the complete process of a generalized optimization run to represent the interactions between plugins.
 
 \paragraph{Feedback and Refinement:}
-Throughout the design process, continuous feedback loops are integrated. This involved:
+Throughout the design process, continuous feedback loops are integrated. This involves:
 \begin{itemize}
 \item Revisiting each stage, evaluating its alignment with overarching goals.
 \item Making necessary refinements to ensure the architecture is robust and flexible.
@@ -568,7 +562,7 @@ With component and sequence diagrams already in place, the next step is to defin
 \subsection{Development Environment and Toolset}
 
 The choice of development tools and environment plays a pivotal role in the successful execution and maintenance of a project.
-The right toolset not only facilitates smooth development but also enhances the system's efficiency, productivity, and scalability.
+The right toolset facilitates smooth development and enhances the system's efficiency, productivity, and scalability.
 The following list delineates the tools and technologies employed in the implementation process, each chosen for its specific capabilities tailored to the requirements of the project:
 
 \begin{itemize}
@@ -588,20 +582,20 @@ The following list delineates the tools and technologies employed in the impleme
 
     \item \textbf{Celery}: A task queue to manage long-running tasks, particularly for minimizer plugins, allowing for asynchronous task execution.
 
-    \item \textbf{Requests}: A Python library for interacting with HTTP endpoints. It is leveraged to invoke endpoints of plugins.
+    \item \textbf{Requests}: A Python library for interacting with HTTP endpoints. It invokes endpoints of plugins.
 \end{itemize}
 
 \subsection{Key Principles of QHana Plugins}
 
 In the \gls{qhana} ecosystem, plugins play a pivotal role in extending functionality.
-The creation and integration of these plugins are governed by a set of principles that ensure their seamless operation and interaction \cite{FabianBuehler}.
+A set of principles governs the creation and integration of these plugins to ensure their seamless operation and interaction \cite{FabianBuehler}.
 All plugins must adhere to these principles to ensure compatibility and consistency across the system.
-For the context of understanding the decisions made in this work, at least the following principles should be kept in mind:
+To understand the decisions made in this work, consider at least the following principles:
 
 \begin{itemize}
     \item \textbf{Plugin Definition:}
-    A plugin is essentially a Python module or package.
-    Conventionally, it contains a class that inherits from \texttt{QHAnaPluginBase} and is located in a directory specified by the \texttt{PLUGIN\_FOLDERS} configuration variable.
+    A plugin is a Python module or package.
+    Conventionally, it inherits from the \texttt{QHAnaPluginBase} class and resides in a directory specified by the \texttt{PLUGIN\_FOLDERS} configuration variable.
     The plugin imports its implementation class and all associated Celery tasks.
 
     \item \textbf{Plugin Metadata and Endpoints:}
@@ -610,7 +604,7 @@ For the context of understanding the decisions made in this work, at least the f
 
     \item \textbf{UI Interaction:}
     Plugins define both \texttt{href} and \texttt{hrefUi} for each plugin with an \gls{ui}.
-    The `hrefUi` serves the microfrontend where users input data, and `href` is the underlying endpoint providing the actual functionality.
+    The `hrefUi` serves the microfrontend where users input data, and `href` is the underlying endpoint providing the functionality.
 
     \item \textbf{Data Handling in Multi-step Plugins:}
     Data is stored in a key-value store for plugins requiring multiple user input and processing steps.
@@ -643,15 +637,14 @@ This ensures that data exchanged between plugins is smooth and error-free.
 
 \subsection{Testing and Debugging}
 
-The quality and reliability of plugins and their interactions are paramount.
-For this reason, a multifaceted testing strategy is adopted:
+A multifaceted testing strategy addresses the paramount importance of the quality and reliability of plugins and their interactions:
 
 \begin{enumerate}
     \item \textbf{Static Code Analysis}:
     \begin{itemize}
         \item \textbf{Purpose}: To ensure code quality and maintainability and to identify potential vulnerabilities or deviations from coding standards.
-        \item \textbf{Tools \& Implementation}: The tool \texttt{flake8}, in combination with type hints, is utilized to conduct static code analysis on the Python codebase.
-        By running \texttt{flake8}, a report detailing any code inconsistencies, potential errors, or areas for improvement is generated, providing valuable feedback for refinement.
+        \item \textbf{Tools \& Implementation}: The tool \emph{flake8}, in combination with type hints, is utilized to conduct static code analysis on the Python codebase.
+        \emph{Flake8} generates a report detailing any code inconsistencies, potential errors, or areas for improvement and provides valuable feedback for refinement.
     \end{itemize}
 
     \item \textbf{Logging and Monitoring}:
@@ -676,11 +669,13 @@ For this reason, a multifaceted testing strategy is adopted:
     \end{itemize}
 \end{enumerate}
 
-By employing a combination of static code analysis, detailed logging, interactive debugging, and manual testing, it is ensured that the plugins are functionally correct and adhere to coding standards and best practices, guaranteeing a robust and user-friendly experience.
+Employing a combination of static code analysis, detailed logging, interactive debugging, and manual testing ensures functional correctness and that plugins adhere to coding standards and best practices.
+
+
 
 
 \subsection{Performance Optimization}
-For optimal performance in the microservice-based plugin architecture, several strategies are employed:
+The system employs several strategies to optimize performance in the microservice-based plugin architecture:
 
 \begin{enumerate}
     \item Reducing the number of interactions between plugins.
@@ -692,7 +687,7 @@ These strategies are critical in ensuring swift and seamless interactions betwee
 
 
 \subsection{Documentation and Extensibility}
-Comprehensive documentation detailing how to add new \gls{of} and minimization plugins is created to enable the development of new plugins.
+The code includes comprehensive documentation that details how to add new \gls{of} and minimization plugins, facilitating the development of new plugins.
 This documentation serves as a guideline for developers aiming to extend the capabilities of \gls{qhana} with plugin interaction.
 
 
@@ -704,7 +699,7 @@ To validate the effectiveness of the proposed solutions and to assess whether th
 \paragraph{Performance Benchmarking:}
 \label{subsec:performanceBenchmarking}
 Performance is paramount, especially in a plugin-based architecture.
-A direct comparison will be made between the two plugin-based approaches and the non-service-based approach.
+A direct comparison shows the differences between the two plugin-based and non-service-based approaches.
 Critical metrics for this comparison include:
 
 \begin{itemize}
@@ -713,7 +708,7 @@ For the plugin-based approach, this is the time, as observed by the client calli
 As all system components run on the same machine, network, in this case, means the \emph{localhost}.
 
 \item \textbf{Minimization Time}: This refers to the time needed to minimize the \gls{of}.
-In the service-based approach, the time taken for the minimization endpoint to return a result is also accounted for.
+The service-based approach includes the time taken for the minimization endpoint to return a result via the network.
 
 \item \textbf{Network Latency}: This exclusively quantifies the time required for a request to reach the server and for the corresponding response to be received.
 This metric does not include any computation time that occurs on the server.
@@ -741,7 +736,7 @@ The evaluation acknowledges any documentation that guides developers through the
 An assessment determines the ease and efficiency with which a developer can introduce a new plugin in plugin-based optimization in \gls{qhana}.
 The goal is to ensure that the plugin-based approach is as easy to implement as the non-service-based approach.
 
-Through meticulously evaluating these parameters, this thesis thoroughly appraises the solutions concerning the challenges outlined in the problem statement.
+This thesis thoroughly appraises the solutions concerning the challenges outlined in the problem statement by meticulously evaluating these parameters.
 
 \section{Test Data Generation for Evaluation}
 To robustly evaluate the solutions proposed in this work, testing them on diverse datasets with different sizes and complexity is essential.
@@ -749,18 +744,18 @@ The objective is to mimic real-world scenarios where optimization problems can r
 The code used to generate the test data can be found in the \hyperref[chap:appendix]{Appendix}.
 The following criteria are employed to generate the test data:
 
-Datasets of different \emph{sizes} have been generated, spanning from a modest 200 data points to a substantial 1400 data points.
+Datasets of different \emph{sizes} are generated, spanning from a modest 200 data points to a substantial 1400 data points.
 This variation ensures that the optimization performance is assessed across different scales, from quick-to-process small datasets to computationally demanding large datasets.
 The \emph{number of features} in each dataset is dynamically determined based on the dataset's size, calculated explicitly as \(\lfloor \sqrt{\text{size}} \times 1.5 \rfloor\).
 This approach ensures that with the growth of the dataset, its complexity also increases, mirroring real-world scenarios where larger datasets often present more features or dimensions.
 
-The data is synthetically generated using the \texttt{make\_regression} function from the Scikit-learn library, known for its utility in machine learning.
+The \texttt{make\_regression} function from the Scikit-learn library generates data.
 An added \emph{noise} parameter introduces an element of randomness, making the optimization task more intricate and resembling real-world challenges.
 
 To maintain the consistency and reliability of the generated datasets across multiple runs or evaluations, a fixed random seed (\texttt{numpy.random.seed(42)}) has been set.
 This ensures that the data, though synthetic and noisy, remains consistent across evaluations, enabling accurate comparisons, assessments, and \emph{reproducibility}.
 
-To adhere to \gls{qhana}'s data standards, two criteria are employed:
+Two criteria are employed to adhere to \gls{qhana}'s data standards:
 Each data point in the dataset is allocated a unique ID in the format \emph{entityX}, where X represents the entity number.
 This aligns with \gls{qhana}'s data standard that mandates every data point to have an identifiable ID.
 All datasets are stored in the CSV (Comma Separated Values) format, adhering to \gls{qhana}'s accepted data formats.
@@ -775,7 +770,7 @@ All datasets are stored in the CSV (Comma Separated Values) format, adhering to 
 
 
 
-By employing such datasets, the methodology aims to objectively evaluate the optimization solutions, assessing their performance, interchangeability, and user experience across various scenarios.
+By employing such datasets, the methodology objectively evaluates the optimization solutions, assessing their performance, interchangeability, and user experience across various scenarios.
 
 
 
@@ -802,7 +797,7 @@ Its primary roles include:
 \item \textbf{Hyperparameters Acquisition}: It prompts the user to provide the hyperparameters necessary for the loss function calculation.
 \item \textbf{Loss Calculation}: The plugin computes the loss based on the provided input data, representing the discrepancy between predicted and target values.
 \item \textbf{Gradient Calculation (Optional)}: For optimization algorithms that leverage gradient-based methods, the plugin can optionally compute the gradient of the loss function.
-This aids in guiding the optimization process toward the desired minimum.
+The gradient aids in guiding the optimization process toward the desired minimum.
 \end{itemize}
 
 \paragraph{Minimizer Plugin:}
@@ -823,10 +818,10 @@ Its primary responsibilities are:
 
 \begin{itemize}
 \item \textbf{Plugin Selection}: It prompts the user to select the desired \gls{of} and minimizer plugins for optimization.
-\item \textbf{Data Acquisition}: The plugin gathers the necessary input data and the target variable from the user, which will be used in the optimization process.
-\item \textbf{Endpoint Acquisition}: It obtains the necessary endpoints from the selected plugins, which will be used for interaction.
+\item \textbf{Data Acquisition}: The plugin gathers the necessary input data and the target variable from the user, which the optimization process will use.
+\item \textbf{Endpoint Acquisition}: It obtains the necessary endpoints from the selected plugins.
 \item \textbf{Coordination Role}: It manages the interaction between the \gls{of} and minimizer plugins, ensuring that the loss (and optionally gradient) calculation function is provided to the minimizer plugin for the optimization process.
-Additionally, it coordinates the interaction between the user and the selected plugins, ensuring the user is provided with the necessary microfrontends.
+Additionally, it coordinates the interaction between the user and the selected plugins, ensuring the user sees the necessary microfrontends.
 \item \textbf{Results Presentation}: Post-optimization, the coordinator plugin presents the optimization results to the user.
 \end{itemize}
 
@@ -847,21 +842,21 @@ The interfaces for each plugin are detailed below and are visualized in the comp
 
 \paragraph{Objective Function Plugin Interfaces:}
 
-The \gls{of} plugin interface is designed to accommodate a wide range of loss functions, including those that offer gradient computation.
+The \gls{of} plugin interface accommodates a wide range of loss functions, including those that offer gradient computation.
 Its interfaces are:
 
 \begin{itemize}
 \item \textbf{Metadata}: The plugin provides metadata about itself as specified in the \gls{qhana} documentation \cite{FabianBuehler}.
-\item \textbf{UIRef}: This endpoint is used to obtain the microfrontend for the \gls{of} plugin, which is used to collect the hyperparameters from the user.
+\item \textbf{UIRef}: This endpoint returns the microfrontend for the \gls{of} plugin, where the user inputs the hyperparameters for the calculation.
 This interface also follows the \gls{qhana} documentation \cite{FabianBuehler}.
 \item \textbf{HRef}: This endpoint is used to process the input from the \gls{of} microfrontend and is therefore usually called the \textbf{processing} endpoint.
 It is usually triggered by the user clicking the \emph{submit} button on the microfrontend.
 This interface also follows the \gls{qhana} documentation \cite{FabianBuehler}.
-\item \textbf{PassData}: This endpoint is used to pass the input and target data to the \gls{of} plugin.
+\item \textbf{PassData}: Via this endpoint, the coordinator passes the input and target data to the \gls{of} plugin.
 It returns the number of weights required for the optimization process.
-The number of weights is returned here since it depends on the data and possibly the hyperparameters.
+It returns the number of weights required by the objective function.
 \item \textbf{CalculateLoss}: This endpoint calculates the loss.
-\item \textbf{CalculateGradient (Optional)}: This endpoint is used to calculate the gradient of the loss function. It is optional since the gradient cannot be computed efficiently for all \glspl{of}.
+\item \textbf{CalculateGradient (Optional)}: This endpoint calculates the gradient of the loss. It is optional since the gradient cannot be computed efficiently for all \glspl{of}.
 \item \textbf{CalculateLossAndGradient (Optional)}: This endpoint calculates the loss and the gradient of the loss function. Similar to the previous endpoint, it is optional.
 \end{itemize}
 
@@ -906,7 +901,7 @@ Long-running interactions come into play for processes requiring extensive compu
 In such a case, the calling plugin invokes the endpoint of the invocable plugin.
 The invoked endpoint then schedules a long-running task and returns immediately.
 The calling plugin can then continue with its execution asynchronously without waiting for the long-running task to finish.
-A new endpoint for the calling plugin is defined that can be called by the long-running task once it is finished.
+The calling plugin gets an additional endpoint that is called by the long-running task once it finishes.
 This endpoint is called a callback endpoint.
 Instances of such interactions are:
 \begin{itemize}
@@ -916,7 +911,7 @@ Instances of such interactions are:
     This mechanism works identically to the previous item.
     \item The coordinator plugin calls the minimization endpoint of the minimizer plugin.
     The minimizer plugin schedules the minimization process and returns immediately.
-    Once the minimization process is finished, the minimizer plugin calls a callback endpoint of the coordinator plugin.
+    Once the minimization process finishes, the minimizer plugin calls a callback endpoint of the coordinator plugin.
 \end{itemize}
 The design of these interactions ensures that plugins can interact seamlessly and efficiently regardless of the complexity or duration of tasks.
 
@@ -932,7 +927,7 @@ They specifically define endpoints in the metadata that other plugins can invoke
 
 The core of interaction endpoints is their \emph{type}.
 All interaction endpoints with the same type must adhere to the same signature and return type.
-This uniformity ensures that other plugins can interchangeably invoke them.
+This uniformity ensures that other plugins can invoke them interchangeably.
 The \gls{of} plugin provides interaction endpoints of types \emph{calc\_loss}, \emph{calc\_grad}, \emph{calc\_loss\_and\_grad}, and \emph{of\_pass\_data}.
 The minimizer plugin offers the `minimization' type.
 These interaction endpoints correspond to the endpoints defined in the previous section.
@@ -940,8 +935,8 @@ The introduction of interaction endpoints significantly enhances the modularity 
 More on how these interaction endpoints are implemented can be found in the implementation chapter \ref{chap:implementation}.
 
 \section{Final Interaction Flow}
-The architecture's final interaction flow can be broken down into three main parts, each ending in a new \gls{ui} displayed to the user.
-They are visualized in the sequence diagrams in figures \ref{fig:interaction_flow_part1}, \ref{fig:interaction_flow_part2}, and \ref{fig:interaction_flow_part3}.
+The architecture's final interaction flow is split into three main parts, each ending in a new \gls{ui} displayed to the user.
+The sequence diagrams in figures \ref{fig:interaction_flow_part1}, \ref{fig:interaction_flow_part2}, and \ref{fig:interaction_flow_part3} visualize the interaction flow.
 
 The first part begins after selecting the optimization plugin and concludes when the \gls{of} plugin's \gls{ui} is set as the next step.
 Here, the coordinator plugin retrieves the user-selected \gls{of} and minimization plugin metadata, including their interaction endpoints.
@@ -950,7 +945,7 @@ This flow is represented in Figure \ref{fig:interaction_flow_part1}.
 The second part starts with retrieving the \gls{of} plugin's microfrontend and ends when the minimizer plugin \gls{ui} is set as the next step.
 After the user inputs hyperparameters and submits, the \gls{of} processes the input and sends a callback to the coordinator plugin,
 The callback endpoint then passes the input and target data to the PassData endpoint.
-This is depicted in Figure \ref{fig:interaction_flow_part2}.
+This sequence is depicted in Figure \ref{fig:interaction_flow_part2}.
 
 The last segment starts with the minimizer plugin's microfrontend retrieval and ends when the optimization process concludes.
 After users input the minimization hyperparameters, the minimizer processes the data and sends a callback to the coordinator.
@@ -1029,7 +1024,7 @@ To exclude a plugin from the loading process, one places a \textit{.ignore} file
 The maximum recursion depth is limited to four to maintain system performance and a clear, structured layout.
 This threshold sufficiently accommodates the current plugin structure but can be adjusted upwards if future needs arise.
 
-The folder hierarchy is further enriched by including an \textit{interaction\_utils} directory dedicated to housing utility functions for generalized plugin interactions.
+The \textit{interaction\_utils} directory is dedicated to housing utility functions for generalized plugin interactions.
 Additionally, there is a \textit{shared} directory, which stores data structures and schemas utilized across the plugins related to the optimization plugin.
 A visual representation of the final folder structure, with all plugins implemented for this thesis, is shown in \cref{fig:folderStructure}.
 
@@ -1076,7 +1071,7 @@ Listing \ref{lst:ridge_loss_schema} shows the \emph{ridge\-loss} plugin's hyperp
 
 The minimizer and \gls{of} plugin selection field is a critical input field for the coordinator plugin.
 The \texttt{PluginUrl} class,  a custom class that extends marshmallow's \texttt{fields.Url} class generates that field.
-It ensures that only plugins of the correct type are selected by checking a plugin's metadata for the correct label.
+It ensures that a user can only select plugins of the correct type by checking a plugin's metadata for the correct label.
 Imperative for this to work is that all minimizer plugins have the \emph{minimization} and all \gls{of} plugins have the \emph{objective-function} label.
 Listing \ref{lst:coordinator_schema} shows the minimizer plugin selection field in the coordinator plugin's \gls{ui}.
 
@@ -1172,7 +1167,7 @@ It aids in data transfer between endpoints and ensures efficient data storage in
 \paragraph{Metadata Endpoint and Interaction Endpoint Discovery:}
 \label{sec:metadataEndpoint}
 The metadata of plugins houses the definitions for interaction endpoints.
-Traditionally, the \emph{EntryPoint} field in the metadata is reserved for guiding the \gls{qhana} \gls{ui} to a plugin's microfrontend.
+Traditionally, the \emph{EntryPoint} field in the metadata guides the \gls{qhana} \gls{ui} to a plugin's microfrontend.
 However, this thesis expands the \emph{EntryPoint} field to encompass interaction endpoints.
 The \emph{interactionEndpoints} field is essentially a list, potentially containing multiple interaction endpoints.
 Each list entry is a dictionary containing a \textbf{type} and an \textbf{href} field.
@@ -1281,7 +1276,7 @@ The foundational idea behind the first approach is promoting maximal decoupling 
 This idea entails minimizing data transfer between plugins and emphasizing data retrieval directly from the database whenever feasible.
 
 Specifically, the \gls{of} plugin archives its hyperparameters in the database.
-When the \emph{pass\_data} endpoint is invoked, input and target data get stored in the database.
+The coordinator invokes the \emph{pass\_data} endpoint, which stores input and target data in the database.
 Thus, for the \emph{pass\_data} endpoint, which determines the number of input weights, the coordinator plugin only passes the input and target data since the \gls{of} plugin fetches the hyperparameters from the database.
 The loss calculation endpoints \emph{calc\_loss}, \emph{calc\_grad}, and \emph{calc\_loss\_and\_grad} solely need the weights as input, leveraging already stored hyperparameters and data.
 Listing \ref{lst:calc_loss_schema} illustrates an exemplary schema for the \emph{calc\_loss} endpoint.
@@ -1293,9 +1288,7 @@ However, it mandates that the task's database ID be communicated to the coordina
   \lstinputlisting[language=Python, caption=\emph{CalcLossOrGradInputSchema} Schema for multistep-plugin approach., label=lst:calc_loss_schema]{code/calc_loss_schema.py}
 \end{minipage}
 
-\noindent\begin{minipage}{\linewidth}
-  \lstinputlisting[language=Python, caption=\emph{MinimizerInputSchema} Schema for multistep-plugin approach., label=lst:minimization_schema]{code/minimization_schema.py}
-\end{minipage}
+\lstinputlisting[language=Python, caption=\emph{MinimizerInputSchema} Schema for multistep-plugin approach., label=lst:minimization_schema]{code/minimization_schema.py}
 
 \subsection{Integrated Plugin Approach}
 \label{sec:secondApproach}
@@ -1304,7 +1297,7 @@ The second strategy embodies a tighter integration.
 This approach does not implement the \gls{of} plugin as a multi-step plugin.
 Such an implementation implies that no shared context exists among the plugin's endpoints, necessitating the passing of all required data during each endpoint invocation.
 
-This requires the microfrontend callback process to relay the hyperparameters to the coordinator plugin.
+This design requires the microfrontend callback process to relay the hyperparameters to the coordinator plugin.
 The coordinator then transmits the hyperparameters and data to the \gls{of} plugin's \emph{pass\_data} endpoint.
 In this setup, the minimizer plugin must also store the hyperparameters and data since it must relay this to the \gls{of} plugin's loss calculation endpoint.
 Listing \ref{lst:calc_loss_schema_multistep} exhibits the input schema for the \emph{calc\_loss} endpoint, while Listing \ref{lst:minimization_schema_multistep} demonstrates the \emph{minimization} endpoint's schema.
@@ -1339,9 +1332,9 @@ Performance benchmarks are conducted on a MacBook Pro. The system's detailed spe
 \section{Benchmark Results}
 \label{subsec:benchmarkingResults}
 
-Given its recurrent invocation, the most resource-intensive phase of the minimization process is related to the loss function's computation.
-The benchmarks employed the \emph{ridge-loss} plugin as the \gls{of}, configuring \emph{alpha} at 0.5.
-The \emph{scipy-minimizer} plugin is used as the minimizer, with the method set to \emph{L-BFGS-B}.
+Given its recurrent invocation, the loss function call is the most resource-intensive phase of the minimization process.
+The benchmarks employ the \emph{ridge-loss} plugin as the \gls{of}, configuring \emph{alpha} at 0.5.
+The \emph{scipy-minimizer} plugin acts as the minimizer, with the method set to \emph{L-BFGS-B}.
 
 Table \ref{table:of_calls} displays the frequency of loss evaluations during the minimization process for varying datasets, underscoring the significance of efficient loss function computation.
 
@@ -1369,8 +1362,8 @@ The \emph{Calculation Time} captures only the actual time it takes to calculate 
 The \emph{Database Time} measures the time it takes to retrieve the data from the database.
 The \emph{Network Time} measures the time it takes to send the data to the \gls{of} plugin and receive the result.
 The total time it takes from the point at which the minimizer plugin calls the calculation endpoint until it receives the result is the sum of the \emph{Calculation Time}, \emph{Database Time}, and \emph{Network Time}.
-The \emph{Database Time} is the most significant contributor to the total time as the data is retrieved from the database for every call, and with increasing dataset size, the time it takes to retrieve the data increases as well.
-The \emph{Network Time} is comparably more minor but still significant. It increases only slightly with an increasing dataset size since the actual data that is sent over the network does not change significantly.
+The \emph{Database Time} is the most significant contributor to the total time as the data is retrieved from the database for every call. With increasing dataset size, the time it takes to retrieve the data also increases.
+The \emph{Network Time} is comparably shorter but still significant. It increases only slightly with an increasing dataset size since the data sent over the network does not change significantly.
 
 \begin{figure}
   \centering
@@ -1381,7 +1374,7 @@ The \emph{Network Time} is comparably more minor but still significant. It incre
 
 Figure \ref{fig:of_call_time_version2} captures the same measurements as \ref{fig:of_call_time_version1} but for the integrated plugin-based implementation approach as described in \ref{sec:secondApproach}.
 The diagram does not show the \emph{Database Time} since this version does not make calls to the database.
-The \emph{Network Time} significantly increases for this approach as the vast amounts of data that were previously retrieved from the database are now sent over the network.
+The \emph{Network Time} significantly increases for this approach as the vast amounts of data previously retrieved from the database are now sent over the network.
 Additionally, the \emph{Network Time} increases with increasing dataset size since the amount of data sent over the network also increases.
 
 \begin{figure}
@@ -1402,7 +1395,7 @@ The Jupyter Notebook implementation is the fastest as it does not have to deal w
 \end{figure}
 
 Figure \ref{fig:time_for_of_calc} measures the same metrics as Figure \ref{fig:coparison_of_of}, but this time it ignores the \emph{Database Time} and the \emph{Network Time} only measuring the actual \emph{Calculation Time}.
-The result shows that for all implementations, a plugin-based implementation approach does not significantly impact the actual time it takes to calculate the loss function.
+The result shows that a plugin-based implementation approach does not significantly impact the time it takes to calculate the loss function.
 
 \begin{figure}
   \centering
@@ -1420,8 +1413,8 @@ Especially for the decoupled plugin-based implementation, the database latency i
 A caching mechanism is implemented for the decoupled plugin-based approach to avoid database latency.
 Since the input and target data and the hyperparameters do not change during the minimization process, they can be cached.
 That means the data is retrieved from the database during the first call of the \emph{calc\_loss} endpoint and cached for subsequent calls.
-The \emph{flask-caching} library is used for the implementation, and the cached data is kept in memory.
-Figure \ref{fig:of_call_time_version1_cached} shows the average time it takes for a single call of the \emph{calc\_loss} endpoint for different dataset sizes when using caching.
+The implementation uses the \emph{flask-caching} library and keeps the cached data in memory.
+Figure \ref{fig:of_call_time_version1_cached} shows the average time for a single call of the \emph{calc\_loss} endpoint for different dataset sizes when using caching.
 
 \begin{figure}
   \centering
@@ -1449,7 +1442,6 @@ The measurements for the plugin-based implementations do not include the time it
   \label{fig:time_for_minimization}
 \end{figure}
 
-\newpage
 \section{Interchangeability and Standardization}
 \label{sec:interchangeabilityOfPlugins}
 
@@ -1466,7 +1458,7 @@ The governing standards, as enumerated in Chapters \ref{chap:architecture} and \
 Successful compliance ensures plugin interchangeability.
 All example plugins in the implementation segment conform to these standards, ensuring mutual compatibility.
 Users can combine any minimizer plugin with any \gls{of} without changing any code.
-It is important to note, though, that to leverage the gradient calculation provided by the \emph{neural-network} plugin, the \emph{scipy-minimizer-grad} plugin has to be used.
+It is important to note that to leverage the gradient calculation provided by the \emph{neural-network} plugin, one has to use the \emph{scipy-minimizer-grad} plugin.
 
 The combination of all minimizer plugins with all \gls{of} plugins is extensively tested manually, and the results have been documented in Table \ref{table:interchangeability} to ensure that the plugins are fully interchangeable.
 
@@ -1493,7 +1485,7 @@ The combination of all minimizer plugins with all \gls{of} plugins is extensivel
 
 This section assesses the system's developer-friendliness.
 The steps required to implement new minimizer and \gls{of} plugins are documented to underpin the evaluation.
-While every plugin's inception is based on an existing template, the first step is to copy the template into a new directory.
+For every new plugin, the first step is to copy an existing plugin into a new directory as a template.
 
 \paragraph{Minimizer Plugin Development:}
 \label{subsec:implementingAMinimizerPlugin}
@@ -1530,7 +1522,7 @@ By starting with existing templates, developers are spared the repetitive tasks 
 This chapter delves into the critical discussions surrounding architectural choices, the model's practical execution, and the consequential outcomes.
 It starts by evaluating the plugin-based optimization framework's architectural decisions and how it is implemented.
 Subsequently, it analyzes the performance of the plugin-based optimization framework and compares it to the Jupyter Notebook implementation.
-Finally, this concept addresses how the results influence the developer experience when it comes to implementing new minimization and \gls{of} plugins.
+Finally, this concept addresses how the results influence the developer experience when implementing new minimization and \gls{of} plugins.
 
 \section{Architecture and Implementation}
 
@@ -1567,10 +1559,6 @@ However, it also has the disadvantage that the minimizer plugin has to pass the 
 Both approaches have advantages and disadvantages and should show that the plugin-based optimization framework is flexible enough to support both approaches.
 As the benchmarking results show, by caching the data, the first approach is arguably the better one of the two.
 
-
-\paragraph{Plugin Interchangeability and Standardization:}
-\label{sec:interchangeabilityAndStandardization}
-
 Standardization is paramount in the plugin-based optimization framework.
 The metadata, interaction endpoints, callback protocols, and plugin functionalities are meticulously defined to foster uniformity.
 This organized structure creates seamless plugin interchangeability.
@@ -1584,10 +1572,10 @@ Absent caching, both plugin methods suffer from network and database latencies.
 However, Figure \ref{fig:time_for_of_calc} stands out, highlighting that the intrinsic time for loss function computation remains unaffected across methods.
 
 Caching within the first plugin-based model increases performance significantly, as evidenced by Figure \ref{fig:of_call_time_version1_cached}.
-However, network latencies persist and cannot be minimized further as data sent and received is already minimal.
+However, network latencies persist and cannot be minimized further as data sent and received is minimal.
 Additionally, some database overhead is still present, as the data has to be retrieved from the database once and stored in the cache.
 As dataset sizes increase, these latencies diminish in relative significance.
-Additionally, the main use case of this optimization framework is \gls{vqa}, where the actual loss function calculation takes significantly longer than the network and database latencies.
+Additionally, the primary use case of this optimization framework is \gls{vqa}, where the actual loss function calculation takes significantly longer than the network and database latencies.
 When fortified with caching, the decoupled plugin-based approach emerges as a compelling alternative to the Jupyter Notebook implementation.
 
 \section{Developer Experience}
@@ -1602,7 +1590,7 @@ What simplifies the process even more is that all plugins of the same type have 
 By copying an existing plugin, everything concerning the plugin's metadata, interaction endpoints, and callback protocols is already implemented.
 The standardized architecture means developers can focus on hyperparameter customization and core calculations during implementation.
 With several existing example plugins, developers can leverage these to understand how the core implementations are realized.
-The understanding is further enhanced by the detailed documentation of the plugin-based optimization framework that explains the architecture and implementation.
+Detailed documentation of the plugin-based optimization framework that explains the architecture and implementation further enhances the understanding.
 
 
 \chapter{Related Work}
@@ -1619,11 +1607,11 @@ Central to this architecture is a \emph{Gateway}, which handles the internal com
 
 Mayer et al. \cite{Mayer_2003} advocate simplifying the intricacies of expansive software systems through a \emph{plugin-based architecture}.
 They argue that the system gains flexibility and becomes more maintainable by minimizing the core system and encapsulating most functionalities as plugins.
-They introduce the concept of \emph{Plugin-in Component Architecture} (PICA), where each plugin must provide a list of interfaces that the core can call and a description of how to use the interfaces.
+They introduce the concept of \emph{Plugin-in Component Architecture} (PICA), where each plugin must provide a list of interfaces the core can call and a description of how to use them.
 
 Wolfinger et al. \cite{Wolfinger2006} present a plugin architecture tailored for the .NET platform, drawing parallels with the Eclipse platform.
 The authors emphasize the structured interaction between plugins through the concepts of \emph{slots} and \emph{extensions}.
-A plugin host defines slots, indicating how they can be extended, while plugin contributors provide extensions to fill these slots.
+A plugin host defines slots that indicate how to extend the plugin, while plugin contributors provide extensions to fill these slots.
 This structured interaction ensures seamless integration of plugins.
 The architecture also leverages .NET features to embed relevant plugin information directly within the application's source code, arguing for improved readability and maintainability.
 
@@ -1637,16 +1625,16 @@ This modular design ensures efficient parallel processing and scalability.
 The paper does not aim to split the machine learning service into different components.
 
 A similar optimization loop, wherein a \gls{of} is evaluated iteratively to minimize the loss value, is adopted by popular machine learning frameworks like TensorFlow \cite{Abadi2016} and PyTorch \cite{Paszke2019}.
-These frameworks operate by processing input data, computing the discrepancy or loss between predictions and actual values, and subsequently refining the model's parameters based on this computed loss.
+These frameworks process input data, compute the discrepancy or loss between predictions and actual values, and refine the model's parameters based on this computed loss.
 The iterative process continues until a specified stopping criterion, such as a predetermined number of epochs or a desired accuracy threshold, is met.
 While there are architectural and functional distinctions between TensorFlow and PyTorch, at a high level, their optimization loops embody this core principle.
-However, these frameworks do not offer a distributed optimization loop, which is a crucial feature of the plugin-based optimization framework.
+However, these frameworks do not offer a distributed optimization loop, a crucial feature of the plugin-based optimization framework.
 
 In a comprehensive survey by Verbreaken et al. \cite{Verbraeken2020}, the authors delve deep into the paradigms and challenges of \emph{Distributed Machine Learning}.
 The authors categorize \emph{Distributed Machine Learning} techniques based on their key characteristics, such as data distribution, model updates, and communication strategies.
 The study sheds light on various challenges, including communication overhead.
 They further highlight the significance of an efficient communication strategy, emphasizing the need for a robust communication protocol.
-As discussed in the results section, the decoupled plugin-based implementation already minimizes communication overhead by caching data and reducing the amount of data that is sent over the network.
+As discussed in the result section of this work, the decoupled plugin-based implementation already minimizes communication overhead by caching data and reducing the amount of data sent over the network.
 
 \chapter{Conclusion and Outlook}
 \label{chap:conclusion}
@@ -1656,7 +1644,7 @@ What emerged is an innovative approach to optimization and a pioneering framewor
 This framework's versatility hints at its potential applicability beyond just optimization tasks.
 
 The example implementations of both the minimizer and the \gls{of} plugins are a testament to the system's functionality and adaptability.
-Performance benchmarks highlight the framework's robustness and efficiency, especially with caching, trying to minimize network and database latencies that come with a distributed system.
+Performance benchmarks highlight the framework's robustness and efficiency, especially with caching, trying to minimize network and database latencies from a distributed system.
 A particularly commendable aspect is the strict adherence to standardization, which ensures modularity and paves the way for seamless plugin interchangeability.
 This design philosophy also creates a developer-friendly system, simplifying plugin development while ensuring versatility.
 
