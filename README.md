@@ -1,22 +1,10 @@
-# LaTeX Template for Scientific Theses ![Build Status](https://github.com/latextemplates/scientific-thesis-template/workflows/Build%20with%20lualatex/badge.svg)
+# Implementing Variational Quantum Algorithms as Compositions of Reusable Microservice-based Plugins
 
-> This template is a general template for scientific theses.
+This repository holds the written work for my Master's thesis in Computer Science at the University of Stuttgart. The thesis is titled "Implementing Variational Quantum Algorithms as Compositions of Reusable Microservice-based Plugins" and is written in LaTeX.
 
-Currently, it is the unofficial LaTeX template for Master, Bachelor, Diploma, and Student Theses.
+The work researches how to implement Variational Quantum Algorithms (VQAs) as [RAMPs](https://www.summersoc.eu/wp-content/uploads/1.08-Fabian-Buehler-RAMP-Architecture-SummerSOC-2022.pdf) into the [QHAna](https://github.com/UST-QuAntiL/qhana) platform. The goal is to create a framework that allows for the easy implementation of VQAs and the reuse of their components while also introducing a new way of plugin interaction and communication.
 
-See [docs/](docs/) or <http://latextemplates.github.io/scientific-thesis-template/> for a documentation of the template.
+The source code for the practical part of the thesis can be found as a [PR](https://github.com/UST-QuAntiL/qhana-plugin-runner/pull/108) to the QHAna-Plugin-Runner repo.
 
-## License
-
-The license of this work is [CC0](https://creativecommons.org/publicdomain/zero/1.0/), which corresponds to "public domain".
-
-### Exceptions
-
-The images in `logos` are subject to other copyright from other parties:
-
-- `UPB_LOGO_GB_RGB_15.pdf` and `UPB_Logo_RGB_D_2012.pdf` are copyright Paderborn University.
-  Refer to <https://www.uni-paderborn.de/universitaet/marketing/design-vorgaben-templates/> for proper use.
-- `UBP-background-picture.*` are demonstration files generated using an educational edition of Microsoft Office.
-  They can be used in a scientific context only.
-  For commercial use, please change them.
-- `UBP-background-picture.pdf` is generated out of `UBP-background-picture.pptx` and is free for personal use only.
+To build the thesis, follow the instructions provided by the used [LaTeX template](https://latextemplates.github.io/scientific-thesis-template/)
+The final PDF will be placed in the root of the repository as `main-english.pdf`.
